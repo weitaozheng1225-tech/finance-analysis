@@ -260,7 +260,7 @@ INDICATORS: dict[str, dict] = {
             "每跌 1% 大致对应曲线上行 7-8bp。本压力指数中代替 UK 30Y。"
         ),
     },
-    # ========================== 日本国债 ==========================
+    # ============================ 日本国债 ============================
     "jgb_10y": {
         "source": "mof", "id": "10", "unit": "%",
         "label": "日本 10Y 国债",
@@ -294,6 +294,58 @@ INDICATORS: dict[str, dict] = {
             "明显压力薄弱的养老金 / 寿险需求。"
         ),
     },
+    # ========================== 外汇与套息 ==========================
+    "us_3m_tbill": {
+        "source": "fred", "id": "DGS3MO", "unit": "%",
+        "label": "美国 3M 国债利率",
+        "group": "外汇与套息",
+        "notes": (
+            "美国 3 个月期国债到期收益率 (CMT)。USD 端短期无风险利率，"
+            "也是 USD/JPY 锁汇成本（CIP 隐含）的核心分量。"
+        ),
+    },
+    "jp_3m_tbill": {
+        "source": "fred", "id": "IR3TIB01JPM156N", "unit": "%",
+        "label": "日本 3M 银行间利率（月频）",
+        "group": "外汇与套息",
+        "notes": (
+            "日本 3 个月银行间拆借利率（IR3TIB01JPM156N）。FRED 仅提供"
+            "月频，本系统按月更新并前向填充到日频供派生指标使用。"
+            "由 BOJ 政策利率直接驱动；BOJ 加息时该值同步上行，"
+            "降低 USD/JPY 锁汇成本。"
+        ),
+    },
+    "jpy_usd_hedge_cost": {
+        "source": "derived", "id": "jpy_usd_hedge_cost", "unit": "%",
+        "label": "USD/JPY 3M 锁汇成本（CIP 隐含）",
+        "group": "外汇与套息",
+        "warn": 4.0, "crisis": 5.0, "direction": "above",
+        "notes": (
+            "通过覆盖性利率平价 (CIP) 隐含的 3 个月 USD/JPY 锁汇成本，"
+            "= 美 3M T-Bill 利率 − 日 3M 银行间利率。日本投资者持有 USD"
+            "资产并用 3M 远期对冲汇率风险，每年需付出此比例的费用。"
+            "判断：> 4% = 锁汇后美债吸引力大幅下降；> 5% = 结构性回流"
+            "压力显著。"
+            "注意：真实锁汇成本还含 30-80bp 的 USD/JPY 跨货币基差点 "
+            "(xccy basis)，为付费数据；CIP 隐含值已捕捉 90%+ 的信号。"
+        ),
+    },
+    "hedged_us_jgb_carry": {
+        "source": "derived", "id": "hedged_us_jgb_carry", "unit": "%",
+        "label": "锁汇后美 10Y − JGB 10Y 套息差",
+        "group": "外汇与套息",
+        "warn": -1.0, "crisis": -2.5, "direction": "below",
+        "notes": (
+            "日本投资者用 3M 远期全额锁汇 USD/JPY 后，持有美 10Y 国债"
+            "相对持有 JGB 10Y 的实际超额收益。"
+            "计算公式：(美 10Y − 锁汇成本) − JGB 10Y "
+            "= 美 10Y − (美 3M − 日 3M) − JGB 10Y。"
+            "为负 = 锁汇后美债 carry 低于 JGB，日本机构有结构性回流"
+            "动机；深度为负（< −2.5%）= 寿险 / 大行已开始系统性减持美债。"
+            "对应 04_japan_carry_unwind.md 通道 1（寿险回流）最直接的"
+            "量化触发信号，也是 USDJPY 即期下行的领先指标。"
+        ),
+    },
 }
 
 # PDF 报告中分组的展示顺序
@@ -307,6 +359,7 @@ GROUP_ORDER = [
     "避险与另类资产",
     "长债 ETF 代理",
     "日本国债",
+    "外汇与套息",
 ]
 
 # 复合压力指数构成 —— 详见 01_scenario_analysis.md §5

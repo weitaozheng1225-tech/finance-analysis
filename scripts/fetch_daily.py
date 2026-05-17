@@ -228,10 +228,62 @@ SOURCE_DISPATCH = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Derived indicators — computed from base series after the main fetch loop
+# ---------------------------------------------------------------------------
+def _load_csv(name: str) -> pd.Series:
+    p = DATA_DIR / f"{name}.csv"
+    if not p.exists():
+        return pd.Series(dtype=float)
+    df = pd.read_csv(p, parse_dates=["date"])
+    return df.set_index("date")["value"].sort_index()
+
+
+def _compute_jpy_usd_hedge_cost() -> pd.Series:
+    us3 = _load_csv("us_3m_tbill")
+    jp3 = _load_csv("jp_3m_tbill")
+    if us3.empty or jp3.empty:
+        raise RuntimeError("missing inputs: us_3m_tbill or jp_3m_tbill")
+    jp3_ff = jp3.reindex(us3.index, method="ffill")
+    s = (us3 - jp3_ff).dropna()
+    s.name = "jpy_usd_hedge_cost"
+    return s
+
+
+def _compute_hedged_us_jgb_carry() -> pd.Series:
+    us10 = _load_csv("us_10y")
+    us3 = _load_csv("us_3m_tbill")
+    jp3 = _load_csv("jp_3m_tbill")
+    jgb10 = _load_csv("jgb_10y")
+    missing = [n for n, s in zip(
+        ["us_10y", "us_3m_tbill", "jp_3m_tbill", "jgb_10y"],
+        [us10, us3, jp3, jgb10],
+    ) if s.empty]
+    if missing:
+        raise RuntimeError(f"missing inputs: {missing}")
+    idx = us10.index
+    us3_a = us3.reindex(idx, method="ffill")
+    jp3_a = jp3.reindex(idx, method="ffill")
+    jgb10_a = jgb10.reindex(idx, method="ffill")
+    hedge = us3_a - jp3_a
+    s = (us10 - hedge - jgb10_a).dropna()
+    s.name = "hedged_us_jgb_carry"
+    return s
+
+
+DERIVED_DISPATCH = {
+    "jpy_usd_hedge_cost": _compute_jpy_usd_hedge_cost,
+    "hedged_us_jgb_carry": _compute_hedged_us_jgb_carry,
+}
+
+
 def main() -> int:
     failures: list[str] = []
+    # Pass 1 — fetch all base (non-derived) indicators
     for name, cfg in INDICATORS.items():
         src = cfg["source"]
+        if src == "derived":
+            continue
         fn = SOURCE_DISPATCH.get(src)
         if fn is None:
             log.warning("[%s] no fetcher for source=%s", name, src)
@@ -241,6 +293,22 @@ def main() -> int:
             _append_csv(name, series)
         except Exception as e:
             log.error("[%s] fetch failed: %s", name, e)
+            failures.append(name)
+
+    # Pass 2 — compute derived indicators from CSVs written in pass 1
+    for name, cfg in INDICATORS.items():
+        if cfg["source"] != "derived":
+            continue
+        fn = DERIVED_DISPATCH.get(name)
+        if fn is None:
+            log.warning("[%s] no derived computation registered", name)
+            failures.append(name)
+            continue
+        try:
+            series = fn()
+            _append_csv(name, series)
+        except Exception as e:
+            log.error("[%s] derived computation failed: %s", name, e)
             failures.append(name)
 
     summary_path = ROOT / "data" / "last_fetch.txt"
