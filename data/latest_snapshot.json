@@ -1,6 +1,6 @@
 {
   "as_of": "2026-05-17",
-  "composite_stress": 1,
+  "composite_stress": 3,
   "stress_band": "watch",
   "components": [
     {
@@ -23,8 +23,8 @@
     },
     {
       "name": "JGB 30Y",
-      "value": null,
-      "points": 0,
+      "value": 3.852,
+      "points": 2,
       "detail": "low=2.5, high=3.0, direction=above"
     },
     {
@@ -308,50 +308,50 @@
     {
       "name": "btc",
       "label": "Bitcoin (USD)",
-      "latest_value": 78074.68428004677,
+      "latest_value": 78103.03196108094,
       "latest_date": "2026-05-17",
-      "change_1d": -0.012573046586245619,
-      "change_5d": -0.04466826746543822,
-      "change_20d": -0.007253358899198542,
-      "z_60d": 0.7766403694166185,
+      "change_1d": -0.012214527501883902,
+      "change_5d": -0.04432140164733809,
+      "change_20d": -0.006892908320510022,
+      "z_60d": 0.7822625789591067,
       "threshold_state": "ok",
       "notes": ""
     },
     {
       "name": "jgb_10y",
       "label": "Japan 10Y JGB yield",
-      "latest_value": null,
-      "latest_date": null,
-      "change_1d": null,
-      "change_5d": null,
+      "latest_value": 2.628,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.040999999999999925,
+      "change_5d": 0.14300000000000024,
       "change_20d": null,
       "z_60d": null,
-      "threshold_state": "ok",
-      "notes": "no data"
+      "threshold_state": "crisis",
+      "notes": ""
     },
     {
       "name": "jgb_30y",
       "label": "Japan 30Y JGB yield",
-      "latest_value": null,
-      "latest_date": null,
-      "change_1d": null,
-      "change_5d": null,
+      "latest_value": 3.852,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.06899999999999995,
+      "change_5d": 0.1379999999999999,
       "change_20d": null,
       "z_60d": null,
-      "threshold_state": "ok",
-      "notes": "no data"
+      "threshold_state": "crisis",
+      "notes": ""
     },
     {
       "name": "jgb_40y",
       "label": "Japan 40Y JGB yield",
-      "latest_value": null,
-      "latest_date": null,
-      "change_1d": null,
-      "change_5d": null,
+      "latest_value": 3.868,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.06199999999999983,
+      "change_5d": 0.121,
       "change_20d": null,
       "z_60d": null,
-      "threshold_state": "ok",
-      "notes": "no data"
+      "threshold_state": "crisis",
+      "notes": ""
     },
     {
       "name": "gilt_10y",
@@ -376,11 +376,26 @@
       "z_60d": null,
       "threshold_state": "ok",
       "notes": "no data"
+    },
+    {
+      "name": "uk_gilt_etf",
+      "label": "iShares UK Gilts ETF (IGLT.L) \u2014 gilt price proxy",
+      "latest_value": 9.6274995803833,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.011296596477217737,
+      "change_5d": -0.017602102754513044,
+      "change_20d": -0.017602102754513044,
+      "z_60d": -1.618207509598434,
+      "threshold_state": "ok",
+      "notes": ""
     }
   ],
   "anomalies": [
     "SOFR: z=-2.60 (WARN)",
     "iShares 20+Y Treasury ETF: z=-2.19 (WARN)",
-    "US 10Y ACM term premium: level=0.700 crosses WARN threshold"
+    "US 10Y ACM term premium: level=0.700 crosses WARN threshold",
+    "Japan 10Y JGB yield: level=2.628 crosses CRISIS threshold",
+    "Japan 30Y JGB yield: level=3.852 crosses CRISIS threshold",
+    "Japan 40Y JGB yield: level=3.868 crosses CRISIS threshold"
   ]
 }
