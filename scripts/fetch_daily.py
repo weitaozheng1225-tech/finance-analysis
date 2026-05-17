@@ -219,12 +219,66 @@ def _append_csv(name: str, series: pd.Series) -> None:
     log.info("[%s] wrote %d rows, latest %s = %s", name, len(merged), merged.index[-1].date(), last["value"])
 
 
+def fetch_fiscal_auction(spec: str) -> pd.Series:
+    """Treasury Fiscal Data API — Treasury Auctions dataset.
+
+    spec format: ``"<security_term>|<field_name>"``
+    Example: ``"30-Year|bid_to_cover_ratio"``.
+
+    Returns one row per auction (sparse — typically monthly for 30Y bonds),
+    indexed by auction_date. Defensive: empty/malformed rows are skipped,
+    and the function raises a clear error if no usable data is returned so
+    the orchestrator records a single named failure rather than poisoning
+    the entire pipeline.
+    """
+    term, field = spec.split("|", 1)
+    url = (
+        "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/"
+        "v1/accounting/od/auctions_query"
+    )
+    params = {
+        "filter": f"security_term:eq:{term}",
+        "fields": f"auction_date,{field}",
+        "sort": "-auction_date",
+        "page[size]": "200",
+    }
+    r = SESSION.get(url, params=params, timeout=TIMEOUT)
+    r.raise_for_status()
+    payload = r.json()
+    rows = payload.get("data", [])
+    if not rows:
+        raise RuntimeError(f"fiscal API returned no rows for term={term}")
+    parsed: list[tuple[pd.Timestamp, float]] = []
+    for row in rows:
+        d = row.get("auction_date")
+        v = row.get(field)
+        if not d or v in (None, "", "null", "NULL"):
+            continue
+        try:
+            parsed.append((pd.Timestamp(d), float(v)))
+        except (ValueError, TypeError):
+            continue
+    if not parsed:
+        raise RuntimeError(
+            f"fiscal API: no usable rows for term={term} field={field} "
+            f"(received {len(rows)} raw rows)"
+        )
+    parsed.sort()
+    idx, vals = zip(*parsed)
+    # Deduplicate by date (keep the latest write per date)
+    s = pd.Series(vals, index=pd.DatetimeIndex(idx))
+    s = s.groupby(s.index).last()
+    s.name = f"fiscal_{term}_{field}"
+    return s
+
+
 SOURCE_DISPATCH = {
     "fred": fetch_fred,
     "yahoo": fetch_yahoo,
     "coingecko": fetch_coingecko,
     "mof": fetch_mof_jgb,
     "stooq": fetch_stooq,
+    "fiscal": fetch_fiscal_auction,
 }
 
 
@@ -271,9 +325,52 @@ def _compute_hedged_us_jgb_carry() -> pd.Series:
     return s
 
 
+def _compute_spread(short: str, long: str, out_name: str) -> pd.Series:
+    a = _load_csv(long)
+    b = _load_csv(short)
+    if a.empty or b.empty:
+        raise RuntimeError(f"missing inputs: {long} / {short}")
+    common = a.index.intersection(b.index)
+    if len(common) == 0:
+        raise RuntimeError(f"no overlapping dates: {long} / {short}")
+    s = (a.loc[common] - b.loc[common]).dropna()
+    s.name = out_name
+    return s
+
+
+def _compute_us_2s10s() -> pd.Series:
+    return _compute_spread("us_2y", "us_10y", "us_2s10s")
+
+
+def _compute_us_10s30s() -> pd.Series:
+    return _compute_spread("us_10y", "us_30y", "us_10s30s")
+
+
+def _compute_jgb_10s30s() -> pd.Series:
+    return _compute_spread("jgb_10y", "jgb_30y", "jgb_10s30s")
+
+
+def _compute_move_3y_percentile() -> pd.Series:
+    m = _load_csv("move")
+    if m.empty:
+        raise RuntimeError("missing input: move")
+    if len(m) < 250:
+        raise RuntimeError(f"insufficient MOVE history ({len(m)} rows, need ≥250)")
+    # Rolling 750-day window (~3 years of trading days) percentile rank
+    # of the current value. pandas' rolling.rank(pct=True) gives the
+    # per-window rank of each value as a fraction; multiply by 100 for %ile.
+    s = (m.rolling(window=750, min_periods=250).rank(pct=True) * 100).dropna()
+    s.name = "move_3y_percentile"
+    return s
+
+
 DERIVED_DISPATCH = {
     "jpy_usd_hedge_cost": _compute_jpy_usd_hedge_cost,
     "hedged_us_jgb_carry": _compute_hedged_us_jgb_carry,
+    "us_2s10s": _compute_us_2s10s,
+    "us_10s30s": _compute_us_10s30s,
+    "jgb_10s30s": _compute_jgb_10s30s,
+    "move_3y_percentile": _compute_move_3y_percentile,
 }
 
 
