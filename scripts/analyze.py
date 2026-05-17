@@ -155,6 +155,8 @@ def _derived_value(name: str) -> float | None:
     if name == "gilt_30y_5d_change":
         g = _load_series("gilt_30y")
         return _level_change(g, 5)
+    if name == "uk_gilt_etf_5d_return":
+        return _pct_change(_load_series("uk_gilt_etf"), 5)
     if name == "kre_1m_return":
         return _pct_change(_load_series("kre"), 21)
     return None

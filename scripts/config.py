@@ -134,16 +134,9 @@ INDICATORS: dict[str, dict] = {
         "label": "Japan 40Y JGB yield",
         "warn": 2.75, "crisis": 3.25, "direction": "above",
     },
-    "gilt_10y": {
-        "source": "stooq", "id": "10yuky.b", "unit": "%",
-        "label": "UK 10Y Gilt yield",
-    },
-    "gilt_30y": {
-        "source": "stooq", "id": "30yuky.b", "unit": "%",
-        "label": "UK 30Y Gilt yield",
-        # weekly delta threshold handled in analyze.py
-    },
-    # Always-available UK gilt stress proxy via Yahoo (in case Stooq blocks GH IPs).
+    # UK gilt yields: Stooq's free CSV blocks GitHub Actions IP ranges (apikey required).
+    # We use the iShares UK Gilts ETF as a price-based stress proxy instead;
+    # IGLT.L has duration ~14y so a ~4% price drop ≈ a 30bp yield rise.
     "uk_gilt_etf": {
         "source": "yahoo", "id": "IGLT.L", "unit": "GBp",
         "label": "iShares UK Gilts ETF (IGLT.L) — gilt price proxy",
@@ -156,7 +149,8 @@ STRESS_COMPONENTS = [
     {"name": "US 10Y term premium", "indicator": "us_10y_term_premium", "low": 0.5, "high": 1.0, "direction": "above"},
     {"name": "SOFR-IORB", "derived": "sofr_iorb_spread", "low": 0.05, "high": 0.10, "direction": "above"},
     {"name": "JGB 30Y", "indicator": "jgb_30y", "low": 2.5, "high": 3.0, "direction": "above"},
-    {"name": "Gilt 30Y weekly change", "derived": "gilt_30y_5d_change", "low": 0.30, "high": 0.50, "direction": "above"},
+    # UK Gilt ETF 5d return (IGLT.L; duration ~14, so -4% ≈ +30bp yield):
+    {"name": "UK Gilt ETF 5d return", "derived": "uk_gilt_etf_5d_return", "low": -0.025, "high": -0.045, "direction": "below"},
     {"name": "KRE 1m return", "derived": "kre_1m_return", "low": -0.05, "high": -0.10, "direction": "below"},
 ]
 
