@@ -55,36 +55,39 @@ def _should_alert(snap: dict) -> bool:
 
 def _subject(snap: dict, mode: str) -> str:
     stress = snap.get("composite_stress") or snap.get("today_stress") or 0
-    band = (snap.get("stress_band") or snap.get("today_band") or "ok").upper()
+    band_en = (snap.get("stress_band") or snap.get("today_band") or "ok")
+    band_zh = {"ok": "正常", "watch": "观察", "warn": "警戒", "crisis": "危机"}.get(band_en, band_en)
     n_anom = len(snap.get("anomalies", []))
     date_str = snap.get("as_of", "")
-    tag = "WEEKLY" if mode == "weekly" else "DAILY"
-    return f"[BOND-MONITOR · {tag}] {date_str} stress={stress}/12 band={band} anomalies={n_anom}"
+    tag = "周报" if mode == "weekly" else "日报"
+    return f"[全球长债监测·{tag}] {date_str} 压力 {stress}/12 · {band_zh} · 异常 {n_anom} 项"
 
 
 def _summary_body(snap: dict, mode: str, pdf_path: Path | None) -> str:
-    """Plain-text email body — short summary; the PDF is the deliverable."""
-    band = (snap.get("stress_band") or snap.get("today_band") or "ok").upper()
+    """纯文本邮件正文 —— 简短摘要；详细内容在 PDF 附件。"""
+    band_en = (snap.get("stress_band") or snap.get("today_band") or "ok")
+    band_zh = {"ok": "正常", "watch": "观察", "warn": "警戒", "crisis": "危机"}.get(band_en, band_en)
     stress = snap.get("composite_stress") or snap.get("today_stress") or 0
+    mode_zh = "周报" if mode == "weekly" else "日报"
     lines = [
-        f"Bond Crisis Monitor — {mode.title()} Report",
-        f"As of: {snap.get('as_of', '')}",
-        f"Composite stress: {stress}/12  ({band})",
+        f"全球长债危机监测 · {mode_zh}",
+        f"数据截至：{snap.get('as_of', '')}",
+        f"综合压力指数：{stress}/12（{band_zh}）",
         "",
     ]
     if snap.get("anomalies"):
-        lines.append("Active anomalies:")
+        lines.append("当前异常：")
         for a in snap["anomalies"][:10]:
             lines.append(f"  • {a}")
         if len(snap["anomalies"]) > 10:
-            lines.append(f"  … and {len(snap['anomalies']) - 10} more")
+            lines.append(f"  …共 {len(snap['anomalies'])} 项，详见附件")
     else:
-        lines.append("No anomalies or threshold breaches detected.")
+        lines.append("今日无异常或阈值越界。")
     lines.append("")
     if pdf_path and pdf_path.exists():
-        lines.append(f"See attached PDF for the full report ({pdf_path.stat().st_size // 1024} KB).")
+        lines.append(f"完整报告见附件 PDF（约 {pdf_path.stat().st_size // 1024} KB）。")
     lines.append("")
-    lines.append("Full archive: https://github.com/weitaozheng1225-tech/finance-analysis")
+    lines.append("历史归档：https://github.com/weitaozheng1225-tech/finance-analysis")
     return "\n".join(lines)
 
 

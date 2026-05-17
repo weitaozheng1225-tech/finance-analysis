@@ -1,341 +1,329 @@
-"""Indicator definitions, thresholds, annotations, and stress-index scoring rules.
+"""指标定义、阈值、注释与压力指数评分规则。
 
-Each indicator entry:
-  source:    one of {"fred", "yahoo", "stooq", "coingecko", "mof"}
-  id:        provider-specific identifier
-  unit:      display unit
-  label:     short label shown in tables
-  group:     category for grouping in PDF reports
-  notes:     full name + economic meaning, shown in PDF glossary
-  warn/crisis/direction: optional thresholds for status flagging
-  stress:    optional dict mapping value -> 0/1/2 contribution to composite index
+每个指标条目包含：
+  source:    数据源 {"fred", "yahoo", "stooq", "coingecko", "mof"}
+  id:        数据源对应的标识符
+  unit:      展示单位
+  label:     表格中的简短标签（中文）
+  group:     PDF 报告中的分组名（中文）
+  notes:     全称 + 经济学意义，用于 PDF 末页释义
+  warn / crisis / direction: 状态阈值
+  stress:    压力指数贡献映射
 
-Composite stress index (0-12) follows 01_scenario_analysis.md §5.
+复合压力指数 (0-12) 算法见 01_scenario_analysis.md §5。
 """
 
 from __future__ import annotations
 
 INDICATORS: dict[str, dict] = {
-    # =========================== US Treasuries ===========================
+    # ============================ 美国国债 ============================
     "us_2y": {
         "source": "fred", "id": "DGS2", "unit": "%",
-        "label": "US 2Y Treasury",
-        "group": "US Treasuries",
+        "label": "美国 2Y 国债",
+        "group": "美国国债",
         "notes": (
-            "US 2-Year Treasury yield. Reflects market expectations of the Fed funds rate "
-            "over the next 2 years; the front-end anchor and a key driver of curve shape."
+            "美国 2 年期国债收益率。反映市场对未来 2 年联邦基金利率路径的预期，"
+            "是收益率曲线前端的锚，与曲线形状（陡峭/平坦/倒挂）密切相关。"
         ),
     },
     "us_10y": {
         "source": "fred", "id": "DGS10", "unit": "%",
-        "label": "US 10Y Treasury",
-        "group": "US Treasuries",
+        "label": "美国 10Y 国债",
+        "group": "美国国债",
         "notes": (
-            "US 10-Year Treasury yield. The global risk-free benchmark; anchors mortgages, "
-            "corporate borrowing costs, and cross-border rate markets."
+            "美国 10 年期国债收益率。全球无风险利率基准，是美国房贷、企业信用债"
+            "以及跨境利率市场的定价之锚。"
         ),
     },
     "us_30y": {
         "source": "fred", "id": "DGS30", "unit": "%",
-        "label": "US 30Y Treasury",
-        "group": "US Treasuries",
+        "label": "美国 30Y 国债",
+        "group": "美国国债",
         "notes": (
-            "US 30-Year Treasury bond yield (the long bond). Most sensitive to inflation "
-            "expectations, fiscal sustainability concerns, and structural demand from "
-            "long-duration buyers (insurers, pensions, foreign reserve managers)."
+            "美国 30 年期长期国债收益率（长债）。对通胀预期、财政可持续性以及"
+            "长久期需求（保险、养老金、海外储备管理者）最为敏感。"
         ),
     },
     "us_10y_term_premium": {
         "source": "fred", "id": "THREEFYTP10", "unit": "%",
-        "label": "US 10Y term premium (ACM)",
-        "group": "US Treasuries",
+        "label": "美国 10Y 期限溢价 (ACM)",
+        "group": "美国国债",
         "warn": 0.5, "crisis": 1.0, "direction": "above",
         "stress": {"low": 0.5, "high": 1.0},
         "notes": (
-            "Adrian-Crump-Moench (ACM) model term premium on the 10Y, published by NY Fed. "
-            "The compensation investors demand for holding long-duration risk beyond what "
-            "expected short-rate paths can justify. Rising values indicate structural "
-            "repricing of sovereign duration — often driven by fiscal concerns or "
-            "weakening foreign demand."
+            "NY Fed 发布的 ACM (Adrian-Crump-Moench) 模型 10Y 期限溢价。指投资者"
+            "持有长久期所要求的、短端利率路径无法解释的额外补偿。该值上行通常"
+            "意味着主权久期被重定价 —— 多由财政担忧或海外需求弱化驱动。"
         ),
     },
-    # ========================= Funding & Liquidity =========================
+    # ======================== 资金面与流动性 ========================
     "sofr": {
         "source": "fred", "id": "SOFR", "unit": "%",
-        "label": "SOFR",
-        "group": "Funding & Liquidity",
+        "label": "SOFR 隔夜担保融资利率",
+        "group": "资金面与流动性",
         "notes": (
-            "Secured Overnight Financing Rate. The post-LIBOR USD benchmark; reflects the "
-            "true cost of overnight Treasury repo. Spikes (relative to IORB) flag dollar "
-            "funding stress, as in the September 2019 repo blowup."
+            "Secured Overnight Financing Rate，LIBOR 退役后的美元基准利率，反映"
+            "美债担保隔夜回购的真实成本。相对 IORB 飙升时（如 2019 年 9 月回购"
+            "事件）即美元资金紧张信号。"
         ),
     },
     "iorb": {
         "source": "fred", "id": "IORB", "unit": "%",
-        "label": "IORB",
-        "group": "Funding & Liquidity",
+        "label": "IORB 准备金利息",
+        "group": "资金面与流动性",
         "notes": (
-            "Interest on Reserve Balances. Rate the Fed pays banks on excess reserves; "
-            "the de facto floor of the fed funds corridor and benchmark for SOFR."
+            "Interest on Reserve Balances，美联储对商业银行准备金支付的利率，是"
+            "联邦基金利率走廊的事实下限，也是 SOFR 的参照基准。"
         ),
     },
     "rrp_usage": {
         "source": "fred", "id": "RRPONTSYD", "unit": "$B",
-        "label": "ON RRP usage",
-        "group": "Funding & Liquidity",
+        "label": "隔夜逆回购规模 (ON RRP)",
+        "group": "资金面与流动性",
         "notes": (
-            "Overnight Reverse Repo Program take-up. Money-market funds park cash with "
-            "the Fed when private-market yields are unattractive. A draining RRP signals "
-            "cash flowing back into private repo and T-Bills; a swelling RRP signals "
-            "excess liquidity with nowhere to go."
+            "货币市场基金当私募市场收益率不具吸引力时将现金存入美联储 RRP。"
+            "RRP 余额回落意味着资金回流私募回购与短端国债；RRP 膨胀则代表"
+            "市场流动性过剩、无处可投。"
         ),
     },
     "tga_balance": {
         "source": "fred", "id": "WTREGEN", "unit": "$M",
-        "label": "Treasury TGA balance",
-        "group": "Funding & Liquidity",
+        "label": "美国财政部一般账户 (TGA)",
+        "group": "资金面与流动性",
         "notes": (
-            "Treasury General Account balance at the Fed. The US Treasury's checking "
-            "account. Drawdowns inject liquidity into the banking system; refills (e.g. "
-            "post debt-ceiling deals) drain it. Key variable around X-date risk windows."
+            "美国财政部在美联储的一般账户余额（即财政部支票账户）。账户耗用"
+            "向银行体系注入流动性；账户补充（如债务上限协议达成后）则抽走流动性。"
+            "是 X-date 风险窗口的关键变量。"
         ),
     },
     "fed_balance_sheet": {
         "source": "fred", "id": "WALCL", "unit": "$M",
-        "label": "Fed total assets (H.4.1)",
-        "group": "Funding & Liquidity",
+        "label": "美联储总资产 (H.4.1)",
+        "group": "资金面与流动性",
         "notes": (
-            "Total assets on the Fed's weekly H.4.1 balance sheet. Tracks QE expansion "
-            "and QT runoff; the broadest single gauge of central bank liquidity supply."
+            "美联储每周 H.4.1 资产负债表合计。直接刻画 QE 扩表与 QT 缩表节奏，"
+            "是央行流动性供给的最综合单一指标。"
         ),
     },
-    # ============================= US Credit ===============================
+    # ============================ 美国信用 ============================
     "ig_oas": {
         "source": "fred", "id": "BAMLC0A0CM", "unit": "%",
-        "label": "US IG corporate OAS",
-        "group": "US Credit",
+        "label": "美国 IG 企业债利差 (OAS)",
+        "group": "美国信用",
         "warn": 1.30, "crisis": 1.80, "direction": "above",
         "notes": (
-            "ICE BofA US Investment-Grade Corporate Index option-adjusted spread over "
-            "Treasuries. The compensation for IG credit + liquidity risk. Widening signals "
-            "rising default expectations and/or deteriorating bank balance sheets."
+            "ICE BofA 美国投资级企业债指数相对美债的期权调整利差 (OAS)。代表"
+            "投资级信用风险加流动性补偿，利差走阔提示违约预期上升或银行资产"
+            "负债表恶化。"
         ),
     },
     "hy_oas": {
         "source": "fred", "id": "BAMLH0A0HYM2", "unit": "%",
-        "label": "US HY corporate OAS",
-        "group": "US Credit",
+        "label": "美国 HY 企业债利差 (OAS)",
+        "group": "美国信用",
         "warn": 4.50, "crisis": 7.00, "direction": "above",
         "notes": (
-            "ICE BofA US High-Yield Corporate Index OAS. The 'risk gauge' of corporate "
-            "credit. HY spreads typically lead equity drawdowns by days to weeks and are "
-            "the cleanest read on leverage-system stress."
+            "ICE BofA 美国高收益企业债 OAS。企业信用市场的恐慌温度计，高收益"
+            "利差通常领先股票回撤数日至数周，是杠杆系统压力最干净的读数。"
         ),
     },
-    # ================================ FX ===================================
+    # ============================== 外汇 ==============================
     "usdjpy": {
         "source": "fred", "id": "DEXJPUS", "unit": "JPY",
-        "label": "USD/JPY",
-        "group": "FX",
+        "label": "美元/日元",
+        "group": "外汇",
         "notes": (
-            "USD/JPY spot. Captures the Fed-BOJ policy gap and the temperature of yen "
-            "carry-trade positioning. A sharp drop (yen strength) signals carry-unwind "
-            "and tends to precede global risk-off (e.g. Aug 2024)."
+            "USD/JPY 即期汇率。反映 Fed-BOJ 政策利差及日元套息交易的温度。"
+            "若快速回落（日元升值）即套息平仓信号，往往领先全球避险情绪"
+            "（如 2024 年 8 月日股闪崩前）。"
         ),
     },
     "gbpusd": {
         "source": "fred", "id": "DEXUSUK", "unit": "USD",
-        "label": "GBP/USD",
-        "group": "FX",
+        "label": "英镑/美元",
+        "group": "外汇",
         "notes": (
-            "GBP/USD spot. Key gauge of UK fiscal/political credibility; LDI-style stress "
-            "(Sep 2022) typically shows here first as foreign holders dump gilts and "
-            "convert proceeds back to home currency."
+            "GBP/USD 即期汇率。英国财政与政治信誉的重要标尺。LDI 式压力"
+            "（如 2022 年 9 月）通常先在此显现，因海外持债人抛售英国国债"
+            "并将本金兑回本币。"
         ),
     },
     "dxy": {
         "source": "yahoo", "id": "DX-Y.NYB", "unit": "idx",
-        "label": "DXY US Dollar Index",
-        "group": "FX",
+        "label": "DXY 美元指数",
+        "group": "外汇",
         "notes": (
-            "ICE US Dollar Index. Trade-weighted USD vs a basket of major currencies. "
-            "A rising DXY tightens global dollar liquidity and pressures EM/commodity "
-            "complexes."
+            "ICE 美元指数。美元相对一篮子主要货币的贸易加权汇率。DXY 上行"
+            "意味着全球美元流动性收紧，对新兴市场与大宗商品板块构成压力。"
         ),
     },
-    # ============================ Volatility ===============================
+    # ============================ 波动率指数 ============================
     "vix": {
         "source": "yahoo", "id": "^VIX", "unit": "idx",
-        "label": "VIX (equity vol)",
-        "group": "Volatility",
+        "label": "VIX 股票波动率",
+        "group": "波动率指数",
         "warn": 25, "crisis": 40, "direction": "above",
         "notes": (
-            "CBOE Volatility Index. 30-day implied vol on S&P 500 options — the 'equity "
-            "fear gauge'. Sustained levels above 25 = elevated risk; spikes above 40 "
-            "historically coincide with macro shocks."
+            "CBOE 波动率指数。标普 500 期权未来 30 天隐含波动率，即股票恐慌"
+            "指数。持续高于 25 = 风险升温；冲高 40+ 通常对应宏观冲击事件。"
         ),
     },
     "move": {
         "source": "yahoo", "id": "^MOVE", "unit": "idx",
-        "label": "MOVE (Treasury vol)",
-        "group": "Volatility",
+        "label": "MOVE 国债波动率",
+        "group": "波动率指数",
         "warn": 140, "crisis": 170, "direction": "above",
         "stress": {"low": 100, "high": 140},
         "notes": (
-            "Merrill Option Volatility Estimate. The Treasury-market equivalent of VIX: "
-            "implied vol weighted across 2/5/10/30Y options. The single most important "
-            "rates-market stress gauge — spikes in MOVE precede most US fixed-income "
-            "dislocations (LDI 2022, SVB 2023, basis-trade unwinds)."
+            "Merrill Option Volatility Estimate (MOVE)。美债市场版的 VIX，对"
+            "2/5/10/30Y 国债期权隐含波动率加权。是利率市场最重要的单一压力"
+            "指标 —— 几乎所有美国固收市场失序事件（2022 LDI、2023 SVB、"
+            "基差交易解除）之前 MOVE 都会先飙升。"
         ),
     },
-    # ============================== Equities ==============================
+    # ============================ 股票市场 ============================
     "kre": {
         "source": "yahoo", "id": "KRE", "unit": "USD",
-        "label": "KRE (regional banks)",
-        "group": "Equities",
+        "label": "KRE 美国区域银行 ETF",
+        "group": "股票市场",
         "notes": (
-            "SPDR S&P Regional Banking ETF. Most direct read on US regional bank stress "
-            "— this cohort holds the largest unrealised losses on HTM Treasuries and is "
-            "most exposed to a duration shock (SVB-style risk)."
+            "SPDR S&P 区域银行 ETF。美国地区银行压力最直接的读数 —— 这类机构"
+            "持有最大规模的 HTM 美债未实现亏损，对久期冲击最敏感（SVB 模板）。"
         ),
     },
     "nikkei": {
         "source": "yahoo", "id": "^N225", "unit": "idx",
-        "label": "Nikkei 225",
-        "group": "Equities",
+        "label": "日经 225",
+        "group": "股票市场",
         "notes": (
-            "Nikkei 225 Index. Tokyo's price-weighted blue-chip index; export-heavy "
-            "composition makes it highly sensitive to USD/JPY and global growth. Sharp "
-            "drops often signal carry-unwind underway (e.g. -12% on 5 Aug 2024)."
+            "Nikkei 225 指数。东京市场价格加权蓝筹指数，出口型权重高使其对"
+            "USD/JPY 与全球增长高度敏感。急跌通常提示套息交易解除已开始"
+            "（如 2024-08-05 单日 -12%）。"
         ),
     },
     "topix_banks": {
         "source": "yahoo", "id": "1615.T", "unit": "JPY",
-        "label": "TOPIX Banks (1615.T)",
-        "group": "Equities",
+        "label": "TOPIX 银行 ETF (1615.T)",
+        "group": "股票市场",
         "notes": (
-            "TOPIX Banks sector ETF. Japanese bank stocks reflect JGB capital pressure "
-            "via NIM expansion (positive) and HTM unrealised losses (negative); a useful "
-            "barometer of how Japanese banks are processing rising long-end yields."
+            "TOPIX 银行业 ETF。日本银行股反映 JGB 端的资本压力：净息差扩大"
+            "（正面）与 HTM 账户未实现亏损（负面）的合成。监测日本银行体系"
+            "如何消化长端收益率上行的实时仪表。"
         ),
     },
     "ftse100": {
         "source": "yahoo", "id": "^FTSE", "unit": "idx",
-        "label": "FTSE 100",
-        "group": "Equities",
+        "label": "富时 100",
+        "group": "股票市场",
         "notes": (
-            "FTSE 100 Index. UK blue chips dominated by global commodity, financial, "
-            "and pharma names; less reflective of UK domestic stress than FTSE 250."
+            "FTSE 100 指数。英国大盘，权重以全球商品、金融、医药为主，相比"
+            "FTSE 250 较少反映英国本土压力。"
         ),
     },
-    # ====================== Safe Haven / Alternative ======================
+    # ======================== 避险与另类资产 ========================
     "gold": {
         "source": "yahoo", "id": "GC=F", "unit": "USD/oz",
-        "label": "Gold (CME front)",
-        "group": "Safe Haven / Alt",
+        "label": "黄金 (CME 主力)",
+        "group": "避险与另类资产",
         "notes": (
-            "Gold front-month futures (COMEX). Classic hedge against sovereign credit "
-            "risk, inflation, and currency debasement. Rising despite stable real rates "
-            "is a clean signal of structural sovereign-risk repricing."
+            "COMEX 黄金主力月份期货。对主权信用、通胀、货币贬值的经典对冲。"
+            "在实际利率稳定的背景下仍上涨，是主权风险被结构性重定价的清晰信号。"
         ),
     },
     "btc": {
         "source": "coingecko", "id": "bitcoin", "unit": "USD",
-        "label": "Bitcoin",
-        "group": "Safe Haven / Alt",
+        "label": "比特币",
+        "group": "避险与另类资产",
         "notes": (
-            "Bitcoin spot (USD). Alternative store-of-value; correlation regime shifts "
-            "— at times tracks risk assets, at times tracks gold. Useful as a tail-hedge "
-            "indicator when traditional safe havens are also under stress."
+            "比特币现货 (USD)。另类价值储存工具，相关性体制不稳定：有时跟随"
+            "风险资产，有时跟随黄金。在传统避险资产也承压时，可作为尾部对冲"
+            "信号观察。"
         ),
     },
-    # ============================= Long Bonds =============================
+    # =========================== 长债 ETF 代理 ===========================
     "tlt": {
         "source": "yahoo", "id": "TLT", "unit": "USD",
-        "label": "TLT (US 20+Y bonds)",
-        "group": "Long Bonds",
+        "label": "TLT 美国 20+Y 国债 ETF",
+        "group": "长债 ETF 代理",
         "notes": (
-            "iShares 20+ Year Treasury Bond ETF. Proxy for long-duration Treasury total "
-            "return. Falling TLT = long-end yields rising; large drawdowns confirm "
-            "structural repricing in the long bond."
+            "iShares 20+ 年美国国债 ETF。长久期美债总回报的代理。TLT 下跌"
+            "= 长端收益率上行；大幅回撤可确认长债的结构性重定价。"
         ),
     },
     "uk_gilt_etf": {
         "source": "yahoo", "id": "IGLT.L", "unit": "GBp",
-        "label": "IGLT.L (UK gilts ETF)",
-        "group": "Long Bonds",
+        "label": "IGLT.L 英国国债 ETF",
+        "group": "长债 ETF 代理",
         "notes": (
-            "iShares Core UK Gilts UCITS ETF. Price-based UK gilt stress proxy used when "
-            "direct gilt-yield feeds are unavailable. ETF duration is ~14 years, so each "
-            "1% price drop corresponds to roughly a 7-8 bp yield rise across the curve. "
-            "Used in lieu of UK 30Y yield in the composite stress index."
+            "iShares Core UK Gilts UCITS ETF。当直接的英国国债收益率数据源"
+            "不可用时，用价格作为英国国债压力代理。ETF 久期约 14 年，价格"
+            "每跌 1% 大致对应曲线上行 7-8bp。本压力指数中代替 UK 30Y。"
         ),
     },
-    # ============================ Japan Yields ============================
+    # ========================== 日本国债 ==========================
     "jgb_10y": {
         "source": "mof", "id": "10", "unit": "%",
-        "label": "JGB 10Y",
-        "group": "Japan Yields",
+        "label": "日本 10Y 国债",
+        "group": "日本国债",
         "warn": 1.75, "crisis": 2.25, "direction": "above",
         "notes": (
-            "Japan 10-Year Government Bond yield. Long the BOJ's YCC target — rising "
-            "values signal monetary normalisation, JGB demand erosion, and broader "
-            "global liquidity tightening as Japanese institutions repatriate."
+            "Japan 10Y JGB 收益率。长期是 BOJ YCC 政策的目标利率。上行预示"
+            "货币政策正常化、JGB 需求侵蚀，以及随着日本机构回流而带来的"
+            "全球流动性收紧。"
         ),
     },
     "jgb_30y": {
         "source": "mof", "id": "30", "unit": "%",
-        "label": "JGB 30Y",
-        "group": "Japan Yields",
+        "label": "日本 30Y 国债",
+        "group": "日本国债",
         "warn": 2.50, "crisis": 3.00, "direction": "above",
         "notes": (
-            "Japan 30-Year JGB yield. Highly sensitive to BOJ purchase pace and life-"
-            "insurance ALM demand. The single most important non-US sovereign-rate "
-            "signal: a 25 bp move here translates into hundreds of billions of USD of "
-            "potential reallocation flow globally."
+            "Japan 30Y JGB 收益率。对 BOJ 购债节奏与寿险 ALM 需求高度敏感。"
+            "全球非美主权利率最重要的单一信号 —— 25bp 的变动对应日本机构"
+            "持有的数千亿美元级别资产的潜在重新配置压力。"
         ),
     },
     "jgb_40y": {
         "source": "mof", "id": "40", "unit": "%",
-        "label": "JGB 40Y",
-        "group": "Japan Yields",
+        "label": "日本 40Y 国债",
+        "group": "日本国债",
         "warn": 2.75, "crisis": 3.25, "direction": "above",
         "notes": (
-            "Japan 40-Year JGB yield. The longest tenor JGB issued; lowest liquidity, "
-            "most volatile, often leads the JGB curve. Levels above 3% are historically "
-            "rare and stress thin pension/insurance demand."
+            "Japan 40Y JGB 收益率。日本国债发行的最长期限，流动性最低、"
+            "波动性最大，常领先整条 JGB 曲线。3% 以上的水平历史罕见，会"
+            "明显压力薄弱的养老金 / 寿险需求。"
         ),
     },
 }
 
-# Display order of groups in PDF reports
+# PDF 报告中分组的展示顺序
 GROUP_ORDER = [
-    "US Treasuries",
-    "Funding & Liquidity",
-    "US Credit",
-    "FX",
-    "Volatility",
-    "Equities",
-    "Safe Haven / Alt",
-    "Long Bonds",
-    "Japan Yields",
+    "美国国债",
+    "资金面与流动性",
+    "美国信用",
+    "外汇",
+    "波动率指数",
+    "股票市场",
+    "避险与另类资产",
+    "长债 ETF 代理",
+    "日本国债",
 ]
 
-# Composite stress index spec — see 01_scenario_analysis.md §5
+# 复合压力指数构成 —— 详见 01_scenario_analysis.md §5
 STRESS_COMPONENTS = [
-    {"name": "MOVE (Treasury vol)", "indicator": "move", "low": 100, "high": 140, "direction": "above"},
-    {"name": "US 10Y term premium", "indicator": "us_10y_term_premium", "low": 0.5, "high": 1.0, "direction": "above"},
-    {"name": "SOFR-IORB spread", "derived": "sofr_iorb_spread", "low": 0.05, "high": 0.10, "direction": "above"},
-    {"name": "JGB 30Y yield", "indicator": "jgb_30y", "low": 2.5, "high": 3.0, "direction": "above"},
-    {"name": "UK Gilt ETF 5d return", "derived": "uk_gilt_etf_5d_return", "low": -0.025, "high": -0.045, "direction": "below"},
-    {"name": "KRE 1m return", "derived": "kre_1m_return", "low": -0.05, "high": -0.10, "direction": "below"},
+    {"name": "MOVE 国债波动率", "indicator": "move", "low": 100, "high": 140, "direction": "above"},
+    {"name": "美国 10Y 期限溢价", "indicator": "us_10y_term_premium", "low": 0.5, "high": 1.0, "direction": "above"},
+    {"name": "SOFR - IORB 利差", "derived": "sofr_iorb_spread", "low": 0.05, "high": 0.10, "direction": "above"},
+    {"name": "日本 30Y JGB 收益率", "indicator": "jgb_30y", "low": 2.5, "high": 3.0, "direction": "above"},
+    {"name": "英国 Gilt ETF 5 日回报", "derived": "uk_gilt_etf_5d_return", "low": -0.025, "high": -0.045, "direction": "below"},
+    {"name": "KRE 1 个月回报", "derived": "kre_1m_return", "low": -0.05, "high": -0.10, "direction": "below"},
 ]
 
-# Anomaly detection — rolling z-score window and threshold
+# 异常检测 —— 滚动窗口与 z 分阈值
 ROLLING_WINDOW_DAYS = 60
 ANOMALY_Z_WARN = 2.0
 ANOMALY_Z_CRISIS = 3.0
 
-# Stress-index alert thresholds (out of 12)
+# 压力指数告警阈值（满分 12）
 STRESS_ALERT_WARN = 4
 STRESS_ALERT_CRISIS = 7

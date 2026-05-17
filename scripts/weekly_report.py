@@ -143,11 +143,11 @@ def _scenario_table(snap: dict, history: list[dict]) -> list[dict]:
     in a transparent, rule-based way using the observed evidence.
     """
     baseline = [
-        {"name": "A · 常态化高利率", "base_low": 45, "base_high": 55},
-        {"name": "B · 区域性流动性事件", "base_low": 25, "base_high": 35},
-        {"name": "C · 跨市场传染",       "base_low": 10, "base_high": 20},
-        {"name": "D · 美债技术性违约",   "base_low":  3, "base_high":  7},
-        {"name": "E · 美债实质性违约",   "base_low":  0, "base_high":  1},
+        {"name": "A · 常态化高利率",       "base_low": 45, "base_high": 55},
+        {"name": "B · 区域性流动性事件",   "base_low": 25, "base_high": 35},
+        {"name": "C · 跨市场传染",         "base_low": 10, "base_high": 20},
+        {"name": "D · 美债技术性违约",     "base_low":  3, "base_high":  7},
+        {"name": "E · 美债实质性违约",     "base_low":  0, "base_high":  1},
     ]
 
     inds = {i["name"]: i for i in snap["indicators"]}
@@ -159,31 +159,31 @@ def _scenario_table(snap: dict, history: list[dict]) -> list[dict]:
     crisis_days = sum(1 for h in history if h["band"] == "crisis")
     warn_days = sum(1 for h in history if h["band"] == "warn")
 
-    # Adjustments — small, transparent, additive
+    # 概率调整 —— 小幅、透明、可加性
     adj = [0, 0, 0, 0, 0]
     notes = []
     if jgb_crisis >= 2:
         adj[1] += 8
         adj[0] -= 5
-        notes.append(f"{jgb_crisis} JGB tenors at crisis-level → +8 to B (Japan-led liquidity event)")
+        notes.append(f"日本国债 {jgb_crisis} 个期限达危机水平 → 情景 B +8（日本主导的流动性事件概率上升）")
     if move_high:
         adj[1] += 5
         adj[2] += 3
-        notes.append("MOVE > 140 → +5 to B, +3 to C (rates-vol regime shift)")
+        notes.append("MOVE > 140 → 情景 B +5、情景 C +3（利率波动率体制切换）")
     if tp_warn:
         adj[0] -= 2
         adj[1] += 2
-        notes.append("Term premium > 0.5% → +2 to B (structural repricing)")
+        notes.append("美国 10Y 期限溢价 > 0.5% → 情景 B +2（结构性重定价进行中）")
     if kre_down:
         adj[1] += 4
-        notes.append("KRE 20d return < -5% → +4 to B (US bank capital stress)")
+        notes.append("KRE 20 日回报 < -5% → 情景 B +4（美国地区银行资本承压）")
     if crisis_days >= 2:
         adj[2] += 5
         adj[3] += 1
-        notes.append(f"{crisis_days} crisis-band days this week → +5 to C, +1 to D")
+        notes.append(f"本周 {crisis_days} 天处于危机区间 → 情景 C +5、情景 D +1")
     elif warn_days >= 3:
         adj[1] += 3
-        notes.append(f"{warn_days} warn-band days this week → +3 to B")
+        notes.append(f"本周 {warn_days} 天处于警戒区间 → 情景 B +3")
 
     out = []
     for i, s in enumerate(baseline):
@@ -275,12 +275,12 @@ def render_weekly_html(snap: dict) -> str:
         return (
             f"<h3>{title}</h3>"
             f"<table><thead><tr>"
-            f"<th>Indicator</th><th class='num'>Latest</th>"
-            f"<th class='num'>5d Δ</th><th class='num'>z (60d)</th><th class='center'>Status</th>"
+            f"<th>指标</th><th class='num'>最新</th>"
+            f"<th class='num'>5 日Δ</th><th class='num'>z (60 日)</th><th class='center'>状态</th>"
             f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
         )
 
-    # Scenario table
+    # 情景概率表
     sc_rows = "".join(
         f"<tr><td>{s['name']}</td><td class='num'>{s['low']}-{s['high']}%</td></tr>"
         for s in snap["scenarios"]
@@ -291,7 +291,7 @@ def render_weekly_html(snap: dict) -> str:
         + "</ul>"
     ) if snap["scenario_notes"] else ""
 
-    # Stress history table
+    # 压力指数历史表
     hist_rows = "".join(
         f"<tr><td>{h['date']}</td>"
         f"<td class='num'>{h['stress']}</td>"
@@ -299,15 +299,24 @@ def render_weekly_html(snap: dict) -> str:
         for h in history[-14:]
     )
 
-    # Anomalies
+    # 异常
     if snap["anomalies"]:
         anomalies_html = "<ul style='margin:1mm 0 0 4mm'>" + "".join(
             f"<li>{a}</li>" for a in snap["anomalies"]
         ) + "</ul>"
     else:
-        anomalies_html = "<div class='no-alerts'>No active anomalies.</div>"
+        anomalies_html = "<div class='no-alerts'>当前无异常。</div>"
 
-    # Full indicator glossary (re-used from daily)
+    # AI 叙事段落（如果有）
+    narrative_html = ""
+    if snap.get("ai_narrative"):
+        narrative_html = (
+            "<h2>叙事性深度解读（AI 生成）</h2>"
+            f"<div style='font-size:9.5pt; line-height:1.6; color:#2C2C2C;'>"
+            f"{snap['ai_narrative']}</div>"
+        )
+
+    # 完整指标释义（复用日报模板）
     glossary_parts = []
     for group in GROUP_ORDER:
         items = [i for i in snap["indicators"] if i.get("group") == group]
@@ -320,75 +329,76 @@ def render_weekly_html(snap: dict) -> str:
             glossary_parts.append(
                 f"<div class='glossary-item'>"
                 f"<div class='term'>{ind['label']}</div>"
-                f"<div class='meta'>{ind['name']} · unit: {ind.get('unit', '—')}</div>"
+                f"<div class='meta'>标识 {ind['name']} · 单位 {ind.get('unit', '—')}</div>"
                 f"<div class='desc'>{ind['notes']}</div></div>"
             )
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>Bond Crisis Monitor — Weekly Report {snap['as_of']}</title>
+<title>全球长债危机监测 — 周报 {snap['as_of']}</title>
 <style>{CSS}</style>
 </head>
 <body>
 
 <div class="cover">
-  <div class="brand">Bond Crisis Monitor</div>
-  <h1>Weekly Risk Report</h1>
-  <p class="subtitle">Global long-end yield stress · 14-day window</p>
-  <p class="date">Week ending {snap['as_of']}</p>
+  <div class="brand">BOND CRISIS MONITOR · 全球长债危机监测</div>
+  <h1>每周深度报告</h1>
+  <p class="subtitle">日本 / 美国 / 英国 长端收益率压力 · 14 日窗口</p>
+  <p class="date">截至 {snap['as_of']}</p>
 </div>
 
-<h2>This Week at a Glance</h2>
+<h2>本周概览</h2>
 <div class="stress-block">
   <div>
     <span class="stress-number">{stress}</span><span class="stress-suffix"> / 12</span>
     {band_pill(band)}
   </div>
   <div style="font-size:8.5pt; color:#8B8B8B; margin-top:2mm;">
-    Composite stress index — 14-day evolution
+    复合压力指数 — 过去 14 个交易日演化
   </div>
   {chart}
 </div>
 
-<h2>Active Anomalies</h2>
+<h2>当前异常</h2>
 {anomalies_html}
 
-<h2>Scenario Probability — Updated</h2>
+<h2>情景概率 — 本周更新</h2>
 <table>
-  <thead><tr><th>Scenario</th><th class='num'>Range</th></tr></thead>
+  <thead><tr><th>情景</th><th class='num'>概率区间</th></tr></thead>
   <tbody>{sc_rows}</tbody>
 </table>
 <div style="font-size:8.5pt; color:#2C2C2C;">
-  Baseline ranges from <code>01_scenario_analysis.md §3</code>. Adjustments derived
-  from this week's evidence:
+  基准范围来自 <code>01_scenario_analysis.md §3</code>。本周证据触发的调整：
 </div>
 {sc_notes_html}
 
-<div class="page-break"></div>
-<h2>Top Movers This Week (by 5-day change)</h2>
-{_movers_table(snap["top_movers_up"], "Largest gainers")}
-{_movers_table(snap["top_movers_down"], "Largest decliners")}
+{narrative_html}
 
-<h2>Stress Index History (14 trading days)</h2>
+<div class="page-break"></div>
+<h2>本周显著变动指标（按 5 日变化）</h2>
+{_movers_table(snap["top_movers_up"], "涨幅最大")}
+{_movers_table(snap["top_movers_down"], "跌幅最大")}
+
+<h2>压力指数历史（14 个交易日）</h2>
 <table>
   <thead><tr>
-    <th>Date</th><th class='num'>Stress</th><th class='center'>Band</th>
+    <th>日期</th><th class='num'>压力分</th><th class='center'>等级</th>
   </tr></thead>
   <tbody>{hist_rows}</tbody>
 </table>
 
 <div class="page-break"></div>
-<h2>Glossary &amp; Economic Meaning</h2>
+<h2>指标释义与经济学意义</h2>
 {''.join(glossary_parts)}
 
 <div class="footer-note">
-  Weekly report is rule-based. For narrative interpretation grounded in live
-  web research (news, central-bank communications, auction results), invoke
-  the <code>bond-crisis-monitor</code> subagent from Claude Code.
-  Methodology: <code>01_scenario_analysis.md</code>;
-  data sources: <code>README.md</code>.
+  本周报基于规则化聚合。如需结合新闻、央行公告、拍卖结果的叙事性解读，
+  可在 Claude Code 中调用 <code>bond-crisis-monitor</code> subagent 获取
+  on-demand 深度分析；或在 GitHub 仓库配置 <code>ANTHROPIC_API_KEY</code>
+  secret，周报将自动包含 AI 叙事段落。
+  算法详见 <code>01_scenario_analysis.md</code>；数据源见 <code>README.md</code>。
 </div>
 
 </body>

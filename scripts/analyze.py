@@ -186,15 +186,18 @@ def _component_points(value: float | None, low: float, high: float, direction: s
 
 def compute_snapshot() -> DailySnapshot:
     indicators = [_read_indicator(n) for n in INDICATORS]
+    state_zh = {"warn": "警戒", "crisis": "危机"}
     anomalies = [
-        f"{ind.label}: z={ind.z_60d:+.2f} ({'CRISIS' if abs(ind.z_60d) >= ANOMALY_Z_CRISIS else 'WARN'})"
+        f"{ind.label}：z={ind.z_60d:+.2f}"
+        f"（{'危机' if abs(ind.z_60d) >= ANOMALY_Z_CRISIS else '警戒'}）"
         for ind in indicators
         if ind.z_60d is not None and abs(ind.z_60d) >= ANOMALY_Z_WARN
     ]
     for ind in indicators:
         if ind.threshold_state in {"warn", "crisis"}:
             anomalies.append(
-                f"{ind.label}: level={ind.latest_value:.3f} crosses {ind.threshold_state.upper()} threshold"
+                f"{ind.label}：当前 {ind.latest_value:.3f} 越过"
+                f"{state_zh[ind.threshold_state]}阈值"
             )
 
     components: list[StressComponent] = []

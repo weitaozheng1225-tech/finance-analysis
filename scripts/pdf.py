@@ -35,14 +35,14 @@ CSS = """
   size: A4;
   margin: 18mm 16mm 22mm 16mm;
   @bottom-left {
-    content: "Bond Crisis Monitor — confidential research";
-    font-family: 'DejaVu Serif', Georgia, serif;
+    content: "全球长债危机监测 · 内部研究";
+    font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
     font-size: 8pt;
     color: #8B8B8B;
   }
   @bottom-right {
-    content: "Page " counter(page) " of " counter(pages);
-    font-family: 'DejaVu Serif', Georgia, serif;
+    content: "第 " counter(page) " / " counter(pages) " 页";
+    font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
     font-size: 8pt;
     color: #8B8B8B;
   }
@@ -51,7 +51,7 @@ CSS = """
 * { box-sizing: border-box; }
 
 body {
-  font-family: 'DejaVu Sans', Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans CJK SC', 'Source Han Sans CN', 'DejaVu Sans', Helvetica, Arial, sans-serif;
   font-size: 9.5pt;
   color: #2C2C2C;
   line-height: 1.4;
@@ -67,7 +67,7 @@ body {
   border-bottom: 3pt solid #C9A961;
 }
 .cover .brand {
-  font-family: 'DejaVu Serif', Georgia, serif;
+  font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
   font-size: 9pt;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -75,7 +75,7 @@ body {
   margin-bottom: 3mm;
 }
 .cover h1 {
-  font-family: 'DejaVu Serif', Georgia, serif;
+  font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
   font-size: 22pt;
   font-weight: normal;
   margin: 0 0 2mm 0;
@@ -94,7 +94,7 @@ body {
 
 /* ---------------- Section headings ---------------- */
 h2 {
-  font-family: 'DejaVu Serif', Georgia, serif;
+  font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
   font-size: 11pt;
   font-weight: bold;
   color: #0F1E3D;
@@ -105,7 +105,7 @@ h2 {
   margin: 9mm 0 4mm 0;
 }
 h3 {
-  font-family: 'DejaVu Serif', Georgia, serif;
+  font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
   font-size: 10pt;
   font-weight: bold;
   color: #0F1E3D;
@@ -121,7 +121,7 @@ h3 {
   margin-bottom: 4mm;
 }
 .stress-number {
-  font-family: 'DejaVu Serif', Georgia, serif;
+  font-family: 'Noto Serif CJK SC', 'Source Han Serif CN', 'DejaVu Serif', Georgia, serif;
   font-size: 32pt;
   font-weight: bold;
   color: #0F1E3D;
@@ -270,9 +270,9 @@ tr:nth-child(even) td { background: #FAF8F3; }
 # Formatting helpers
 # ---------------------------------------------------------------------------
 BAND_CLASS = {"ok": "band-ok", "watch": "band-watch", "warn": "band-warn", "crisis": "band-crisis"}
-BAND_NAME = {"ok": "Normal", "watch": "Watch", "warn": "Warn", "crisis": "Crisis"}
+BAND_NAME = {"ok": "正常", "watch": "观察", "warn": "警戒", "crisis": "危机"}
 STATE_CLASS = {"ok": "tag-ok", "warn": "tag-warn", "crisis": "tag-crisis"}
-STATE_TAG = {"ok": "OK", "warn": "WARN", "crisis": "CRISIS"}
+STATE_TAG = {"ok": "—", "warn": "警戒", "crisis": "危机"}
 
 
 def fmt_value(v, unit: str = "", digits: int = 3) -> str:
@@ -347,13 +347,13 @@ def render_daily(snap: dict) -> str:
     # Alerts section
     if snap["anomalies"]:
         alerts_html = "".join(
-            f'<div class="alert {"crisis" if "CRISIS" in a else "warn"}">'
+            f'<div class="alert {"crisis" if "危机" in a else "warn"}">'
             f'<span class="label">▸</span> <span class="body">{a}</span>'
             f"</div>"
             for a in snap["anomalies"]
         )
     else:
-        alerts_html = '<div class="no-alerts">No threshold breaches or anomalous moves detected today.</div>'
+        alerts_html = '<div class="no-alerts">今日无阈值越界或异常波动。</div>'
 
     # Stress components table
     comp_rows = "".join(
@@ -391,10 +391,10 @@ def render_daily(snap: dict) -> str:
         group_html_parts.append(
             f"<h3>{group}</h3>"
             f"<table><thead><tr>"
-            f"<th>Indicator</th><th class='num'>Latest</th>"
-            f"<th class='center'>Date</th>"
-            f"<th class='num'>1d Δ</th><th class='num'>5d Δ</th><th class='num'>20d Δ</th>"
-            f"<th class='num'>z (60d)</th><th class='center'>Status</th>"
+            f"<th>指标</th><th class='num'>最新</th>"
+            f"<th class='center'>日期</th>"
+            f"<th class='num'>1 日Δ</th><th class='num'>5 日Δ</th><th class='num'>20 日Δ</th>"
+            f"<th class='num'>z (60 日)</th><th class='center'>状态</th>"
             f"</tr></thead><tbody>"
             f"{''.join(rows)}</tbody></table>"
         )
@@ -412,28 +412,28 @@ def render_daily(snap: dict) -> str:
             glossary_parts.append(
                 f"<div class='glossary-item'>"
                 f"<div class='term'>{ind['label']}</div>"
-                f"<div class='meta'>{ind['name']} · unit: {ind.get('unit', '—')}</div>"
+                f"<div class='meta'>标识 {ind['name']} · 单位 {ind.get('unit', '—')}</div>"
                 f"<div class='desc'>{ind['notes']}</div>"
                 f"</div>"
             )
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>Bond Crisis Monitor — Daily Report {snap['as_of']}</title>
+<title>全球长债危机监测 — 每日报告 {snap['as_of']}</title>
 <style>{CSS}</style>
 </head>
 <body>
 
 <div class="cover">
-  <div class="brand">Bond Crisis Monitor</div>
-  <h1>Daily Risk Report</h1>
-  <p class="subtitle">Global long-end yield stress · JP / US / UK</p>
-  <p class="date">As of {snap['as_of']}</p>
+  <div class="brand">BOND CRISIS MONITOR · 全球长债危机监测</div>
+  <h1>每日风险报告</h1>
+  <p class="subtitle">日本 / 美国 / 英国 长端收益率压力监测</p>
+  <p class="date">数据截至 {snap['as_of']}</p>
 </div>
 
-<h2>Executive Summary</h2>
+<h2>执行摘要</h2>
 <div class="stress-block">
   <div>
     <span class="stress-number">{stress}</span><span class="stress-suffix"> / 12</span>
@@ -441,40 +441,40 @@ def render_daily(snap: dict) -> str:
   </div>
   <div class="meter"><div class="meter-fill" style="width:{meter_pct}%"></div></div>
   <div class="meter-scale">
-    <span>0 OK</span><span>4 WATCH/WARN</span><span>7 CRISIS</span><span>12 MAX</span>
+    <span>0 正常</span><span>4 警戒</span><span>7 危机</span><span>12 极值</span>
   </div>
 </div>
 
-<h2>Alerts &amp; Anomalies</h2>
+<h2>告警与异常</h2>
 {alerts_html}
 
-<h2>Stress Index Composition</h2>
+<h2>压力指数构成</h2>
 <table>
   <thead><tr>
-    <th>Component</th><th class='num'>Current</th><th class='num'>Thresholds (low / high)</th>
-    <th class='center'>Score</th>
+    <th>分量</th><th class='num'>当前值</th><th class='num'>阈值（low / high）</th>
+    <th class='center'>得分</th>
   </tr></thead>
   <tbody>{comp_rows}</tbody>
 </table>
 
 <div class="page-break"></div>
-<h2>Indicator Snapshot</h2>
+<h2>指标快照</h2>
 {''.join(group_html_parts)}
 
 <div class="page-break"></div>
-<h2>Glossary &amp; Economic Meaning</h2>
+<h2>指标释义与经济学意义</h2>
 {''.join(glossary_parts)}
 
 <div class="footer-note">
-  Definitions: <b>OAS</b> = option-adjusted spread; <b>SOFR</b> = Secured Overnight Financing Rate;
-  <b>IORB</b> = Interest on Reserve Balances; <b>RRP</b> = Reverse Repo Program;
-  <b>ACM</b> = Adrian-Crump-Moench term-premium model; <b>JGB</b> = Japan Government Bond;
-  <b>LDI</b> = Liability-Driven Investing; <b>MOVE</b> = Merrill Option Volatility Estimate;
-  <b>VIX</b> = CBOE Volatility Index; <b>TLT</b> = iShares 20+Y Treasury ETF;
-  <b>KRE</b> = SPDR S&amp;P Regional Banking ETF; <b>DXY</b> = US Dollar Index.
-  Yields and OAS values are quoted in level percent (e.g. 4.470 = 4.470%); deltas
-  for yields/spreads are level differences, deltas for prices/indices are percent.
-  Composite stress index methodology: see <code>01_scenario_analysis.md §5</code>.
+  缩写说明：<b>OAS</b> = 期权调整利差；<b>SOFR</b> = 隔夜担保融资利率；
+  <b>IORB</b> = 准备金利息；<b>RRP</b> = 隔夜逆回购工具；
+  <b>ACM</b> = Adrian-Crump-Moench 期限溢价模型；<b>JGB</b> = 日本国债；
+  <b>LDI</b> = 负债驱动投资；<b>MOVE</b> = 美林期权波动率估计；
+  <b>VIX</b> = CBOE 波动率指数；<b>TLT</b> = iShares 20+Y 美国国债 ETF；
+  <b>KRE</b> = SPDR S&amp;P 区域银行 ETF；<b>DXY</b> = 美元指数。
+  收益率与 OAS 以百分比水平展示（4.470 即 4.470%）；
+  对于收益率/利差，"Δ" 列为水平差；对于价格/指数，"Δ" 列为百分比。
+  复合压力指数算法详见 <code>01_scenario_analysis.md §5</code>。
 </div>
 
 </body>
