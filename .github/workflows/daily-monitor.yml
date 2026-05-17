@@ -1,0 +1,70 @@
+name: Daily bond crisis monitor
+
+on:
+  schedule:
+    # 06:30 UTC daily = NY ~02:30, London ~07:30, Tokyo ~15:30 — after US close, before Asia close
+    - cron: "30 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install deps
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch indicators
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/fetch_daily.py
+
+      - name: Compute snapshot + anomalies
+        run: python scripts/analyze.py
+
+      - name: Generate Markdown report
+        run: python scripts/report.py
+
+      - name: Send alerts
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          ALERT_MIN_BAND: ${{ vars.ALERT_MIN_BAND || 'warn' }}
+        run: python scripts/notify.py
+
+      - name: Commit data + report
+        run: |
+          git config user.name  "bond-monitor[bot]"
+          git config user.email "bond-monitor@users.noreply.github.com"
+          git add data/ reports/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "monitor: daily snapshot $(date -u +%Y-%m-%d)"
+            for i in 1 2 3 4; do
+              if git push; then
+                exit 0
+              fi
+              sleep $((2 ** i))
+            done
+            git push
+          fi
