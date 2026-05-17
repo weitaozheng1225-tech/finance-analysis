@@ -41,10 +41,11 @@ SESSION = requests.Session()
 SESSION.headers.update(
     {
         "User-Agent": (
-            "Mozilla/5.0 (compatible; bond-crisis-monitor/1.0; "
-            "+https://github.com/weitaozheng1225-tech/finance-analysis)"
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
         ),
-        "Accept": "*/*",
+        "Accept": "text/csv,application/json,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
     }
 )
 
@@ -97,11 +98,14 @@ def fetch_coingecko(coin_id: str) -> pd.Series:
 
 
 def fetch_mof_jgb(tenor: str) -> pd.Series:
-    """Japan MoF historical JGB yields (CSV, Shift-JIS encoded)."""
+    """Japan MoF historical JGB yields.
+
+    The CSV is Shift-JIS encoded. Row 0 is a unit annotation like ``,,,,(Unit : %)``;
+    row 1 holds the real header ``Date,1Y,2Y,...,30Y,40Y``. We must skip row 0.
+    """
     url = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv"
     r = SESSION.get(url, timeout=TIMEOUT)
     r.raise_for_status()
-    # MoF publishes the CSV in Shift-JIS / CP932 (Japanese legacy encoding).
     text: str | None = None
     for enc in ("shift_jis", "cp932", "utf-8"):
         try:
@@ -111,14 +115,18 @@ def fetch_mof_jgb(tenor: str) -> pd.Series:
             continue
     if text is None:
         raise RuntimeError("Failed to decode MoF CSV with any known encoding")
-    df = pd.read_csv(io.StringIO(text))
+    df = pd.read_csv(io.StringIO(text), header=1)
     df.columns = [str(c).strip() for c in df.columns]
     date_col = df.columns[0]
     df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
     df = df.dropna(subset=[date_col]).set_index(date_col)
-    col = f"{tenor}Y"
-    if col not in df.columns:
-        raise RuntimeError(f"tenor {col} not in MoF CSV columns: {list(df.columns)}")
+    # Some years use Japanese tenor names (e.g. "1年"); normalise.
+    col_candidates = [f"{tenor}Y", f"{tenor}年", tenor]
+    col = next((c for c in col_candidates if c in df.columns), None)
+    if col is None:
+        raise RuntimeError(
+            f"tenor {tenor} not in MoF CSV columns: {list(df.columns)}"
+        )
     s = pd.to_numeric(df[col], errors="coerce").dropna()
     s.name = f"jgb_{tenor}y"
     return s
@@ -127,18 +135,20 @@ def fetch_mof_jgb(tenor: str) -> pd.Series:
 def fetch_stooq(ticker: str) -> pd.Series:
     """Stooq daily history CSV.
 
-    Stooq's bond yield ticker convention is inconsistent: UK 10Y is
-    ``10uky.b`` (no 'y' between tenor and country) while US 30Y is
-    ``30yusy.b`` (with 'y'). Try the provided form and, if Stooq returns
-    "no data", fall back to the alternate form automatically.
+    Standard bond yield ticker pattern is ``Nyy{country}y.b`` (e.g.
+    ``10yusy.b`` for US 10Y, ``10ydey.b`` for Germany 10Y, ``10yuky.b``
+    for UK 10Y). We try the given ticker and a couple of common
+    alternate forms. Stooq's free CSV endpoint may rate-limit by IP
+    and return an HTML page mentioning "apikey" — we detect that and
+    raise a clear error so the failure is diagnosable.
     """
     import re
 
     candidates: list[str] = [ticker]
-    m = re.match(r"^(\d+)([a-z]{2,3})y?\.b$", ticker)
+    m = re.match(r"^(\d+)y?([a-z]{2,3})y?\.b$", ticker)
     if m:
         n, country = m.groups()
-        for alt in (f"{n}{country}y.b", f"{n}y{country}y.b", f"{n}{country}.b"):
+        for alt in (f"{n}y{country}y.b", f"{n}{country}y.b", f"{n}{country}.b"):
             if alt not in candidates:
                 candidates.append(alt)
 
@@ -148,7 +158,18 @@ def fetch_stooq(ticker: str) -> pd.Series:
             r = SESSION.get(f"https://stooq.com/q/d/l/?s={cand}&i=d", timeout=TIMEOUT)
             r.raise_for_status()
             body = r.text.strip()
-            if not body or body.lower().startswith("no data"):
+            body_lower = body.lower()
+            if not body:
+                last_err = f"empty response for {cand}"
+                continue
+            if body_lower.startswith("<") or "<html" in body_lower[:200]:
+                snippet = body[:200].replace("\n", " ")
+                last_err = f"HTML (not CSV) response for {cand}: '{snippet}'"
+                continue
+            if "apikey" in body_lower[:200] or "get_apikey" in body_lower:
+                last_err = f"stooq apikey-required for {cand} (free CSV likely rate-limited)"
+                continue
+            if body_lower.startswith("no data"):
                 last_err = f"no data for {cand}"
                 continue
             df = pd.read_csv(io.StringIO(body))

@@ -135,13 +135,18 @@ INDICATORS: dict[str, dict] = {
         "warn": 2.75, "crisis": 3.25, "direction": "above",
     },
     "gilt_10y": {
-        "source": "stooq", "id": "10uky.b", "unit": "%",
+        "source": "stooq", "id": "10yuky.b", "unit": "%",
         "label": "UK 10Y Gilt yield",
     },
     "gilt_30y": {
-        "source": "stooq", "id": "30uky.b", "unit": "%",
+        "source": "stooq", "id": "30yuky.b", "unit": "%",
         "label": "UK 30Y Gilt yield",
         # weekly delta threshold handled in analyze.py
+    },
+    # Always-available UK gilt stress proxy via Yahoo (in case Stooq blocks GH IPs).
+    "uk_gilt_etf": {
+        "source": "yahoo", "id": "IGLT.L", "unit": "GBp",
+        "label": "iShares UK Gilts ETF (IGLT.L) — gilt price proxy",
     },
 }
 
