@@ -135,11 +135,11 @@ INDICATORS: dict[str, dict] = {
         "warn": 2.75, "crisis": 3.25, "direction": "above",
     },
     "gilt_10y": {
-        "source": "dmo", "id": "10", "unit": "%",
+        "source": "stooq", "id": "10uky.b", "unit": "%",
         "label": "UK 10Y Gilt yield",
     },
     "gilt_30y": {
-        "source": "dmo", "id": "30", "unit": "%",
+        "source": "stooq", "id": "30uky.b", "unit": "%",
         "label": "UK 30Y Gilt yield",
         # weekly delta threshold handled in analyze.py
     },

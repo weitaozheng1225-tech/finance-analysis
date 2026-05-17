@@ -33,8 +33,20 @@ logging.basicConfig(
 )
 log = logging.getLogger("fetch")
 
-FRED_KEY = os.getenv("FRED_API_KEY")
+FRED_KEY = (os.getenv("FRED_API_KEY") or "").strip()
 TIMEOUT = 30
+
+# Many providers (BoE, MoF, stooq) reject the default python-requests UA.
+SESSION = requests.Session()
+SESSION.headers.update(
+    {
+        "User-Agent": (
+            "Mozilla/5.0 (compatible; bond-crisis-monitor/1.0; "
+            "+https://github.com/weitaozheng1225-tech/finance-analysis)"
+        ),
+        "Accept": "*/*",
+    }
+)
 
 
 # ---------------------------------------------------------------------------
@@ -50,7 +62,7 @@ def fetch_fred(series_id: str) -> pd.Series:
         "file_type": "json",
         "observation_start": (date.today() - timedelta(days=365 * 3)).isoformat(),
     }
-    r = requests.get(url, params=params, timeout=TIMEOUT)
+    r = SESSION.get(url, params=params, timeout=TIMEOUT)
     r.raise_for_status()
     obs = r.json()["observations"]
     s = pd.Series(
@@ -74,7 +86,7 @@ def fetch_yahoo(ticker: str) -> pd.Series:
 def fetch_coingecko(coin_id: str) -> pd.Series:
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
     params = {"vs_currency": "usd", "days": "365", "interval": "daily"}
-    r = requests.get(url, params=params, timeout=TIMEOUT)
+    r = SESSION.get(url, params=params, timeout=TIMEOUT)
     r.raise_for_status()
     prices = r.json()["prices"]
     s = pd.Series(
@@ -85,14 +97,22 @@ def fetch_coingecko(coin_id: str) -> pd.Series:
 
 
 def fetch_mof_jgb(tenor: str) -> pd.Series:
-    """Japan MoF historical JGB yields (CSV)."""
-    year = date.today().year
-    url = f"https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv"
-    r = requests.get(url, timeout=TIMEOUT)
+    """Japan MoF historical JGB yields (CSV, Shift-JIS encoded)."""
+    url = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv"
+    r = SESSION.get(url, timeout=TIMEOUT)
     r.raise_for_status()
-    df = pd.read_csv(io.BytesIO(r.content))
-    # The CSV: first col = Date, then columns named '1Y','2Y',...,'30Y','40Y'
-    df.columns = [c.strip() for c in df.columns]
+    # MoF publishes the CSV in Shift-JIS / CP932 (Japanese legacy encoding).
+    text: str | None = None
+    for enc in ("shift_jis", "cp932", "utf-8"):
+        try:
+            text = r.content.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    if text is None:
+        raise RuntimeError("Failed to decode MoF CSV with any known encoding")
+    df = pd.read_csv(io.StringIO(text))
+    df.columns = [str(c).strip() for c in df.columns]
     date_col = df.columns[0]
     df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
     df = df.dropna(subset=[date_col]).set_index(date_col)
@@ -104,57 +124,48 @@ def fetch_mof_jgb(tenor: str) -> pd.Series:
     return s
 
 
-def fetch_dmo_gilt(tenor: str) -> pd.Series:
-    """UK Gilt yields via Bank of England yield curve archive.
+def fetch_stooq(ticker: str) -> pd.Series:
+    """Stooq daily history CSV.
 
-    The DMO does not publish a stable machine-readable daily yield curve, but
-    BoE publishes a spreadsheet of nominal spot curves daily. We use FRED-style
-    proxy via Yahoo (^TNX-equivalent for UK) — fall back to BoE if needed.
+    Stooq's bond yield ticker convention is inconsistent: UK 10Y is
+    ``10uky.b`` (no 'y' between tenor and country) while US 30Y is
+    ``30yusy.b`` (with 'y'). Try the provided form and, if Stooq returns
+    "no data", fall back to the alternate form automatically.
     """
-    # Use Yahoo proxy: ^TYX-style not available for UK, use specific tickers.
-    # IGLT.L = iShares UK Gilts ETF (proxy for price), not yield. So instead:
-    # The Bank of England publishes daily nominal yield curves at
-    # https://www.bankofengland.co.uk/statistics/yield-curves -- requires xls.
-    # As a pragmatic free source we use FT's published yield via investpy/yfinance.
-    # Yahoo provides ^FTAS but no yield curve. We use UK Gilt ETF + duration proxy
-    # OR pull the BoE GLC nominal spot curve XLSX:
-    url = (
-        "https://www.bankofengland.co.uk/-/media/boe/files/statistics/yield-curves/latest-yield-curve-data.zip"
-    )
-    try:
-        import zipfile
-        r = requests.get(url, timeout=TIMEOUT)
-        r.raise_for_status()
-        z = zipfile.ZipFile(io.BytesIO(r.content))
-        # find the GLC nominal daily file
-        target = next(
-            (n for n in z.namelist() if "GLC Nominal daily data" in n and n.endswith(".xlsx")),
-            None,
-        )
-        if target is None:
-            raise RuntimeError("BoE zip missing GLC Nominal daily file")
-        with z.open(target) as f:
-            xl = pd.ExcelFile(f)
-            # most recent year sheet
-            sheet = sorted([s for s in xl.sheet_names if s.isdigit() or " " in s])[-1]
-            df = xl.parse(sheet, skiprows=3)
-        # first column is date, subsequent columns are maturities in years
-        date_col = df.columns[0]
-        df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
-        df = df.dropna(subset=[date_col]).set_index(date_col)
-        # find the column closest to requested tenor
-        numeric_cols = [c for c in df.columns if isinstance(c, (int, float))]
-        if not numeric_cols:
-            raise RuntimeError("BoE sheet has no numeric maturity columns")
-        target_tenor = float(tenor)
-        closest = min(numeric_cols, key=lambda c: abs(c - target_tenor))
-        s = pd.to_numeric(df[closest], errors="coerce").dropna()
-        s.name = f"gilt_{tenor}y"
-        return s
-    except Exception as e:
-        log.warning("BoE gilt fetch failed (%s); falling back to Yahoo ^FTSE-derived proxy", e)
-        # last resort: no gilt yield; return empty series so loop continues
-        return pd.Series(dtype=float, name=f"gilt_{tenor}y")
+    import re
+
+    candidates: list[str] = [ticker]
+    m = re.match(r"^(\d+)([a-z]{2,3})y?\.b$", ticker)
+    if m:
+        n, country = m.groups()
+        for alt in (f"{n}{country}y.b", f"{n}y{country}y.b", f"{n}{country}.b"):
+            if alt not in candidates:
+                candidates.append(alt)
+
+    last_err: str | None = None
+    for cand in candidates:
+        try:
+            r = SESSION.get(f"https://stooq.com/q/d/l/?s={cand}&i=d", timeout=TIMEOUT)
+            r.raise_for_status()
+            body = r.text.strip()
+            if not body or body.lower().startswith("no data"):
+                last_err = f"no data for {cand}"
+                continue
+            df = pd.read_csv(io.StringIO(body))
+            if "Date" not in df.columns or "Close" not in df.columns:
+                last_err = f"unexpected CSV for {cand}: cols={list(df.columns)}"
+                continue
+            df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+            df = df.dropna(subset=["Date"]).set_index("Date").sort_index()
+            s = pd.to_numeric(df["Close"], errors="coerce").dropna()
+            s.name = cand
+            if cand != ticker:
+                log.info("stooq fallback ticker %s worked (original %s failed)", cand, ticker)
+            return s
+        except Exception as e:
+            last_err = str(e)
+            continue
+    raise RuntimeError(f"stooq: all ticker candidates failed for {ticker} -> {candidates}: {last_err}")
 
 
 # ---------------------------------------------------------------------------
@@ -192,7 +203,7 @@ SOURCE_DISPATCH = {
     "yahoo": fetch_yahoo,
     "coingecko": fetch_coingecko,
     "mof": fetch_mof_jgb,
-    "dmo": fetch_dmo_gilt,
+    "stooq": fetch_stooq,
 }
 
 
