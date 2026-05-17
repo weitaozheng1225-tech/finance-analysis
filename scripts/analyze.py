@@ -41,6 +41,8 @@ class IndicatorReading:
     change_20d: float | None
     z_60d: float | None
     threshold_state: str  # "ok" | "warn" | "crisis"
+    group: str = ""
+    unit: str = ""
     notes: str = ""
 
 
@@ -117,17 +119,19 @@ def _threshold_state(name: str, value: float | None) -> str:
 def _read_indicator(name: str) -> IndicatorReading:
     cfg = INDICATORS[name]
     s = _load_series(name)
+    group = cfg.get("group", "")
+    unit = cfg.get("unit", "")
+    notes = cfg.get("notes", "")
     if s.empty:
         return IndicatorReading(
             name=name, label=cfg["label"],
             latest_value=None, latest_date=None,
             change_1d=None, change_5d=None, change_20d=None,
             z_60d=None, threshold_state="ok",
-            notes="no data",
+            group=group, unit=unit, notes=notes + " (no data this run)",
         )
     val = float(s.iloc[-1])
     # Use level changes for yields and spreads (units: %, bp); pct for prices/indices.
-    unit = cfg.get("unit", "")
     if unit in {"%", "bp"}:
         c1, c5, c20 = _level_change(s, 1), _level_change(s, 5), _level_change(s, 20)
     else:
@@ -139,6 +143,7 @@ def _read_indicator(name: str) -> IndicatorReading:
         change_1d=c1, change_5d=c5, change_20d=c20,
         z_60d=_z_score(s),
         threshold_state=_threshold_state(name, val),
+        group=group, unit=unit, notes=notes,
     )
 
 
