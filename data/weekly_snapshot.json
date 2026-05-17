@@ -57,7 +57,7 @@
   "top_movers_up": [
     {
       "name": "move",
-      "label": "MOVE \u56fd\u503a\u6ce2\u52a8\u7387",
+      "label": "MOVE 国债波动率",
       "latest_value": 79.87000274658203,
       "latest_date": "2026-05-15",
       "change_1d": 0.14706313222870915,
@@ -65,13 +65,13 @@
       "change_20d": 0.2156774194297579,
       "z_60d": 0.11850646816954888,
       "threshold_state": "ok",
-      "group": "\u6ce2\u52a8\u7387\u6307\u6570",
+      "group": "波动率指数",
       "unit": "idx",
-      "notes": "Merrill Option Volatility Estimate (MOVE)\u3002\u7f8e\u503a\u5e02\u573a\u7248\u7684 VIX\uff0c\u5bf92/5/10/30Y \u56fd\u503a\u671f\u6743\u9690\u542b\u6ce2\u52a8\u7387\u52a0\u6743\u3002\u662f\u5229\u7387\u5e02\u573a\u6700\u91cd\u8981\u7684\u5355\u4e00\u538b\u529b\u6307\u6807 \u2014\u2014 \u51e0\u4e4e\u6240\u6709\u7f8e\u56fd\u56fa\u6536\u5e02\u573a\u5931\u5e8f\u4e8b\u4ef6\uff082022 LDI\u30012023 SVB\u3001\u57fa\u5dee\u4ea4\u6613\u89e3\u9664\uff09\u4e4b\u524d MOVE \u90fd\u4f1a\u5148\u98d9\u5347\u3002"
+      "notes": "Merrill Option Volatility Estimate (MOVE)。美债市场版的 VIX，对2/5/10/30Y 国债期权隐含波动率加权。是利率市场最重要的单一压力指标 —— 几乎所有美国固收市场失序事件（2022 LDI、2023 SVB、基差交易解除）之前 MOVE 都会先飙升。"
     },
     {
       "name": "jgb_10y",
-      "label": "\u65e5\u672c 10Y \u56fd\u503a",
+      "label": "日本 10Y 国债",
       "latest_value": 2.628,
       "latest_date": "2026-05-14",
       "change_1d": 0.040999999999999925,
@@ -79,13 +79,13 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 10Y JGB \u6536\u76ca\u7387\u3002\u957f\u671f\u662f BOJ YCC \u653f\u7b56\u7684\u76ee\u6807\u5229\u7387\u3002\u4e0a\u884c\u9884\u793a\u8d27\u5e01\u653f\u7b56\u6b63\u5e38\u5316\u3001JGB \u9700\u6c42\u4fb5\u8680\uff0c\u4ee5\u53ca\u968f\u7740\u65e5\u672c\u673a\u6784\u56de\u6d41\u800c\u5e26\u6765\u7684\u5168\u7403\u6d41\u52a8\u6027\u6536\u7d27\u3002"
+      "notes": "Japan 10Y JGB 收益率。长期是 BOJ YCC 政策的目标利率。上行预示货币政策正常化、JGB 需求侵蚀，以及随着日本机构回流而带来的全球流动性收紧。"
     },
     {
       "name": "jgb_30y",
-      "label": "\u65e5\u672c 30Y \u56fd\u503a",
+      "label": "日本 30Y 国债",
       "latest_value": 3.852,
       "latest_date": "2026-05-14",
       "change_1d": 0.06899999999999995,
@@ -93,13 +93,13 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 30Y JGB \u6536\u76ca\u7387\u3002\u5bf9 BOJ \u8d2d\u503a\u8282\u594f\u4e0e\u5bff\u9669 ALM \u9700\u6c42\u9ad8\u5ea6\u654f\u611f\u3002\u5168\u7403\u975e\u7f8e\u4e3b\u6743\u5229\u7387\u6700\u91cd\u8981\u7684\u5355\u4e00\u4fe1\u53f7 \u2014\u2014 25bp \u7684\u53d8\u52a8\u5bf9\u5e94\u65e5\u672c\u673a\u6784\u6301\u6709\u7684\u6570\u5343\u4ebf\u7f8e\u5143\u7ea7\u522b\u8d44\u4ea7\u7684\u6f5c\u5728\u91cd\u65b0\u914d\u7f6e\u538b\u529b\u3002"
+      "notes": "Japan 30Y JGB 收益率。对 BOJ 购债节奏与寿险 ALM 需求高度敏感。全球非美主权利率最重要的单一信号 —— 25bp 的变动对应日本机构持有的数千亿美元级别资产的潜在重新配置压力。"
     },
     {
       "name": "jgb_40y",
-      "label": "\u65e5\u672c 40Y \u56fd\u503a",
+      "label": "日本 40Y 国债",
       "latest_value": 3.868,
       "latest_date": "2026-05-14",
       "change_1d": 0.06199999999999983,
@@ -107,13 +107,13 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 40Y JGB \u6536\u76ca\u7387\u3002\u65e5\u672c\u56fd\u503a\u53d1\u884c\u7684\u6700\u957f\u671f\u9650\uff0c\u6d41\u52a8\u6027\u6700\u4f4e\u3001\u6ce2\u52a8\u6027\u6700\u5927\uff0c\u5e38\u9886\u5148\u6574\u6761 JGB \u66f2\u7ebf\u30023% \u4ee5\u4e0a\u7684\u6c34\u5e73\u5386\u53f2\u7f55\u89c1\uff0c\u4f1a\u660e\u663e\u538b\u529b\u8584\u5f31\u7684\u517b\u8001\u91d1 / \u5bff\u9669\u9700\u6c42\u3002"
+      "notes": "Japan 40Y JGB 收益率。日本国债发行的最长期限，流动性最低、波动性最大，常领先整条 JGB 曲线。3% 以上的水平历史罕见，会明显压力薄弱的养老金 / 寿险需求。"
     },
     {
       "name": "tga_balance",
-      "label": "\u7f8e\u56fd\u8d22\u653f\u90e8\u4e00\u822c\u8d26\u6237 (TGA)",
+      "label": "美国财政部一般账户 (TGA)",
       "latest_value": 838584.0,
       "latest_date": "2026-05-13",
       "change_1d": -0.04463287842590409,
@@ -121,15 +121,15 @@
       "change_20d": 0.0017488532110091744,
       "z_60d": 0.6456969711246981,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "$M",
-      "notes": "\u7f8e\u56fd\u8d22\u653f\u90e8\u5728\u7f8e\u8054\u50a8\u7684\u4e00\u822c\u8d26\u6237\u4f59\u989d\uff08\u5373\u8d22\u653f\u90e8\u652f\u7968\u8d26\u6237\uff09\u3002\u8d26\u6237\u8017\u7528\u5411\u94f6\u884c\u4f53\u7cfb\u6ce8\u5165\u6d41\u52a8\u6027\uff1b\u8d26\u6237\u8865\u5145\uff08\u5982\u503a\u52a1\u4e0a\u9650\u534f\u8bae\u8fbe\u6210\u540e\uff09\u5219\u62bd\u8d70\u6d41\u52a8\u6027\u3002\u662f X-date \u98ce\u9669\u7a97\u53e3\u7684\u5173\u952e\u53d8\u91cf\u3002"
+      "notes": "美国财政部在美联储的一般账户余额（即财政部支票账户）。账户耗用向银行体系注入流动性；账户补充（如债务上限协议达成后）则抽走流动性。是 X-date 风险窗口的关键变量。"
     }
   ],
   "top_movers_down": [
     {
       "name": "rrp_usage",
-      "label": "\u9694\u591c\u9006\u56de\u8d2d\u89c4\u6a21 (ON RRP)",
+      "label": "隔夜逆回购规模 (ON RRP)",
       "latest_value": 0.647,
       "latest_date": "2026-05-15",
       "change_1d": -0.6819075712881022,
@@ -137,13 +137,13 @@
       "change_20d": 3.722627737226277,
       "z_60d": -0.3098460676787257,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "$B",
-      "notes": "\u8d27\u5e01\u5e02\u573a\u57fa\u91d1\u5f53\u79c1\u52df\u5e02\u573a\u6536\u76ca\u7387\u4e0d\u5177\u5438\u5f15\u529b\u65f6\u5c06\u73b0\u91d1\u5b58\u5165\u7f8e\u8054\u50a8 RRP\u3002RRP \u4f59\u989d\u56de\u843d\u610f\u5473\u7740\u8d44\u91d1\u56de\u6d41\u79c1\u52df\u56de\u8d2d\u4e0e\u77ed\u7aef\u56fd\u503a\uff1bRRP \u81a8\u80c0\u5219\u4ee3\u8868\u5e02\u573a\u6d41\u52a8\u6027\u8fc7\u5269\u3001\u65e0\u5904\u53ef\u6295\u3002"
+      "notes": "货币市场基金当私募市场收益率不具吸引力时将现金存入美联储 RRP。RRP 余额回落意味着资金回流私募回购与短端国债；RRP 膨胀则代表市场流动性过剩、无处可投。"
     },
     {
       "name": "kre",
-      "label": "KRE \u7f8e\u56fd\u533a\u57df\u94f6\u884c ETF",
+      "label": "KRE 美国区域银行 ETF",
       "latest_value": 66.97000122070312,
       "latest_date": "2026-05-15",
       "change_1d": -0.011366942240165554,
@@ -151,13 +151,27 @@
       "change_20d": -0.04831606356650383,
       "z_60d": -0.1449986301802395,
       "threshold_state": "ok",
-      "group": "\u80a1\u7968\u5e02\u573a",
+      "group": "股票市场",
       "unit": "USD",
-      "notes": "SPDR S&P \u533a\u57df\u94f6\u884c ETF\u3002\u7f8e\u56fd\u5730\u533a\u94f6\u884c\u538b\u529b\u6700\u76f4\u63a5\u7684\u8bfb\u6570 \u2014\u2014 \u8fd9\u7c7b\u673a\u6784\u6301\u6709\u6700\u5927\u89c4\u6a21\u7684 HTM \u7f8e\u503a\u672a\u5b9e\u73b0\u4e8f\u635f\uff0c\u5bf9\u4e45\u671f\u51b2\u51fb\u6700\u654f\u611f\uff08SVB \u6a21\u677f\uff09\u3002"
+      "notes": "SPDR S&P 区域银行 ETF。美国地区银行压力最直接的读数 —— 这类机构持有最大规模的 HTM 美债未实现亏损，对久期冲击最敏感（SVB 模板）。"
+    },
+    {
+      "name": "btc",
+      "label": "比特币",
+      "latest_value": 78449.04996151183,
+      "latest_date": "2026-05-17",
+      "change_1d": -0.007838365073019432,
+      "change_5d": -0.04008748153753535,
+      "change_20d": -0.0024931696490598466,
+      "z_60d": 0.8507817046377544,
+      "threshold_state": "ok",
+      "group": "避险与另类资产",
+      "unit": "USD",
+      "notes": "比特币现货 (USD)。另类价值储存工具，相关性体制不稳定：有时跟随风险资产，有时跟随黄金。在传统避险资产也承压时，可作为尾部对冲信号观察。"
     },
     {
       "name": "sofr",
-      "label": "SOFR \u9694\u591c\u62c5\u4fdd\u878d\u8d44\u5229\u7387",
+      "label": "SOFR 隔夜担保融资利率",
       "latest_value": 3.56,
       "latest_date": "2026-05-14",
       "change_1d": -0.029999999999999805,
@@ -165,27 +179,13 @@
       "change_20d": -0.10999999999999988,
       "z_60d": -2.5983578623174974,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "%",
-      "notes": "Secured Overnight Financing Rate\uff0cLIBOR \u9000\u5f79\u540e\u7684\u7f8e\u5143\u57fa\u51c6\u5229\u7387\uff0c\u53cd\u6620\u7f8e\u503a\u62c5\u4fdd\u9694\u591c\u56de\u8d2d\u7684\u771f\u5b9e\u6210\u672c\u3002\u76f8\u5bf9 IORB \u98d9\u5347\u65f6\uff08\u5982 2019 \u5e74 9 \u6708\u56de\u8d2d\u4e8b\u4ef6\uff09\u5373\u7f8e\u5143\u8d44\u91d1\u7d27\u5f20\u4fe1\u53f7\u3002"
-    },
-    {
-      "name": "btc",
-      "label": "\u6bd4\u7279\u5e01",
-      "latest_value": 78461.0397771749,
-      "latest_date": "2026-05-17",
-      "change_1d": -0.007686727352529803,
-      "change_5d": -0.03994077263341629,
-      "change_20d": -0.0023407149918724768,
-      "z_60d": 0.8531523042504044,
-      "threshold_state": "ok",
-      "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
-      "unit": "USD",
-      "notes": "\u6bd4\u7279\u5e01\u73b0\u8d27 (USD)\u3002\u53e6\u7c7b\u4ef7\u503c\u50a8\u5b58\u5de5\u5177\uff0c\u76f8\u5173\u6027\u4f53\u5236\u4e0d\u7a33\u5b9a\uff1a\u6709\u65f6\u8ddf\u968f\u98ce\u9669\u8d44\u4ea7\uff0c\u6709\u65f6\u8ddf\u968f\u9ec4\u91d1\u3002\u5728\u4f20\u7edf\u907f\u9669\u8d44\u4ea7\u4e5f\u627f\u538b\u65f6\uff0c\u53ef\u4f5c\u4e3a\u5c3e\u90e8\u5bf9\u51b2\u4fe1\u53f7\u89c2\u5bdf\u3002"
+      "notes": "Secured Overnight Financing Rate，LIBOR 退役后的美元基准利率，反映美债担保隔夜回购的真实成本。相对 IORB 飙升时（如 2019 年 9 月回购事件）即美元资金紧张信号。"
     },
     {
       "name": "gold",
-      "label": "\u9ec4\u91d1 (CME \u4e3b\u529b)",
+      "label": "黄金 (CME 主力)",
       "latest_value": 4561.89990234375,
       "latest_date": "2026-05-15",
       "change_1d": -0.02483918532882972,
@@ -193,52 +193,52 @@
       "change_20d": -0.06087372146076265,
       "z_60d": -0.9828577100284555,
       "threshold_state": "ok",
-      "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
+      "group": "避险与另类资产",
       "unit": "USD/oz",
-      "notes": "COMEX \u9ec4\u91d1\u4e3b\u529b\u6708\u4efd\u671f\u8d27\u3002\u5bf9\u4e3b\u6743\u4fe1\u7528\u3001\u901a\u80c0\u3001\u8d27\u5e01\u8d2c\u503c\u7684\u7ecf\u5178\u5bf9\u51b2\u3002\u5728\u5b9e\u9645\u5229\u7387\u7a33\u5b9a\u7684\u80cc\u666f\u4e0b\u4ecd\u4e0a\u6da8\uff0c\u662f\u4e3b\u6743\u98ce\u9669\u88ab\u7ed3\u6784\u6027\u91cd\u5b9a\u4ef7\u7684\u6e05\u6670\u4fe1\u53f7\u3002"
+      "notes": "COMEX 黄金主力月份期货。对主权信用、通胀、货币贬值的经典对冲。在实际利率稳定的背景下仍上涨，是主权风险被结构性重定价的清晰信号。"
     }
   ],
   "anomalies": [
-    "SOFR \u9694\u591c\u62c5\u4fdd\u878d\u8d44\u5229\u7387\uff1az=-2.60\uff08\u8b66\u6212\uff09",
-    "TLT \u7f8e\u56fd 20+Y \u56fd\u503a ETF\uff1az=-2.19\uff08\u8b66\u6212\uff09",
-    "\u7f8e\u56fd 10Y \u671f\u9650\u6ea2\u4ef7 (ACM)\uff1a\u5f53\u524d 0.700 \u8d8a\u8fc7\u8b66\u6212\u9608\u503c",
-    "\u65e5\u672c 10Y \u56fd\u503a\uff1a\u5f53\u524d 2.628 \u8d8a\u8fc7\u5371\u673a\u9608\u503c",
-    "\u65e5\u672c 30Y \u56fd\u503a\uff1a\u5f53\u524d 3.852 \u8d8a\u8fc7\u5371\u673a\u9608\u503c",
-    "\u65e5\u672c 40Y \u56fd\u503a\uff1a\u5f53\u524d 3.868 \u8d8a\u8fc7\u5371\u673a\u9608\u503c"
+    "SOFR 隔夜担保融资利率：z=-2.60（警戒）",
+    "TLT 美国 20+Y 国债 ETF：z=-2.19（警戒）",
+    "美国 10Y 期限溢价 (ACM)：当前 0.700 越过警戒阈值",
+    "日本 10Y 国债：当前 2.628 越过危机阈值",
+    "日本 30Y 国债：当前 3.852 越过危机阈值",
+    "日本 40Y 国债：当前 3.868 越过危机阈值"
   ],
   "components": [
     {
-      "name": "MOVE \u56fd\u503a\u6ce2\u52a8\u7387",
+      "name": "MOVE 国债波动率",
       "value": 79.87000274658203,
       "points": 0,
       "detail": "low=100, high=140, direction=above"
     },
     {
-      "name": "\u7f8e\u56fd 10Y \u671f\u9650\u6ea2\u4ef7",
+      "name": "美国 10Y 期限溢价",
       "value": 0.6999,
       "points": 1,
       "detail": "low=0.5, high=1.0, direction=above"
     },
     {
-      "name": "SOFR - IORB \u5229\u5dee",
+      "name": "SOFR - IORB 利差",
       "value": -0.08999999999999986,
       "points": 0,
       "detail": "low=0.05, high=0.1, direction=above"
     },
     {
-      "name": "\u65e5\u672c 30Y JGB \u6536\u76ca\u7387",
+      "name": "日本 30Y JGB 收益率",
       "value": 3.852,
       "points": 2,
       "detail": "low=2.5, high=3.0, direction=above"
     },
     {
-      "name": "\u82f1\u56fd Gilt ETF 5 \u65e5\u56de\u62a5",
+      "name": "英国 Gilt ETF 5 日回报",
       "value": -0.017602102754513044,
       "points": 0,
       "detail": "low=-0.025, high=-0.045, direction=below"
     },
     {
-      "name": "KRE 1 \u4e2a\u6708\u56de\u62a5",
+      "name": "KRE 1 个月回报",
       "value": -0.027023108540909092,
       "points": 0,
       "detail": "low=-0.05, high=-0.1, direction=below"
@@ -247,7 +247,7 @@
   "indicators": [
     {
       "name": "us_2y",
-      "label": "\u7f8e\u56fd 2Y \u56fd\u503a",
+      "label": "美国 2Y 国债",
       "latest_value": 4.0,
       "latest_date": "2026-05-14",
       "change_1d": 0.020000000000000018,
@@ -255,13 +255,13 @@
       "change_20d": 0.2200000000000002,
       "z_60d": 1.5155843112456509,
       "threshold_state": "ok",
-      "group": "\u7f8e\u56fd\u56fd\u503a",
+      "group": "美国国债",
       "unit": "%",
-      "notes": "\u7f8e\u56fd 2 \u5e74\u671f\u56fd\u503a\u6536\u76ca\u7387\u3002\u53cd\u6620\u5e02\u573a\u5bf9\u672a\u6765 2 \u5e74\u8054\u90a6\u57fa\u91d1\u5229\u7387\u8def\u5f84\u7684\u9884\u671f\uff0c\u662f\u6536\u76ca\u7387\u66f2\u7ebf\u524d\u7aef\u7684\u951a\uff0c\u4e0e\u66f2\u7ebf\u5f62\u72b6\uff08\u9661\u5ced/\u5e73\u5766/\u5012\u6302\uff09\u5bc6\u5207\u76f8\u5173\u3002"
+      "notes": "美国 2 年期国债收益率。反映市场对未来 2 年联邦基金利率路径的预期，是收益率曲线前端的锚，与曲线形状（陡峭/平坦/倒挂）密切相关。"
     },
     {
       "name": "us_10y",
-      "label": "\u7f8e\u56fd 10Y \u56fd\u503a",
+      "label": "美国 10Y 国债",
       "latest_value": 4.47,
       "latest_date": "2026-05-14",
       "change_1d": 0.009999999999999787,
@@ -269,13 +269,13 @@
       "change_20d": 0.14999999999999947,
       "z_60d": 1.4687743098012493,
       "threshold_state": "ok",
-      "group": "\u7f8e\u56fd\u56fd\u503a",
+      "group": "美国国债",
       "unit": "%",
-      "notes": "\u7f8e\u56fd 10 \u5e74\u671f\u56fd\u503a\u6536\u76ca\u7387\u3002\u5168\u7403\u65e0\u98ce\u9669\u5229\u7387\u57fa\u51c6\uff0c\u662f\u7f8e\u56fd\u623f\u8d37\u3001\u4f01\u4e1a\u4fe1\u7528\u503a\u4ee5\u53ca\u8de8\u5883\u5229\u7387\u5e02\u573a\u7684\u5b9a\u4ef7\u4e4b\u951a\u3002"
+      "notes": "美国 10 年期国债收益率。全球无风险利率基准，是美国房贷、企业信用债以及跨境利率市场的定价之锚。"
     },
     {
       "name": "us_30y",
-      "label": "\u7f8e\u56fd 30Y \u56fd\u503a",
+      "label": "美国 30Y 国债",
       "latest_value": 5.02,
       "latest_date": "2026-05-14",
       "change_1d": -0.010000000000000675,
@@ -283,13 +283,13 @@
       "change_20d": 0.08999999999999986,
       "z_60d": 1.448334551122578,
       "threshold_state": "ok",
-      "group": "\u7f8e\u56fd\u56fd\u503a",
+      "group": "美国国债",
       "unit": "%",
-      "notes": "\u7f8e\u56fd 30 \u5e74\u671f\u957f\u671f\u56fd\u503a\u6536\u76ca\u7387\uff08\u957f\u503a\uff09\u3002\u5bf9\u901a\u80c0\u9884\u671f\u3001\u8d22\u653f\u53ef\u6301\u7eed\u6027\u4ee5\u53ca\u957f\u4e45\u671f\u9700\u6c42\uff08\u4fdd\u9669\u3001\u517b\u8001\u91d1\u3001\u6d77\u5916\u50a8\u5907\u7ba1\u7406\u8005\uff09\u6700\u4e3a\u654f\u611f\u3002"
+      "notes": "美国 30 年期长期国债收益率（长债）。对通胀预期、财政可持续性以及长久期需求（保险、养老金、海外储备管理者）最为敏感。"
     },
     {
       "name": "us_10y_term_premium",
-      "label": "\u7f8e\u56fd 10Y \u671f\u9650\u6ea2\u4ef7 (ACM)",
+      "label": "美国 10Y 期限溢价 (ACM)",
       "latest_value": 0.6999,
       "latest_date": "2026-05-08",
       "change_1d": -0.008700000000000041,
@@ -297,13 +297,13 @@
       "change_20d": 0.04809999999999992,
       "z_60d": 1.102376952426682,
       "threshold_state": "warn",
-      "group": "\u7f8e\u56fd\u56fd\u503a",
+      "group": "美国国债",
       "unit": "%",
-      "notes": "NY Fed \u53d1\u5e03\u7684 ACM (Adrian-Crump-Moench) \u6a21\u578b 10Y \u671f\u9650\u6ea2\u4ef7\u3002\u6307\u6295\u8d44\u8005\u6301\u6709\u957f\u4e45\u671f\u6240\u8981\u6c42\u7684\u3001\u77ed\u7aef\u5229\u7387\u8def\u5f84\u65e0\u6cd5\u89e3\u91ca\u7684\u989d\u5916\u8865\u507f\u3002\u8be5\u503c\u4e0a\u884c\u901a\u5e38\u610f\u5473\u7740\u4e3b\u6743\u4e45\u671f\u88ab\u91cd\u5b9a\u4ef7 \u2014\u2014 \u591a\u7531\u8d22\u653f\u62c5\u5fe7\u6216\u6d77\u5916\u9700\u6c42\u5f31\u5316\u9a71\u52a8\u3002"
+      "notes": "NY Fed 发布的 ACM (Adrian-Crump-Moench) 模型 10Y 期限溢价。指投资者持有长久期所要求的、短端利率路径无法解释的额外补偿。该值上行通常意味着主权久期被重定价 —— 多由财政担忧或海外需求弱化驱动。"
     },
     {
       "name": "sofr",
-      "label": "SOFR \u9694\u591c\u62c5\u4fdd\u878d\u8d44\u5229\u7387",
+      "label": "SOFR 隔夜担保融资利率",
       "latest_value": 3.56,
       "latest_date": "2026-05-14",
       "change_1d": -0.029999999999999805,
@@ -311,13 +311,13 @@
       "change_20d": -0.10999999999999988,
       "z_60d": -2.5983578623174974,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "%",
-      "notes": "Secured Overnight Financing Rate\uff0cLIBOR \u9000\u5f79\u540e\u7684\u7f8e\u5143\u57fa\u51c6\u5229\u7387\uff0c\u53cd\u6620\u7f8e\u503a\u62c5\u4fdd\u9694\u591c\u56de\u8d2d\u7684\u771f\u5b9e\u6210\u672c\u3002\u76f8\u5bf9 IORB \u98d9\u5347\u65f6\uff08\u5982 2019 \u5e74 9 \u6708\u56de\u8d2d\u4e8b\u4ef6\uff09\u5373\u7f8e\u5143\u8d44\u91d1\u7d27\u5f20\u4fe1\u53f7\u3002"
+      "notes": "Secured Overnight Financing Rate，LIBOR 退役后的美元基准利率，反映美债担保隔夜回购的真实成本。相对 IORB 飙升时（如 2019 年 9 月回购事件）即美元资金紧张信号。"
     },
     {
       "name": "iorb",
-      "label": "IORB \u51c6\u5907\u91d1\u5229\u606f",
+      "label": "IORB 准备金利息",
       "latest_value": 3.65,
       "latest_date": "2026-05-18",
       "change_1d": 0.0,
@@ -325,13 +325,13 @@
       "change_20d": 0.0,
       "z_60d": null,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "%",
-      "notes": "Interest on Reserve Balances\uff0c\u7f8e\u8054\u50a8\u5bf9\u5546\u4e1a\u94f6\u884c\u51c6\u5907\u91d1\u652f\u4ed8\u7684\u5229\u7387\uff0c\u662f\u8054\u90a6\u57fa\u91d1\u5229\u7387\u8d70\u5eca\u7684\u4e8b\u5b9e\u4e0b\u9650\uff0c\u4e5f\u662f SOFR \u7684\u53c2\u7167\u57fa\u51c6\u3002"
+      "notes": "Interest on Reserve Balances，美联储对商业银行准备金支付的利率，是联邦基金利率走廊的事实下限，也是 SOFR 的参照基准。"
     },
     {
       "name": "rrp_usage",
-      "label": "\u9694\u591c\u9006\u56de\u8d2d\u89c4\u6a21 (ON RRP)",
+      "label": "隔夜逆回购规模 (ON RRP)",
       "latest_value": 0.647,
       "latest_date": "2026-05-15",
       "change_1d": -0.6819075712881022,
@@ -339,13 +339,13 @@
       "change_20d": 3.722627737226277,
       "z_60d": -0.3098460676787257,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "$B",
-      "notes": "\u8d27\u5e01\u5e02\u573a\u57fa\u91d1\u5f53\u79c1\u52df\u5e02\u573a\u6536\u76ca\u7387\u4e0d\u5177\u5438\u5f15\u529b\u65f6\u5c06\u73b0\u91d1\u5b58\u5165\u7f8e\u8054\u50a8 RRP\u3002RRP \u4f59\u989d\u56de\u843d\u610f\u5473\u7740\u8d44\u91d1\u56de\u6d41\u79c1\u52df\u56de\u8d2d\u4e0e\u77ed\u7aef\u56fd\u503a\uff1bRRP \u81a8\u80c0\u5219\u4ee3\u8868\u5e02\u573a\u6d41\u52a8\u6027\u8fc7\u5269\u3001\u65e0\u5904\u53ef\u6295\u3002"
+      "notes": "货币市场基金当私募市场收益率不具吸引力时将现金存入美联储 RRP。RRP 余额回落意味着资金回流私募回购与短端国债；RRP 膨胀则代表市场流动性过剩、无处可投。"
     },
     {
       "name": "tga_balance",
-      "label": "\u7f8e\u56fd\u8d22\u653f\u90e8\u4e00\u822c\u8d26\u6237 (TGA)",
+      "label": "美国财政部一般账户 (TGA)",
       "latest_value": 838584.0,
       "latest_date": "2026-05-13",
       "change_1d": -0.04463287842590409,
@@ -353,13 +353,13 @@
       "change_20d": 0.0017488532110091744,
       "z_60d": 0.6456969711246981,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "$M",
-      "notes": "\u7f8e\u56fd\u8d22\u653f\u90e8\u5728\u7f8e\u8054\u50a8\u7684\u4e00\u822c\u8d26\u6237\u4f59\u989d\uff08\u5373\u8d22\u653f\u90e8\u652f\u7968\u8d26\u6237\uff09\u3002\u8d26\u6237\u8017\u7528\u5411\u94f6\u884c\u4f53\u7cfb\u6ce8\u5165\u6d41\u52a8\u6027\uff1b\u8d26\u6237\u8865\u5145\uff08\u5982\u503a\u52a1\u4e0a\u9650\u534f\u8bae\u8fbe\u6210\u540e\uff09\u5219\u62bd\u8d70\u6d41\u52a8\u6027\u3002\u662f X-date \u98ce\u9669\u7a97\u53e3\u7684\u5173\u952e\u53d8\u91cf\u3002"
+      "notes": "美国财政部在美联储的一般账户余额（即财政部支票账户）。账户耗用向银行体系注入流动性；账户补充（如债务上限协议达成后）则抽走流动性。是 X-date 风险窗口的关键变量。"
     },
     {
       "name": "fed_balance_sheet",
-      "label": "\u7f8e\u8054\u50a8\u603b\u8d44\u4ea7 (H.4.1)",
+      "label": "美联储总资产 (H.4.1)",
       "latest_value": 6728502.0,
       "latest_date": "2026-05-13",
       "change_1d": 0.002831356411538556,
@@ -367,13 +367,13 @@
       "change_20d": 0.02237742452741744,
       "z_60d": 1.5824732625229907,
       "threshold_state": "ok",
-      "group": "\u8d44\u91d1\u9762\u4e0e\u6d41\u52a8\u6027",
+      "group": "资金面与流动性",
       "unit": "$M",
-      "notes": "\u7f8e\u8054\u50a8\u6bcf\u5468 H.4.1 \u8d44\u4ea7\u8d1f\u503a\u8868\u5408\u8ba1\u3002\u76f4\u63a5\u523b\u753b QE \u6269\u8868\u4e0e QT \u7f29\u8868\u8282\u594f\uff0c\u662f\u592e\u884c\u6d41\u52a8\u6027\u4f9b\u7ed9\u7684\u6700\u7efc\u5408\u5355\u4e00\u6307\u6807\u3002"
+      "notes": "美联储每周 H.4.1 资产负债表合计。直接刻画 QE 扩表与 QT 缩表节奏，是央行流动性供给的最综合单一指标。"
     },
     {
       "name": "ig_oas",
-      "label": "\u7f8e\u56fd IG \u4f01\u4e1a\u503a\u5229\u5dee (OAS)",
+      "label": "美国 IG 企业债利差 (OAS)",
       "latest_value": 0.76,
       "latest_date": "2026-05-14",
       "change_1d": 0.0,
@@ -381,13 +381,13 @@
       "change_20d": -0.050000000000000044,
       "z_60d": -1.6795686444815707,
       "threshold_state": "ok",
-      "group": "\u7f8e\u56fd\u4fe1\u7528",
+      "group": "美国信用",
       "unit": "%",
-      "notes": "ICE BofA \u7f8e\u56fd\u6295\u8d44\u7ea7\u4f01\u4e1a\u503a\u6307\u6570\u76f8\u5bf9\u7f8e\u503a\u7684\u671f\u6743\u8c03\u6574\u5229\u5dee (OAS)\u3002\u4ee3\u8868\u6295\u8d44\u7ea7\u4fe1\u7528\u98ce\u9669\u52a0\u6d41\u52a8\u6027\u8865\u507f\uff0c\u5229\u5dee\u8d70\u9614\u63d0\u793a\u8fdd\u7ea6\u9884\u671f\u4e0a\u5347\u6216\u94f6\u884c\u8d44\u4ea7\u8d1f\u503a\u8868\u6076\u5316\u3002"
+      "notes": "ICE BofA 美国投资级企业债指数相对美债的期权调整利差 (OAS)。代表投资级信用风险加流动性补偿，利差走阔提示违约预期上升或银行资产负债表恶化。"
     },
     {
       "name": "hy_oas",
-      "label": "\u7f8e\u56fd HY \u4f01\u4e1a\u503a\u5229\u5dee (OAS)",
+      "label": "美国 HY 企业债利差 (OAS)",
       "latest_value": 2.76,
       "latest_date": "2026-05-14",
       "change_1d": -0.06000000000000005,
@@ -395,13 +395,13 @@
       "change_20d": -0.10000000000000009,
       "z_60d": -1.3416449391258611,
       "threshold_state": "ok",
-      "group": "\u7f8e\u56fd\u4fe1\u7528",
+      "group": "美国信用",
       "unit": "%",
-      "notes": "ICE BofA \u7f8e\u56fd\u9ad8\u6536\u76ca\u4f01\u4e1a\u503a OAS\u3002\u4f01\u4e1a\u4fe1\u7528\u5e02\u573a\u7684\u6050\u614c\u6e29\u5ea6\u8ba1\uff0c\u9ad8\u6536\u76ca\u5229\u5dee\u901a\u5e38\u9886\u5148\u80a1\u7968\u56de\u64a4\u6570\u65e5\u81f3\u6570\u5468\uff0c\u662f\u6760\u6746\u7cfb\u7edf\u538b\u529b\u6700\u5e72\u51c0\u7684\u8bfb\u6570\u3002"
+      "notes": "ICE BofA 美国高收益企业债 OAS。企业信用市场的恐慌温度计，高收益利差通常领先股票回撤数日至数周，是杠杆系统压力最干净的读数。"
     },
     {
       "name": "usdjpy",
-      "label": "\u7f8e\u5143/\u65e5\u5143",
+      "label": "美元/日元",
       "latest_value": 156.64,
       "latest_date": "2026-05-08",
       "change_1d": 0.0010224948875255406,
@@ -409,13 +409,13 @@
       "change_20d": -0.01620399447305623,
       "z_60d": -0.7937895441967343,
       "threshold_state": "ok",
-      "group": "\u5916\u6c47",
+      "group": "外汇",
       "unit": "JPY",
-      "notes": "USD/JPY \u5373\u671f\u6c47\u7387\u3002\u53cd\u6620 Fed-BOJ \u653f\u7b56\u5229\u5dee\u53ca\u65e5\u5143\u5957\u606f\u4ea4\u6613\u7684\u6e29\u5ea6\u3002\u82e5\u5feb\u901f\u56de\u843d\uff08\u65e5\u5143\u5347\u503c\uff09\u5373\u5957\u606f\u5e73\u4ed3\u4fe1\u53f7\uff0c\u5f80\u5f80\u9886\u5148\u5168\u7403\u907f\u9669\u60c5\u7eea\uff08\u5982 2024 \u5e74 8 \u6708\u65e5\u80a1\u95ea\u5d29\u524d\uff09\u3002"
+      "notes": "USD/JPY 即期汇率。反映 Fed-BOJ 政策利差及日元套息交易的温度。若快速回落（日元升值）即套息平仓信号，往往领先全球避险情绪（如 2024 年 8 月日股闪崩前）。"
     },
     {
       "name": "gbpusd",
-      "label": "\u82f1\u9551/\u7f8e\u5143",
+      "label": "英镑/美元",
       "latest_value": 1.3625,
       "latest_date": "2026-05-08",
       "change_1d": 0.0009550396708786945,
@@ -423,13 +423,13 @@
       "change_20d": 0.01225854383358095,
       "z_60d": 1.5389633261039721,
       "threshold_state": "ok",
-      "group": "\u5916\u6c47",
+      "group": "外汇",
       "unit": "USD",
-      "notes": "GBP/USD \u5373\u671f\u6c47\u7387\u3002\u82f1\u56fd\u8d22\u653f\u4e0e\u653f\u6cbb\u4fe1\u8a89\u7684\u91cd\u8981\u6807\u5c3a\u3002LDI \u5f0f\u538b\u529b\uff08\u5982 2022 \u5e74 9 \u6708\uff09\u901a\u5e38\u5148\u5728\u6b64\u663e\u73b0\uff0c\u56e0\u6d77\u5916\u6301\u503a\u4eba\u629b\u552e\u82f1\u56fd\u56fd\u503a\u5e76\u5c06\u672c\u91d1\u5151\u56de\u672c\u5e01\u3002"
+      "notes": "GBP/USD 即期汇率。英国财政与政治信誉的重要标尺。LDI 式压力（如 2022 年 9 月）通常先在此显现，因海外持债人抛售英国国债并将本金兑回本币。"
     },
     {
       "name": "dxy",
-      "label": "DXY \u7f8e\u5143\u6307\u6570",
+      "label": "DXY 美元指数",
       "latest_value": 99.2699966430664,
       "latest_date": "2026-05-15",
       "change_1d": 0.0039441686941892665,
@@ -437,13 +437,13 @@
       "change_20d": 0.011926587024911723,
       "z_60d": 0.5581293182794529,
       "threshold_state": "ok",
-      "group": "\u5916\u6c47",
+      "group": "外汇",
       "unit": "idx",
-      "notes": "ICE \u7f8e\u5143\u6307\u6570\u3002\u7f8e\u5143\u76f8\u5bf9\u4e00\u7bee\u5b50\u4e3b\u8981\u8d27\u5e01\u7684\u8d38\u6613\u52a0\u6743\u6c47\u7387\u3002DXY \u4e0a\u884c\u610f\u5473\u7740\u5168\u7403\u7f8e\u5143\u6d41\u52a8\u6027\u6536\u7d27\uff0c\u5bf9\u65b0\u5174\u5e02\u573a\u4e0e\u5927\u5b97\u5546\u54c1\u677f\u5757\u6784\u6210\u538b\u529b\u3002"
+      "notes": "ICE 美元指数。美元相对一篮子主要货币的贸易加权汇率。DXY 上行意味着全球美元流动性收紧，对新兴市场与大宗商品板块构成压力。"
     },
     {
       "name": "vix",
-      "label": "VIX \u80a1\u7968\u6ce2\u52a8\u7387",
+      "label": "VIX 股票波动率",
       "latest_value": 18.43000030517578,
       "latest_date": "2026-05-15",
       "change_1d": 0.0677867937878783,
@@ -451,13 +451,13 @@
       "change_20d": 0.054347871156632394,
       "z_60d": -0.7820649483310357,
       "threshold_state": "ok",
-      "group": "\u6ce2\u52a8\u7387\u6307\u6570",
+      "group": "波动率指数",
       "unit": "idx",
-      "notes": "CBOE \u6ce2\u52a8\u7387\u6307\u6570\u3002\u6807\u666e 500 \u671f\u6743\u672a\u6765 30 \u5929\u9690\u542b\u6ce2\u52a8\u7387\uff0c\u5373\u80a1\u7968\u6050\u614c\u6307\u6570\u3002\u6301\u7eed\u9ad8\u4e8e 25 = \u98ce\u9669\u5347\u6e29\uff1b\u51b2\u9ad8 40+ \u901a\u5e38\u5bf9\u5e94\u5b8f\u89c2\u51b2\u51fb\u4e8b\u4ef6\u3002"
+      "notes": "CBOE 波动率指数。标普 500 期权未来 30 天隐含波动率，即股票恐慌指数。持续高于 25 = 风险升温；冲高 40+ 通常对应宏观冲击事件。"
     },
     {
       "name": "move",
-      "label": "MOVE \u56fd\u503a\u6ce2\u52a8\u7387",
+      "label": "MOVE 国债波动率",
       "latest_value": 79.87000274658203,
       "latest_date": "2026-05-15",
       "change_1d": 0.14706313222870915,
@@ -465,13 +465,13 @@
       "change_20d": 0.2156774194297579,
       "z_60d": 0.11850646816954888,
       "threshold_state": "ok",
-      "group": "\u6ce2\u52a8\u7387\u6307\u6570",
+      "group": "波动率指数",
       "unit": "idx",
-      "notes": "Merrill Option Volatility Estimate (MOVE)\u3002\u7f8e\u503a\u5e02\u573a\u7248\u7684 VIX\uff0c\u5bf92/5/10/30Y \u56fd\u503a\u671f\u6743\u9690\u542b\u6ce2\u52a8\u7387\u52a0\u6743\u3002\u662f\u5229\u7387\u5e02\u573a\u6700\u91cd\u8981\u7684\u5355\u4e00\u538b\u529b\u6307\u6807 \u2014\u2014 \u51e0\u4e4e\u6240\u6709\u7f8e\u56fd\u56fa\u6536\u5e02\u573a\u5931\u5e8f\u4e8b\u4ef6\uff082022 LDI\u30012023 SVB\u3001\u57fa\u5dee\u4ea4\u6613\u89e3\u9664\uff09\u4e4b\u524d MOVE \u90fd\u4f1a\u5148\u98d9\u5347\u3002"
+      "notes": "Merrill Option Volatility Estimate (MOVE)。美债市场版的 VIX，对2/5/10/30Y 国债期权隐含波动率加权。是利率市场最重要的单一压力指标 —— 几乎所有美国固收市场失序事件（2022 LDI、2023 SVB、基差交易解除）之前 MOVE 都会先飙升。"
     },
     {
       "name": "kre",
-      "label": "KRE \u7f8e\u56fd\u533a\u57df\u94f6\u884c ETF",
+      "label": "KRE 美国区域银行 ETF",
       "latest_value": 66.97000122070312,
       "latest_date": "2026-05-15",
       "change_1d": -0.011366942240165554,
@@ -479,13 +479,13 @@
       "change_20d": -0.04831606356650383,
       "z_60d": -0.1449986301802395,
       "threshold_state": "ok",
-      "group": "\u80a1\u7968\u5e02\u573a",
+      "group": "股票市场",
       "unit": "USD",
-      "notes": "SPDR S&P \u533a\u57df\u94f6\u884c ETF\u3002\u7f8e\u56fd\u5730\u533a\u94f6\u884c\u538b\u529b\u6700\u76f4\u63a5\u7684\u8bfb\u6570 \u2014\u2014 \u8fd9\u7c7b\u673a\u6784\u6301\u6709\u6700\u5927\u89c4\u6a21\u7684 HTM \u7f8e\u503a\u672a\u5b9e\u73b0\u4e8f\u635f\uff0c\u5bf9\u4e45\u671f\u51b2\u51fb\u6700\u654f\u611f\uff08SVB \u6a21\u677f\uff09\u3002"
+      "notes": "SPDR S&P 区域银行 ETF。美国地区银行压力最直接的读数 —— 这类机构持有最大规模的 HTM 美债未实现亏损，对久期冲击最敏感（SVB 模板）。"
     },
     {
       "name": "nikkei",
-      "label": "\u65e5\u7ecf 225",
+      "label": "日经 225",
       "latest_value": 61409.2890625,
       "latest_date": "2026-05-15",
       "change_1d": -0.019867218531423515,
@@ -493,13 +493,13 @@
       "change_20d": 0.08683679706242275,
       "z_60d": 1.421935431756247,
       "threshold_state": "ok",
-      "group": "\u80a1\u7968\u5e02\u573a",
+      "group": "股票市场",
       "unit": "idx",
-      "notes": "Nikkei 225 \u6307\u6570\u3002\u4e1c\u4eac\u5e02\u573a\u4ef7\u683c\u52a0\u6743\u84dd\u7b79\u6307\u6570\uff0c\u51fa\u53e3\u578b\u6743\u91cd\u9ad8\u4f7f\u5176\u5bf9USD/JPY \u4e0e\u5168\u7403\u589e\u957f\u9ad8\u5ea6\u654f\u611f\u3002\u6025\u8dcc\u901a\u5e38\u63d0\u793a\u5957\u606f\u4ea4\u6613\u89e3\u9664\u5df2\u5f00\u59cb\uff08\u5982 2024-08-05 \u5355\u65e5 -12%\uff09\u3002"
+      "notes": "Nikkei 225 指数。东京市场价格加权蓝筹指数，出口型权重高使其对USD/JPY 与全球增长高度敏感。急跌通常提示套息交易解除已开始（如 2024-08-05 单日 -12%）。"
     },
     {
       "name": "topix_banks",
-      "label": "TOPIX \u94f6\u884c ETF (1615.T)",
+      "label": "TOPIX 银行 ETF (1615.T)",
       "latest_value": 639.7000122070312,
       "latest_date": "2026-05-15",
       "change_1d": -0.0004687309265136719,
@@ -507,13 +507,13 @@
       "change_20d": 0.02433949112414932,
       "z_60d": 1.0142381890375376,
       "threshold_state": "ok",
-      "group": "\u80a1\u7968\u5e02\u573a",
+      "group": "股票市场",
       "unit": "JPY",
-      "notes": "TOPIX \u94f6\u884c\u4e1a ETF\u3002\u65e5\u672c\u94f6\u884c\u80a1\u53cd\u6620 JGB \u7aef\u7684\u8d44\u672c\u538b\u529b\uff1a\u51c0\u606f\u5dee\u6269\u5927\uff08\u6b63\u9762\uff09\u4e0e HTM \u8d26\u6237\u672a\u5b9e\u73b0\u4e8f\u635f\uff08\u8d1f\u9762\uff09\u7684\u5408\u6210\u3002\u76d1\u6d4b\u65e5\u672c\u94f6\u884c\u4f53\u7cfb\u5982\u4f55\u6d88\u5316\u957f\u7aef\u6536\u76ca\u7387\u4e0a\u884c\u7684\u5b9e\u65f6\u4eea\u8868\u3002"
+      "notes": "TOPIX 银行业 ETF。日本银行股反映 JGB 端的资本压力：净息差扩大（正面）与 HTM 账户未实现亏损（负面）的合成。监测日本银行体系如何消化长端收益率上行的实时仪表。"
     },
     {
       "name": "ftse100",
-      "label": "\u5bcc\u65f6 100",
+      "label": "富时 100",
       "latest_value": 10195.400390625,
       "latest_date": "2026-05-15",
       "change_1d": -0.017111896703493272,
@@ -521,13 +521,13 @@
       "change_20d": -0.037261530630311616,
       "z_60d": -0.8623903429135923,
       "threshold_state": "ok",
-      "group": "\u80a1\u7968\u5e02\u573a",
+      "group": "股票市场",
       "unit": "idx",
-      "notes": "FTSE 100 \u6307\u6570\u3002\u82f1\u56fd\u5927\u76d8\uff0c\u6743\u91cd\u4ee5\u5168\u7403\u5546\u54c1\u3001\u91d1\u878d\u3001\u533b\u836f\u4e3a\u4e3b\uff0c\u76f8\u6bd4FTSE 250 \u8f83\u5c11\u53cd\u6620\u82f1\u56fd\u672c\u571f\u538b\u529b\u3002"
+      "notes": "FTSE 100 指数。英国大盘，权重以全球商品、金融、医药为主，相比FTSE 250 较少反映英国本土压力。"
     },
     {
       "name": "gold",
-      "label": "\u9ec4\u91d1 (CME \u4e3b\u529b)",
+      "label": "黄金 (CME 主力)",
       "latest_value": 4561.89990234375,
       "latest_date": "2026-05-15",
       "change_1d": -0.02483918532882972,
@@ -535,27 +535,27 @@
       "change_20d": -0.06087372146076265,
       "z_60d": -0.9828577100284555,
       "threshold_state": "ok",
-      "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
+      "group": "避险与另类资产",
       "unit": "USD/oz",
-      "notes": "COMEX \u9ec4\u91d1\u4e3b\u529b\u6708\u4efd\u671f\u8d27\u3002\u5bf9\u4e3b\u6743\u4fe1\u7528\u3001\u901a\u80c0\u3001\u8d27\u5e01\u8d2c\u503c\u7684\u7ecf\u5178\u5bf9\u51b2\u3002\u5728\u5b9e\u9645\u5229\u7387\u7a33\u5b9a\u7684\u80cc\u666f\u4e0b\u4ecd\u4e0a\u6da8\uff0c\u662f\u4e3b\u6743\u98ce\u9669\u88ab\u7ed3\u6784\u6027\u91cd\u5b9a\u4ef7\u7684\u6e05\u6670\u4fe1\u53f7\u3002"
+      "notes": "COMEX 黄金主力月份期货。对主权信用、通胀、货币贬值的经典对冲。在实际利率稳定的背景下仍上涨，是主权风险被结构性重定价的清晰信号。"
     },
     {
       "name": "btc",
-      "label": "\u6bd4\u7279\u5e01",
-      "latest_value": 78461.0397771749,
+      "label": "比特币",
+      "latest_value": 78449.04996151183,
       "latest_date": "2026-05-17",
-      "change_1d": -0.007686727352529803,
-      "change_5d": -0.03994077263341629,
-      "change_20d": -0.0023407149918724768,
-      "z_60d": 0.8531523042504044,
+      "change_1d": -0.007838365073019432,
+      "change_5d": -0.04008748153753535,
+      "change_20d": -0.0024931696490598466,
+      "z_60d": 0.8507817046377544,
       "threshold_state": "ok",
-      "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
+      "group": "避险与另类资产",
       "unit": "USD",
-      "notes": "\u6bd4\u7279\u5e01\u73b0\u8d27 (USD)\u3002\u53e6\u7c7b\u4ef7\u503c\u50a8\u5b58\u5de5\u5177\uff0c\u76f8\u5173\u6027\u4f53\u5236\u4e0d\u7a33\u5b9a\uff1a\u6709\u65f6\u8ddf\u968f\u98ce\u9669\u8d44\u4ea7\uff0c\u6709\u65f6\u8ddf\u968f\u9ec4\u91d1\u3002\u5728\u4f20\u7edf\u907f\u9669\u8d44\u4ea7\u4e5f\u627f\u538b\u65f6\uff0c\u53ef\u4f5c\u4e3a\u5c3e\u90e8\u5bf9\u51b2\u4fe1\u53f7\u89c2\u5bdf\u3002"
+      "notes": "比特币现货 (USD)。另类价值储存工具，相关性体制不稳定：有时跟随风险资产，有时跟随黄金。在传统避险资产也承压时，可作为尾部对冲信号观察。"
     },
     {
       "name": "tlt",
-      "label": "TLT \u7f8e\u56fd 20+Y \u56fd\u503a ETF",
+      "label": "TLT 美国 20+Y 国债 ETF",
       "latest_value": 83.66000366210938,
       "latest_date": "2026-05-15",
       "change_1d": -0.014837429745691036,
@@ -563,13 +563,13 @@
       "change_20d": -0.03916384569503504,
       "z_60d": -2.18520984114908,
       "threshold_state": "ok",
-      "group": "\u957f\u503a ETF \u4ee3\u7406",
+      "group": "长债 ETF 代理",
       "unit": "USD",
-      "notes": "iShares 20+ \u5e74\u7f8e\u56fd\u56fd\u503a ETF\u3002\u957f\u4e45\u671f\u7f8e\u503a\u603b\u56de\u62a5\u7684\u4ee3\u7406\u3002TLT \u4e0b\u8dcc= \u957f\u7aef\u6536\u76ca\u7387\u4e0a\u884c\uff1b\u5927\u5e45\u56de\u64a4\u53ef\u786e\u8ba4\u957f\u503a\u7684\u7ed3\u6784\u6027\u91cd\u5b9a\u4ef7\u3002"
+      "notes": "iShares 20+ 年美国国债 ETF。长久期美债总回报的代理。TLT 下跌= 长端收益率上行；大幅回撤可确认长债的结构性重定价。"
     },
     {
       "name": "uk_gilt_etf",
-      "label": "IGLT.L \u82f1\u56fd\u56fd\u503a ETF",
+      "label": "IGLT.L 英国国债 ETF",
       "latest_value": 9.6274995803833,
       "latest_date": "2026-05-15",
       "change_1d": -0.011296596477217737,
@@ -577,13 +577,13 @@
       "change_20d": -0.017602102754513044,
       "z_60d": -1.618207509598434,
       "threshold_state": "ok",
-      "group": "\u957f\u503a ETF \u4ee3\u7406",
+      "group": "长债 ETF 代理",
       "unit": "GBp",
-      "notes": "iShares Core UK Gilts UCITS ETF\u3002\u5f53\u76f4\u63a5\u7684\u82f1\u56fd\u56fd\u503a\u6536\u76ca\u7387\u6570\u636e\u6e90\u4e0d\u53ef\u7528\u65f6\uff0c\u7528\u4ef7\u683c\u4f5c\u4e3a\u82f1\u56fd\u56fd\u503a\u538b\u529b\u4ee3\u7406\u3002ETF \u4e45\u671f\u7ea6 14 \u5e74\uff0c\u4ef7\u683c\u6bcf\u8dcc 1% \u5927\u81f4\u5bf9\u5e94\u66f2\u7ebf\u4e0a\u884c 7-8bp\u3002\u672c\u538b\u529b\u6307\u6570\u4e2d\u4ee3\u66ff UK 30Y\u3002"
+      "notes": "iShares Core UK Gilts UCITS ETF。当直接的英国国债收益率数据源不可用时，用价格作为英国国债压力代理。ETF 久期约 14 年，价格每跌 1% 大致对应曲线上行 7-8bp。本压力指数中代替 UK 30Y。"
     },
     {
       "name": "jgb_10y",
-      "label": "\u65e5\u672c 10Y \u56fd\u503a",
+      "label": "日本 10Y 国债",
       "latest_value": 2.628,
       "latest_date": "2026-05-14",
       "change_1d": 0.040999999999999925,
@@ -591,13 +591,13 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 10Y JGB \u6536\u76ca\u7387\u3002\u957f\u671f\u662f BOJ YCC \u653f\u7b56\u7684\u76ee\u6807\u5229\u7387\u3002\u4e0a\u884c\u9884\u793a\u8d27\u5e01\u653f\u7b56\u6b63\u5e38\u5316\u3001JGB \u9700\u6c42\u4fb5\u8680\uff0c\u4ee5\u53ca\u968f\u7740\u65e5\u672c\u673a\u6784\u56de\u6d41\u800c\u5e26\u6765\u7684\u5168\u7403\u6d41\u52a8\u6027\u6536\u7d27\u3002"
+      "notes": "Japan 10Y JGB 收益率。长期是 BOJ YCC 政策的目标利率。上行预示货币政策正常化、JGB 需求侵蚀，以及随着日本机构回流而带来的全球流动性收紧。"
     },
     {
       "name": "jgb_30y",
-      "label": "\u65e5\u672c 30Y \u56fd\u503a",
+      "label": "日本 30Y 国债",
       "latest_value": 3.852,
       "latest_date": "2026-05-14",
       "change_1d": 0.06899999999999995,
@@ -605,13 +605,13 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 30Y JGB \u6536\u76ca\u7387\u3002\u5bf9 BOJ \u8d2d\u503a\u8282\u594f\u4e0e\u5bff\u9669 ALM \u9700\u6c42\u9ad8\u5ea6\u654f\u611f\u3002\u5168\u7403\u975e\u7f8e\u4e3b\u6743\u5229\u7387\u6700\u91cd\u8981\u7684\u5355\u4e00\u4fe1\u53f7 \u2014\u2014 25bp \u7684\u53d8\u52a8\u5bf9\u5e94\u65e5\u672c\u673a\u6784\u6301\u6709\u7684\u6570\u5343\u4ebf\u7f8e\u5143\u7ea7\u522b\u8d44\u4ea7\u7684\u6f5c\u5728\u91cd\u65b0\u914d\u7f6e\u538b\u529b\u3002"
+      "notes": "Japan 30Y JGB 收益率。对 BOJ 购债节奏与寿险 ALM 需求高度敏感。全球非美主权利率最重要的单一信号 —— 25bp 的变动对应日本机构持有的数千亿美元级别资产的潜在重新配置压力。"
     },
     {
       "name": "jgb_40y",
-      "label": "\u65e5\u672c 40Y \u56fd\u503a",
+      "label": "日本 40Y 国债",
       "latest_value": 3.868,
       "latest_date": "2026-05-14",
       "change_1d": 0.06199999999999983,
@@ -619,40 +619,41 @@
       "change_20d": null,
       "z_60d": null,
       "threshold_state": "crisis",
-      "group": "\u65e5\u672c\u56fd\u503a",
+      "group": "日本国债",
       "unit": "%",
-      "notes": "Japan 40Y JGB \u6536\u76ca\u7387\u3002\u65e5\u672c\u56fd\u503a\u53d1\u884c\u7684\u6700\u957f\u671f\u9650\uff0c\u6d41\u52a8\u6027\u6700\u4f4e\u3001\u6ce2\u52a8\u6027\u6700\u5927\uff0c\u5e38\u9886\u5148\u6574\u6761 JGB \u66f2\u7ebf\u30023% \u4ee5\u4e0a\u7684\u6c34\u5e73\u5386\u53f2\u7f55\u89c1\uff0c\u4f1a\u660e\u663e\u538b\u529b\u8584\u5f31\u7684\u517b\u8001\u91d1 / \u5bff\u9669\u9700\u6c42\u3002"
+      "notes": "Japan 40Y JGB 收益率。日本国债发行的最长期限，流动性最低、波动性最大，常领先整条 JGB 曲线。3% 以上的水平历史罕见，会明显压力薄弱的养老金 / 寿险需求。"
     }
   ],
   "scenarios": [
     {
-      "name": "A \u00b7 \u5e38\u6001\u5316\u9ad8\u5229\u7387",
+      "name": "A · 常态化高利率",
       "low": 38,
       "high": 48
     },
     {
-      "name": "B \u00b7 \u533a\u57df\u6027\u6d41\u52a8\u6027\u4e8b\u4ef6",
+      "name": "B · 区域性流动性事件",
       "low": 35,
       "high": 45
     },
     {
-      "name": "C \u00b7 \u8de8\u5e02\u573a\u4f20\u67d3",
+      "name": "C · 跨市场传染",
       "low": 10,
       "high": 20
     },
     {
-      "name": "D \u00b7 \u7f8e\u503a\u6280\u672f\u6027\u8fdd\u7ea6",
+      "name": "D · 美债技术性违约",
       "low": 3,
       "high": 7
     },
     {
-      "name": "E \u00b7 \u7f8e\u503a\u5b9e\u8d28\u6027\u8fdd\u7ea6",
+      "name": "E · 美债实质性违约",
       "low": 0,
       "high": 1
     }
   ],
   "scenario_notes": [
-    "\u65e5\u672c\u56fd\u503a 3 \u4e2a\u671f\u9650\u8fbe\u5371\u673a\u6c34\u5e73 \u2192 \u60c5\u666f B +8\uff08\u65e5\u672c\u4e3b\u5bfc\u7684\u6d41\u52a8\u6027\u4e8b\u4ef6\u6982\u7387\u4e0a\u5347\uff09",
-    "\u7f8e\u56fd 10Y \u671f\u9650\u6ea2\u4ef7 > 0.5% \u2192 \u60c5\u666f B +2\uff08\u7ed3\u6784\u6027\u91cd\u5b9a\u4ef7\u8fdb\u884c\u4e2d\uff09"
-  ]
+    "日本国债 3 个期限达危机水平 → 情景 B +8（日本主导的流动性事件概率上升）",
+    "美国 10Y 期限溢价 > 0.5% → 情景 B +2（结构性重定价进行中）"
+  ],
+  "ai_narrative": "<h4>本周关键变化</h4>\n<p>本周最具信息量的不是压力指数本身（3/12，仍在 watch 区），而是<b>三类信号的剧烈分化</b>。第一，日本超长端继续突破：JGB 10Y 升至 2.628%、30Y 至 3.852%、40Y 至 3.868%，三个期限同时停留在 `02` 文档定义的\"危机阈值\"上方，30Y 5 日上行 13.8bp、40Y 5 日上行 12.1bp，已显著高于寿险负 carry 临界点（30Y > 2.5%）。第二，美债端呈现\"价跌但波动率不跟\"的怪相：美 30Y 收于 5.02%、10Y 4.47%（20 日 +15bp），TLT z 值 -2.19、长债 ETF 代理已进入警戒区，但 MOVE 仍仅 79.87（z=+0.12），即<b>价格在跌、隐含波动率却没起来</b>，这是结构性重定价而非流动性事件的典型形态。第三，美元资金面意外宽松：SOFR-IORB 利差 -9bp（z=-2.60），ON RRP 余额 5 日再降 17.8%，与日本端的紧张形成镜像——压力集中在长端定价，而非短端融资。</p>\n\n<h4>市场所处状态判断</h4>\n<p>当前坐标落在<b>情景 A（38-48%）与情景 B（35-45%）的交界带，偏 A 向 B 漂移</b>。证据有三：（1）激活的传导通道主要是 <b>通道 2（日元套息解除）的前夜信号</b>——JGB 长端已经到位，但 USD/JPY 仍在 156.64（z=-0.79），日元尚未走强，意味着套息平仓\"扳机\"还没扣下，这恰恰是 2024/8/5 之前的状态；（2）<b>通道 4（美债流动性）只有\"期限溢价\"一项激活</b>：ACM 期限溢价 0.70%（z=+1.10）越过警戒阈值，但 MOVE、信用利差（IG 0.76%、HY 2.76%，z 均深度负值）都未配合，说明这是慢节奏的\"安全资产重定价\"而非急性事件；（3）<b>通道 1（银行资本）暂时静默</b>：KRE 5 日仅 -4.12%，未触发月跌 -5% 警戒线。值得警觉的反常点是<b>黄金 5 日跌 3.36%、比特币跌 4.01%</b>——避险资产在长端利率新高时不涨反跌，说明市场仍把当前定义为\"实际利率走高\"而非\"主权信用风险\"，一旦这层叙事翻转，仓位的洗牌会非常剧烈。</p>\n\n<h4>下周 1-2 周观察重点</h4>\n<ul>\n<li><b>USD/JPY 跌破 155 → 150 通道</b>：这是通道 2 的\"扳机线\"。目前 156.64，若一周内跌至 153 以下且伴随 JGB 30Y 站稳 3.9% 上方，按 `04` 文档判断套息解除将进入加速段，VNKY、VIX 会在 48 小时内补涨。</li>\n<li><b>MOVE 是否补涨至 100 上方</b>：当前 79.87 与 TLT z=-2.19 的背离不可持续。若下周 MOVE 突破 100（压力指数会立即 +1），意味着美债波动率开始 catch up，通道 4 转为激活，情景 B 概率上调至 50%+。</li>\n<li><b>美 20Y/30Y 拍卖尾差与间接投标比例</b>：在 ACM 期限溢价已破 0.5% 的背景下，下次长端拍卖是\"海外需求是否塌方\"的直接证据。尾差 > 2bp 或间接比例 < 60% 即视作通道 4 实质恶化。辅助指标：一级交易商美债持仓（FR2004）是否突破 3500 亿。</li>\n</ul>\n\n<h4>行动建议</h4>\n<ul>\n<li><b>降低长久期暴露、加买事件性对冲</b>：TLT z=-2.19 已是技术性超卖，可减仓但不要抄底；用 1-2 个月期 USD/JPY 145 行权价 put 与 VIX 25 行权价 call 做尾部对冲，当前隐含波动率（MOVE 79、VIX 18.43）使期权成本处于过去 12 个月低位，性价比最佳的窗口。</li>\n<li><b>黄金回调是结构性加仓机会而非减仓信号</b>：5 日 -3.36% 至 4561 是\"实际利率叙事\"驱动的，与 `03` 文档\"美元信用慢性侵蚀\"的中期逻辑不冲突。建议分批补至 10-15% 仓位，重点关注 4400 一线。</li>\n<li><b>日股内部做切换</b>：减仓日经 225（z=+1.42，估值偏高且面临套息解除冲击）与 TOPIX 银行（z=+1.01，已 price-in 利率上行），保留弹药等 BOJ 若被迫紧急干预后 24-48 小时抄底出口型与寿险板块——这是 `04` 文档操作手册中胜率最高的一档交易。</li>\n</ul>"
 }
