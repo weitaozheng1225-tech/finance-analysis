@@ -1,0 +1,386 @@
+{
+  "as_of": "2026-05-17",
+  "composite_stress": 1,
+  "stress_band": "watch",
+  "components": [
+    {
+      "name": "MOVE",
+      "value": 79.87000274658203,
+      "points": 0,
+      "detail": "low=100, high=140, direction=above"
+    },
+    {
+      "name": "US 10Y term premium",
+      "value": 0.6999,
+      "points": 1,
+      "detail": "low=0.5, high=1.0, direction=above"
+    },
+    {
+      "name": "SOFR-IORB",
+      "value": -0.08999999999999986,
+      "points": 0,
+      "detail": "low=0.05, high=0.1, direction=above"
+    },
+    {
+      "name": "JGB 30Y",
+      "value": null,
+      "points": 0,
+      "detail": "low=2.5, high=3.0, direction=above"
+    },
+    {
+      "name": "Gilt 30Y weekly change",
+      "value": null,
+      "points": 0,
+      "detail": "low=0.3, high=0.5, direction=above"
+    },
+    {
+      "name": "KRE 1m return",
+      "value": -0.027023108540909092,
+      "points": 0,
+      "detail": "low=-0.05, high=-0.1, direction=below"
+    }
+  ],
+  "indicators": [
+    {
+      "name": "us_2y",
+      "label": "US 2Y Treasury yield",
+      "latest_value": 4.0,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.020000000000000018,
+      "change_5d": 0.08000000000000007,
+      "change_20d": 0.2200000000000002,
+      "z_60d": 1.5155843112456509,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "us_10y",
+      "label": "US 10Y Treasury yield",
+      "latest_value": 4.47,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.009999999999999787,
+      "change_5d": 0.05999999999999961,
+      "change_20d": 0.14999999999999947,
+      "z_60d": 1.4687743098012493,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "us_30y",
+      "label": "US 30Y Treasury yield",
+      "latest_value": 5.02,
+      "latest_date": "2026-05-14",
+      "change_1d": -0.010000000000000675,
+      "change_5d": 0.04999999999999982,
+      "change_20d": 0.08999999999999986,
+      "z_60d": 1.448334551122578,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "us_10y_term_premium",
+      "label": "US 10Y ACM term premium",
+      "latest_value": 0.6999,
+      "latest_date": "2026-05-08",
+      "change_1d": -0.008700000000000041,
+      "change_5d": -0.0037000000000000366,
+      "change_20d": 0.04809999999999992,
+      "z_60d": 1.102376952426682,
+      "threshold_state": "warn",
+      "notes": ""
+    },
+    {
+      "name": "sofr",
+      "label": "SOFR",
+      "latest_value": 3.56,
+      "latest_date": "2026-05-14",
+      "change_1d": -0.029999999999999805,
+      "change_5d": -0.040000000000000036,
+      "change_20d": -0.10999999999999988,
+      "z_60d": -2.5983578623174974,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "iorb",
+      "label": "IORB",
+      "latest_value": 3.65,
+      "latest_date": "2026-05-18",
+      "change_1d": 0.0,
+      "change_5d": 0.0,
+      "change_20d": 0.0,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "rrp_usage",
+      "label": "ON RRP usage",
+      "latest_value": 0.647,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.6819075712881022,
+      "change_5d": -0.17789072426937738,
+      "change_20d": 3.722627737226277,
+      "z_60d": -0.3098460676787257,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "tga_balance",
+      "label": "Treasury General Account balance",
+      "latest_value": 838584.0,
+      "latest_date": "2026-05-13",
+      "change_1d": -0.04463287842590409,
+      "change_5d": 0.12053833901675094,
+      "change_20d": 0.0017488532110091744,
+      "z_60d": 0.6456969711246981,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "fed_balance_sheet",
+      "label": "Fed total assets (H.4.1)",
+      "latest_value": 6728502.0,
+      "latest_date": "2026-05-13",
+      "change_1d": 0.002831356411538556,
+      "change_5d": 0.0051735385997130805,
+      "change_20d": 0.02237742452741744,
+      "z_60d": 1.5824732625229907,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "ig_oas",
+      "label": "US IG corporate OAS",
+      "latest_value": 0.76,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.0,
+      "change_5d": -0.030000000000000027,
+      "change_20d": -0.050000000000000044,
+      "z_60d": -1.6795686444815707,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "hy_oas",
+      "label": "US HY corporate OAS",
+      "latest_value": 2.76,
+      "latest_date": "2026-05-14",
+      "change_1d": -0.06000000000000005,
+      "change_5d": -0.03000000000000025,
+      "change_20d": -0.10000000000000009,
+      "z_60d": -1.3416449391258611,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "usdjpy",
+      "label": "USD/JPY",
+      "latest_value": 156.64,
+      "latest_date": "2026-05-08",
+      "change_1d": 0.0010224948875255406,
+      "change_5d": -0.0007655014034192686,
+      "change_20d": -0.01620399447305623,
+      "z_60d": -0.7937895441967343,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "gbpusd",
+      "label": "GBP/USD",
+      "latest_value": 1.3625,
+      "latest_date": "2026-05-08",
+      "change_1d": 0.0009550396708786945,
+      "change_5d": 0.0002936641949929931,
+      "change_20d": 0.01225854383358095,
+      "z_60d": 1.5389633261039721,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "vix",
+      "label": "VIX equity vol index",
+      "latest_value": 18.43000030517578,
+      "latest_date": "2026-05-15",
+      "change_1d": 0.0677867937878783,
+      "change_5d": 0.07213494663141048,
+      "change_20d": 0.054347871156632394,
+      "z_60d": -0.7820649483310357,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "move",
+      "label": "MOVE Treasury vol index",
+      "latest_value": 79.87000274658203,
+      "latest_date": "2026-05-15",
+      "change_1d": 0.14706313222870915,
+      "change_5d": 0.18765803340642426,
+      "change_20d": 0.2156774194297579,
+      "z_60d": 0.11850646816954888,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "gold",
+      "label": "Gold spot (CME front)",
+      "latest_value": 4561.89990234375,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.02483918532882972,
+      "change_5d": -0.03357766360458197,
+      "change_20d": -0.06087372146076265,
+      "z_60d": -0.9828577100284555,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "tlt",
+      "label": "iShares 20+Y Treasury ETF",
+      "latest_value": 83.66000366210938,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.014837429745691036,
+      "change_5d": -0.028113361030067507,
+      "change_20d": -0.03916384569503504,
+      "z_60d": -2.18520984114908,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "kre",
+      "label": "Regional Banks ETF (KRE)",
+      "latest_value": 66.97000122070312,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.011366942240165554,
+      "change_5d": -0.041231171314699264,
+      "change_20d": -0.04831606356650383,
+      "z_60d": -0.1449986301802395,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "dxy",
+      "label": "DXY US Dollar Index",
+      "latest_value": 99.2699966430664,
+      "latest_date": "2026-05-15",
+      "change_1d": 0.0039441686941892665,
+      "change_5d": 0.014615702766762913,
+      "change_20d": 0.011926587024911723,
+      "z_60d": 0.5581293182794529,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "nikkei",
+      "label": "Nikkei 225",
+      "latest_value": 61409.2890625,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.019867218531423515,
+      "change_5d": -0.02079865240657966,
+      "change_20d": 0.08683679706242275,
+      "z_60d": 1.421935431756247,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "topix_banks",
+      "label": "TOPIX Banks ETF (proxy)",
+      "latest_value": 639.7000122070312,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.0004687309265136719,
+      "change_5d": 0.027465527291421217,
+      "change_20d": 0.02433949112414932,
+      "z_60d": 1.0142381890375376,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "ftse100",
+      "label": "FTSE 100",
+      "latest_value": 10195.400390625,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.017111896703493272,
+      "change_5d": -0.003684046885995526,
+      "change_20d": -0.037261530630311616,
+      "z_60d": -0.8623903429135923,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "btc",
+      "label": "Bitcoin (USD)",
+      "latest_value": 78074.68428004677,
+      "latest_date": "2026-05-17",
+      "change_1d": -0.012573046586245619,
+      "change_5d": -0.04466826746543822,
+      "change_20d": -0.007253358899198542,
+      "z_60d": 0.7766403694166185,
+      "threshold_state": "ok",
+      "notes": ""
+    },
+    {
+      "name": "jgb_10y",
+      "label": "Japan 10Y JGB yield",
+      "latest_value": null,
+      "latest_date": null,
+      "change_1d": null,
+      "change_5d": null,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": "no data"
+    },
+    {
+      "name": "jgb_30y",
+      "label": "Japan 30Y JGB yield",
+      "latest_value": null,
+      "latest_date": null,
+      "change_1d": null,
+      "change_5d": null,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": "no data"
+    },
+    {
+      "name": "jgb_40y",
+      "label": "Japan 40Y JGB yield",
+      "latest_value": null,
+      "latest_date": null,
+      "change_1d": null,
+      "change_5d": null,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": "no data"
+    },
+    {
+      "name": "gilt_10y",
+      "label": "UK 10Y Gilt yield",
+      "latest_value": null,
+      "latest_date": null,
+      "change_1d": null,
+      "change_5d": null,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": "no data"
+    },
+    {
+      "name": "gilt_30y",
+      "label": "UK 30Y Gilt yield",
+      "latest_value": null,
+      "latest_date": null,
+      "change_1d": null,
+      "change_5d": null,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "ok",
+      "notes": "no data"
+    }
+  ],
+  "anomalies": [
+    "SOFR: z=-2.60 (WARN)",
+    "iShares 20+Y Treasury ETF: z=-2.19 (WARN)",
+    "US 10Y ACM term premium: level=0.700 crosses WARN threshold"
+  ]
+}
