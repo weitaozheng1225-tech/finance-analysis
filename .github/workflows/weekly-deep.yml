@@ -47,6 +47,11 @@ jobs:
       - name: Build weekly aggregate
         run: python scripts/weekly_report.py
 
+      - name: Generate AI narrative (Claude)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/ai_narrative.py
+
       - name: Generate weekly PDF
         run: python scripts/pdf.py weekly
 

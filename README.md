@@ -97,6 +97,11 @@ finance-analysis/
 | `EMAIL_TO` | 收件人，多个用逗号分隔 |
 | `WEBHOOK_URL` | Slack/Discord/飞书/钉钉 incoming webhook |
 
+### Secrets（可选：周报 AI 叙事段落）
+| 名称 | 说明 |
+|------|------|
+| `ANTHROPIC_API_KEY` | 申请：https://console.anthropic.com/settings/keys。配置后，周报 PDF 会额外包含一段 Claude Opus 4.7 生成的中文叙事性深度解读（本周关键变化 / 状态判断 / 观察重点 / 行动建议）。未配置则跳过，周报照常生成。约 $0.05-0.10/次周报。|
+
 ### Variables（可选）
 | 名称 | 默认 | 说明 |
 |------|------|------|
