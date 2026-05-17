@@ -69,12 +69,17 @@ def _send_email(snap: dict, body_md: str) -> None:
     html = "<pre style='font-family: monospace'>" + body_md.replace("<", "&lt;") + "</pre>"
     msg.attach(MIMEText(html, "html", "utf-8"))
 
+    use_ssl = port == 465 or os.getenv("SMTP_SSL", "").lower() in {"1", "true", "yes"}
     try:
-        with smtplib.SMTP(host, port, timeout=30) as smtp:
+        if use_ssl:
+            smtp = smtplib.SMTP_SSL(host, port, timeout=30)
+        else:
+            smtp = smtplib.SMTP(host, port, timeout=30)
             smtp.starttls()
+        with smtp:
             smtp.login(user, pw)
             smtp.sendmail(sender, [r.strip() for r in recipient.split(",")], msg.as_string())
-        log.info("Email sent to %s", recipient)
+        log.info("Email sent to %s via %s:%d (%s)", recipient, host, port, "SSL" if use_ssl else "STARTTLS")
     except Exception as e:
         log.error("Email send failed: %s", e)
 
