@@ -4,7 +4,7 @@
   "stress_band": "watch",
   "components": [
     {
-      "name": "MOVE",
+      "name": "MOVE (Treasury vol)",
       "value": 79.87000274658203,
       "points": 0,
       "detail": "low=100, high=140, direction=above"
@@ -16,22 +16,22 @@
       "detail": "low=0.5, high=1.0, direction=above"
     },
     {
-      "name": "SOFR-IORB",
+      "name": "SOFR-IORB spread",
       "value": -0.08999999999999986,
       "points": 0,
       "detail": "low=0.05, high=0.1, direction=above"
     },
     {
-      "name": "JGB 30Y",
+      "name": "JGB 30Y yield",
       "value": 3.852,
       "points": 2,
       "detail": "low=2.5, high=3.0, direction=above"
     },
     {
-      "name": "Gilt 30Y weekly change",
-      "value": null,
+      "name": "UK Gilt ETF 5d return",
+      "value": -0.017602102754513044,
       "points": 0,
-      "detail": "low=0.3, high=0.5, direction=above"
+      "detail": "low=-0.025, high=-0.045, direction=below"
     },
     {
       "name": "KRE 1m return",
@@ -43,7 +43,7 @@
   "indicators": [
     {
       "name": "us_2y",
-      "label": "US 2Y Treasury yield",
+      "label": "US 2Y Treasury",
       "latest_value": 4.0,
       "latest_date": "2026-05-14",
       "change_1d": 0.020000000000000018,
@@ -51,11 +51,13 @@
       "change_20d": 0.2200000000000002,
       "z_60d": 1.5155843112456509,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "US Treasuries",
+      "unit": "%",
+      "notes": "US 2-Year Treasury yield. Reflects market expectations of the Fed funds rate over the next 2 years; the front-end anchor and a key driver of curve shape."
     },
     {
       "name": "us_10y",
-      "label": "US 10Y Treasury yield",
+      "label": "US 10Y Treasury",
       "latest_value": 4.47,
       "latest_date": "2026-05-14",
       "change_1d": 0.009999999999999787,
@@ -63,11 +65,13 @@
       "change_20d": 0.14999999999999947,
       "z_60d": 1.4687743098012493,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "US Treasuries",
+      "unit": "%",
+      "notes": "US 10-Year Treasury yield. The global risk-free benchmark; anchors mortgages, corporate borrowing costs, and cross-border rate markets."
     },
     {
       "name": "us_30y",
-      "label": "US 30Y Treasury yield",
+      "label": "US 30Y Treasury",
       "latest_value": 5.02,
       "latest_date": "2026-05-14",
       "change_1d": -0.010000000000000675,
@@ -75,11 +79,13 @@
       "change_20d": 0.08999999999999986,
       "z_60d": 1.448334551122578,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "US Treasuries",
+      "unit": "%",
+      "notes": "US 30-Year Treasury bond yield (the long bond). Most sensitive to inflation expectations, fiscal sustainability concerns, and structural demand from long-duration buyers (insurers, pensions, foreign reserve managers)."
     },
     {
       "name": "us_10y_term_premium",
-      "label": "US 10Y ACM term premium",
+      "label": "US 10Y term premium (ACM)",
       "latest_value": 0.6999,
       "latest_date": "2026-05-08",
       "change_1d": -0.008700000000000041,
@@ -87,7 +93,9 @@
       "change_20d": 0.04809999999999992,
       "z_60d": 1.102376952426682,
       "threshold_state": "warn",
-      "notes": ""
+      "group": "US Treasuries",
+      "unit": "%",
+      "notes": "Adrian-Crump-Moench (ACM) model term premium on the 10Y, published by NY Fed. The compensation investors demand for holding long-duration risk beyond what expected short-rate paths can justify. Rising values indicate structural repricing of sovereign duration \u2014 often driven by fiscal concerns or weakening foreign demand."
     },
     {
       "name": "sofr",
@@ -99,7 +107,9 @@
       "change_20d": -0.10999999999999988,
       "z_60d": -2.5983578623174974,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Funding & Liquidity",
+      "unit": "%",
+      "notes": "Secured Overnight Financing Rate. The post-LIBOR USD benchmark; reflects the true cost of overnight Treasury repo. Spikes (relative to IORB) flag dollar funding stress, as in the September 2019 repo blowup."
     },
     {
       "name": "iorb",
@@ -111,7 +121,9 @@
       "change_20d": 0.0,
       "z_60d": null,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Funding & Liquidity",
+      "unit": "%",
+      "notes": "Interest on Reserve Balances. Rate the Fed pays banks on excess reserves; the de facto floor of the fed funds corridor and benchmark for SOFR."
     },
     {
       "name": "rrp_usage",
@@ -123,11 +135,13 @@
       "change_20d": 3.722627737226277,
       "z_60d": -0.3098460676787257,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Funding & Liquidity",
+      "unit": "$B",
+      "notes": "Overnight Reverse Repo Program take-up. Money-market funds park cash with the Fed when private-market yields are unattractive. A draining RRP signals cash flowing back into private repo and T-Bills; a swelling RRP signals excess liquidity with nowhere to go."
     },
     {
       "name": "tga_balance",
-      "label": "Treasury General Account balance",
+      "label": "Treasury TGA balance",
       "latest_value": 838584.0,
       "latest_date": "2026-05-13",
       "change_1d": -0.04463287842590409,
@@ -135,7 +149,9 @@
       "change_20d": 0.0017488532110091744,
       "z_60d": 0.6456969711246981,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Funding & Liquidity",
+      "unit": "$M",
+      "notes": "Treasury General Account balance at the Fed. The US Treasury's checking account. Drawdowns inject liquidity into the banking system; refills (e.g. post debt-ceiling deals) drain it. Key variable around X-date risk windows."
     },
     {
       "name": "fed_balance_sheet",
@@ -147,7 +163,9 @@
       "change_20d": 0.02237742452741744,
       "z_60d": 1.5824732625229907,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Funding & Liquidity",
+      "unit": "$M",
+      "notes": "Total assets on the Fed's weekly H.4.1 balance sheet. Tracks QE expansion and QT runoff; the broadest single gauge of central bank liquidity supply."
     },
     {
       "name": "ig_oas",
@@ -159,7 +177,9 @@
       "change_20d": -0.050000000000000044,
       "z_60d": -1.6795686444815707,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "US Credit",
+      "unit": "%",
+      "notes": "ICE BofA US Investment-Grade Corporate Index option-adjusted spread over Treasuries. The compensation for IG credit + liquidity risk. Widening signals rising default expectations and/or deteriorating bank balance sheets."
     },
     {
       "name": "hy_oas",
@@ -171,7 +191,9 @@
       "change_20d": -0.10000000000000009,
       "z_60d": -1.3416449391258611,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "US Credit",
+      "unit": "%",
+      "notes": "ICE BofA US High-Yield Corporate Index OAS. The 'risk gauge' of corporate credit. HY spreads typically lead equity drawdowns by days to weeks and are the cleanest read on leverage-system stress."
     },
     {
       "name": "usdjpy",
@@ -183,7 +205,9 @@
       "change_20d": -0.01620399447305623,
       "z_60d": -0.7937895441967343,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "FX",
+      "unit": "JPY",
+      "notes": "USD/JPY spot. Captures the Fed-BOJ policy gap and the temperature of yen carry-trade positioning. A sharp drop (yen strength) signals carry-unwind and tends to precede global risk-off (e.g. Aug 2024)."
     },
     {
       "name": "gbpusd",
@@ -195,67 +219,9 @@
       "change_20d": 0.01225854383358095,
       "z_60d": 1.5389633261039721,
       "threshold_state": "ok",
-      "notes": ""
-    },
-    {
-      "name": "vix",
-      "label": "VIX equity vol index",
-      "latest_value": 18.43000030517578,
-      "latest_date": "2026-05-15",
-      "change_1d": 0.0677867937878783,
-      "change_5d": 0.07213494663141048,
-      "change_20d": 0.054347871156632394,
-      "z_60d": -0.7820649483310357,
-      "threshold_state": "ok",
-      "notes": ""
-    },
-    {
-      "name": "move",
-      "label": "MOVE Treasury vol index",
-      "latest_value": 79.87000274658203,
-      "latest_date": "2026-05-15",
-      "change_1d": 0.14706313222870915,
-      "change_5d": 0.18765803340642426,
-      "change_20d": 0.2156774194297579,
-      "z_60d": 0.11850646816954888,
-      "threshold_state": "ok",
-      "notes": ""
-    },
-    {
-      "name": "gold",
-      "label": "Gold spot (CME front)",
-      "latest_value": 4561.89990234375,
-      "latest_date": "2026-05-15",
-      "change_1d": -0.02483918532882972,
-      "change_5d": -0.03357766360458197,
-      "change_20d": -0.06087372146076265,
-      "z_60d": -0.9828577100284555,
-      "threshold_state": "ok",
-      "notes": ""
-    },
-    {
-      "name": "tlt",
-      "label": "iShares 20+Y Treasury ETF",
-      "latest_value": 83.66000366210938,
-      "latest_date": "2026-05-15",
-      "change_1d": -0.014837429745691036,
-      "change_5d": -0.028113361030067507,
-      "change_20d": -0.03916384569503504,
-      "z_60d": -2.18520984114908,
-      "threshold_state": "ok",
-      "notes": ""
-    },
-    {
-      "name": "kre",
-      "label": "Regional Banks ETF (KRE)",
-      "latest_value": 66.97000122070312,
-      "latest_date": "2026-05-15",
-      "change_1d": -0.011366942240165554,
-      "change_5d": -0.041231171314699264,
-      "change_20d": -0.04831606356650383,
-      "z_60d": -0.1449986301802395,
-      "threshold_state": "ok",
-      "notes": ""
+      "group": "FX",
+      "unit": "USD",
+      "notes": "GBP/USD spot. Key gauge of UK fiscal/political credibility; LDI-style stress (Sep 2022) typically shows here first as foreign holders dump gilts and convert proceeds back to home currency."
     },
     {
       "name": "dxy",
@@ -267,7 +233,51 @@
       "change_20d": 0.011926587024911723,
       "z_60d": 0.5581293182794529,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "FX",
+      "unit": "idx",
+      "notes": "ICE US Dollar Index. Trade-weighted USD vs a basket of major currencies. A rising DXY tightens global dollar liquidity and pressures EM/commodity complexes."
+    },
+    {
+      "name": "vix",
+      "label": "VIX (equity vol)",
+      "latest_value": 18.43000030517578,
+      "latest_date": "2026-05-15",
+      "change_1d": 0.0677867937878783,
+      "change_5d": 0.07213494663141048,
+      "change_20d": 0.054347871156632394,
+      "z_60d": -0.7820649483310357,
+      "threshold_state": "ok",
+      "group": "Volatility",
+      "unit": "idx",
+      "notes": "CBOE Volatility Index. 30-day implied vol on S&P 500 options \u2014 the 'equity fear gauge'. Sustained levels above 25 = elevated risk; spikes above 40 historically coincide with macro shocks."
+    },
+    {
+      "name": "move",
+      "label": "MOVE (Treasury vol)",
+      "latest_value": 79.87000274658203,
+      "latest_date": "2026-05-15",
+      "change_1d": 0.14706313222870915,
+      "change_5d": 0.18765803340642426,
+      "change_20d": 0.2156774194297579,
+      "z_60d": 0.11850646816954888,
+      "threshold_state": "ok",
+      "group": "Volatility",
+      "unit": "idx",
+      "notes": "Merrill Option Volatility Estimate. The Treasury-market equivalent of VIX: implied vol weighted across 2/5/10/30Y options. The single most important rates-market stress gauge \u2014 spikes in MOVE precede most US fixed-income dislocations (LDI 2022, SVB 2023, basis-trade unwinds)."
+    },
+    {
+      "name": "kre",
+      "label": "KRE (regional banks)",
+      "latest_value": 66.97000122070312,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.011366942240165554,
+      "change_5d": -0.041231171314699264,
+      "change_20d": -0.04831606356650383,
+      "z_60d": -0.1449986301802395,
+      "threshold_state": "ok",
+      "group": "Equities",
+      "unit": "USD",
+      "notes": "SPDR S&P Regional Banking ETF. Most direct read on US regional bank stress \u2014 this cohort holds the largest unrealised losses on HTM Treasuries and is most exposed to a duration shock (SVB-style risk)."
     },
     {
       "name": "nikkei",
@@ -279,11 +289,13 @@
       "change_20d": 0.08683679706242275,
       "z_60d": 1.421935431756247,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Equities",
+      "unit": "idx",
+      "notes": "Nikkei 225 Index. Tokyo's price-weighted blue-chip index; export-heavy composition makes it highly sensitive to USD/JPY and global growth. Sharp drops often signal carry-unwind underway (e.g. -12% on 5 Aug 2024)."
     },
     {
       "name": "topix_banks",
-      "label": "TOPIX Banks ETF (proxy)",
+      "label": "TOPIX Banks (1615.T)",
       "latest_value": 639.7000122070312,
       "latest_date": "2026-05-15",
       "change_1d": -0.0004687309265136719,
@@ -291,7 +303,9 @@
       "change_20d": 0.02433949112414932,
       "z_60d": 1.0142381890375376,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Equities",
+      "unit": "JPY",
+      "notes": "TOPIX Banks sector ETF. Japanese bank stocks reflect JGB capital pressure via NIM expansion (positive) and HTM unrealised losses (negative); a useful barometer of how Japanese banks are processing rising long-end yields."
     },
     {
       "name": "ftse100",
@@ -303,83 +317,55 @@
       "change_20d": -0.037261530630311616,
       "z_60d": -0.8623903429135923,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Equities",
+      "unit": "idx",
+      "notes": "FTSE 100 Index. UK blue chips dominated by global commodity, financial, and pharma names; less reflective of UK domestic stress than FTSE 250."
+    },
+    {
+      "name": "gold",
+      "label": "Gold (CME front)",
+      "latest_value": 4561.89990234375,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.02483918532882972,
+      "change_5d": -0.03357766360458197,
+      "change_20d": -0.06087372146076265,
+      "z_60d": -0.9828577100284555,
+      "threshold_state": "ok",
+      "group": "Safe Haven / Alt",
+      "unit": "USD/oz",
+      "notes": "Gold front-month futures (COMEX). Classic hedge against sovereign credit risk, inflation, and currency debasement. Rising despite stable real rates is a clean signal of structural sovereign-risk repricing."
     },
     {
       "name": "btc",
-      "label": "Bitcoin (USD)",
-      "latest_value": 78103.03196108094,
+      "label": "Bitcoin",
+      "latest_value": 78087.64169486043,
       "latest_date": "2026-05-17",
-      "change_1d": -0.012214527501883902,
-      "change_5d": -0.04432140164733809,
-      "change_20d": -0.006892908320510022,
-      "z_60d": 0.7822625789591067,
+      "change_1d": -0.01240917143578484,
+      "change_5d": -0.04450971889547281,
+      "change_20d": -0.007088600883815852,
+      "z_60d": 0.7792103796139331,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Safe Haven / Alt",
+      "unit": "USD",
+      "notes": "Bitcoin spot (USD). Alternative store-of-value; correlation regime shifts \u2014 at times tracks risk assets, at times tracks gold. Useful as a tail-hedge indicator when traditional safe havens are also under stress."
     },
     {
-      "name": "jgb_10y",
-      "label": "Japan 10Y JGB yield",
-      "latest_value": 2.628,
-      "latest_date": "2026-05-14",
-      "change_1d": 0.040999999999999925,
-      "change_5d": 0.14300000000000024,
-      "change_20d": null,
-      "z_60d": null,
-      "threshold_state": "crisis",
-      "notes": ""
-    },
-    {
-      "name": "jgb_30y",
-      "label": "Japan 30Y JGB yield",
-      "latest_value": 3.852,
-      "latest_date": "2026-05-14",
-      "change_1d": 0.06899999999999995,
-      "change_5d": 0.1379999999999999,
-      "change_20d": null,
-      "z_60d": null,
-      "threshold_state": "crisis",
-      "notes": ""
-    },
-    {
-      "name": "jgb_40y",
-      "label": "Japan 40Y JGB yield",
-      "latest_value": 3.868,
-      "latest_date": "2026-05-14",
-      "change_1d": 0.06199999999999983,
-      "change_5d": 0.121,
-      "change_20d": null,
-      "z_60d": null,
-      "threshold_state": "crisis",
-      "notes": ""
-    },
-    {
-      "name": "gilt_10y",
-      "label": "UK 10Y Gilt yield",
-      "latest_value": null,
-      "latest_date": null,
-      "change_1d": null,
-      "change_5d": null,
-      "change_20d": null,
-      "z_60d": null,
+      "name": "tlt",
+      "label": "TLT (US 20+Y bonds)",
+      "latest_value": 83.66000366210938,
+      "latest_date": "2026-05-15",
+      "change_1d": -0.014837429745691036,
+      "change_5d": -0.028113361030067507,
+      "change_20d": -0.03916384569503504,
+      "z_60d": -2.18520984114908,
       "threshold_state": "ok",
-      "notes": "no data"
-    },
-    {
-      "name": "gilt_30y",
-      "label": "UK 30Y Gilt yield",
-      "latest_value": null,
-      "latest_date": null,
-      "change_1d": null,
-      "change_5d": null,
-      "change_20d": null,
-      "z_60d": null,
-      "threshold_state": "ok",
-      "notes": "no data"
+      "group": "Long Bonds",
+      "unit": "USD",
+      "notes": "iShares 20+ Year Treasury Bond ETF. Proxy for long-duration Treasury total return. Falling TLT = long-end yields rising; large drawdowns confirm structural repricing in the long bond."
     },
     {
       "name": "uk_gilt_etf",
-      "label": "iShares UK Gilts ETF (IGLT.L) \u2014 gilt price proxy",
+      "label": "IGLT.L (UK gilts ETF)",
       "latest_value": 9.6274995803833,
       "latest_date": "2026-05-15",
       "change_1d": -0.011296596477217737,
@@ -387,15 +373,59 @@
       "change_20d": -0.017602102754513044,
       "z_60d": -1.618207509598434,
       "threshold_state": "ok",
-      "notes": ""
+      "group": "Long Bonds",
+      "unit": "GBp",
+      "notes": "iShares Core UK Gilts UCITS ETF. Price-based UK gilt stress proxy used when direct gilt-yield feeds are unavailable. ETF duration is ~14 years, so each 1% price drop corresponds to roughly a 7-8 bp yield rise across the curve. Used in lieu of UK 30Y yield in the composite stress index."
+    },
+    {
+      "name": "jgb_10y",
+      "label": "JGB 10Y",
+      "latest_value": 2.628,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.040999999999999925,
+      "change_5d": 0.14300000000000024,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "crisis",
+      "group": "Japan Yields",
+      "unit": "%",
+      "notes": "Japan 10-Year Government Bond yield. Long the BOJ's YCC target \u2014 rising values signal monetary normalisation, JGB demand erosion, and broader global liquidity tightening as Japanese institutions repatriate."
+    },
+    {
+      "name": "jgb_30y",
+      "label": "JGB 30Y",
+      "latest_value": 3.852,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.06899999999999995,
+      "change_5d": 0.1379999999999999,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "crisis",
+      "group": "Japan Yields",
+      "unit": "%",
+      "notes": "Japan 30-Year JGB yield. Highly sensitive to BOJ purchase pace and life-insurance ALM demand. The single most important non-US sovereign-rate signal: a 25 bp move here translates into hundreds of billions of USD of potential reallocation flow globally."
+    },
+    {
+      "name": "jgb_40y",
+      "label": "JGB 40Y",
+      "latest_value": 3.868,
+      "latest_date": "2026-05-14",
+      "change_1d": 0.06199999999999983,
+      "change_5d": 0.121,
+      "change_20d": null,
+      "z_60d": null,
+      "threshold_state": "crisis",
+      "group": "Japan Yields",
+      "unit": "%",
+      "notes": "Japan 40-Year JGB yield. The longest tenor JGB issued; lowest liquidity, most volatile, often leads the JGB curve. Levels above 3% are historically rare and stress thin pension/insurance demand."
     }
   ],
   "anomalies": [
     "SOFR: z=-2.60 (WARN)",
-    "iShares 20+Y Treasury ETF: z=-2.19 (WARN)",
-    "US 10Y ACM term premium: level=0.700 crosses WARN threshold",
-    "Japan 10Y JGB yield: level=2.628 crosses CRISIS threshold",
-    "Japan 30Y JGB yield: level=3.852 crosses CRISIS threshold",
-    "Japan 40Y JGB yield: level=3.868 crosses CRISIS threshold"
+    "TLT (US 20+Y bonds): z=-2.19 (WARN)",
+    "US 10Y term premium (ACM): level=0.700 crosses WARN threshold",
+    "JGB 10Y: level=2.628 crosses CRISIS threshold",
+    "JGB 30Y: level=3.852 crosses CRISIS threshold",
+    "JGB 40Y: level=3.868 crosses CRISIS threshold"
   ]
 }
