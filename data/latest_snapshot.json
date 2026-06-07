@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-06",
+  "as_of": "2026-06-07",
   "composite_stress": 3,
   "stress_band": "watch",
   "components": [
@@ -324,12 +324,12 @@
     {
       "name": "gold",
       "label": "\u9ec4\u91d1 (CME \u4e3b\u529b)",
-      "latest_value": 4337.10009765625,
+      "latest_value": 4365.2998046875,
       "latest_date": "2026-06-05",
-      "change_1d": -0.030988809393572507,
-      "change_5d": -0.04898583540044951,
-      "change_20d": -0.08120070600314729,
-      "z_60d": -1.9328624795235825,
+      "change_1d": -0.024688324952396996,
+      "change_5d": -0.04280236713353799,
+      "change_20d": -0.07522669794987866,
+      "z_60d": -1.7638879359007016,
       "threshold_state": "ok",
       "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
       "unit": "USD/oz",
@@ -338,12 +338,12 @@
     {
       "name": "btc",
       "label": "\u6bd4\u7279\u5e01",
-      "latest_value": 61151.17710784567,
-      "latest_date": "2026-06-06",
-      "change_1d": -0.04146132573394547,
-      "change_5d": -0.16906677716763233,
-      "change_20d": -0.21736520993543212,
-      "z_60d": -3.427170987095901,
+      "latest_value": 62532.99199978764,
+      "latest_date": "2026-06-07",
+      "change_1d": 0.02644698174257401,
+      "change_5d": -0.12370085460078872,
+      "change_20d": -0.19234853891923287,
+      "z_60d": -2.8542726972170303,
       "threshold_state": "ok",
       "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
       "unit": "USD",
@@ -589,7 +589,7 @@
     }
   ],
   "anomalies": [
-    "\u6bd4\u7279\u5e01\uff1az=-3.43\uff08\u5371\u673a\uff09",
+    "\u6bd4\u7279\u5e01\uff1az=-2.85\uff08\u8b66\u6212\uff09",
     "\u7f8e\u56fd 3M \u56fd\u503a\u5229\u7387\uff1az=+2.75\uff08\u8b66\u6212\uff09",
     "USD/JPY 3M \u9501\u6c47\u6210\u672c\uff08CIP \u9690\u542b\uff09\uff1az=+2.75\uff08\u8b66\u6212\uff09",
     "\u7f8e\u56fd 2s10s \u5229\u5dee\uff1az=-2.26\uff08\u8b66\u6212\uff09",

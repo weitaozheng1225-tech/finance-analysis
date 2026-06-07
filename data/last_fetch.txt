@@ -1,3 +1,3 @@
-fetched_at=2026-06-06T09:09:41.589784+00:00
+fetched_at=2026-06-07T09:48:12.172642+00:00
 total=39
 failures=us_30y_auction_indirect
