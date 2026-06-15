@@ -219,56 +219,110 @@ def _append_csv(name: str, series: pd.Series) -> None:
     log.info("[%s] wrote %d rows, latest %s = %s", name, len(merged), merged.index[-1].date(), last["value"])
 
 
+# Candidate field names for auction metrics. The Treasury Fiscal Data schema
+# uses snake_case but exact names drift; we try each in order and pick the
+# first present in a row. This self-heals if a column is renamed upstream.
+_FISCAL_FIELD_CANDIDATES: dict[str, list[str]] = {
+    "bid_to_cover": ["bid_to_cover_ratio", "bid_cover_ratio"],
+    "indirect_accepted": [
+        "indirect_bidder_accepted",
+        "indirect_bidder_accepted_amt",
+        "indirect_bidders_accepted",
+        "indirect_accepted",
+    ],
+    "total_accepted": [
+        "total_accepted",
+        "total_accepted_amt",
+        "total_amt_accepted",
+    ],
+}
+
+
+def _to_clean_float(v) -> float | None:
+    """Treasury values arrive as strings, sometimes with commas. Strip and cast."""
+    if v in (None, "", "null", "NULL"):
+        return None
+    try:
+        return float(str(v).replace(",", "").strip())
+    except (ValueError, TypeError):
+        return None
+
+
+def _pick_field(row: dict, key: str) -> float | None:
+    for cand in _FISCAL_FIELD_CANDIDATES[key]:
+        if cand in row:
+            val = _to_clean_float(row[cand])
+            if val is not None:
+                return val
+    return None
+
+
 def fetch_fiscal_auction(spec: str) -> pd.Series:
     """Treasury Fiscal Data API — Treasury Auctions dataset.
 
-    spec format: ``"<security_term>|<field_name>"``
-    Example: ``"30-Year|bid_to_cover_ratio"``.
+    spec format: ``"<security_term>|<selector>"`` where selector is either:
+      * a computed token (``@bid_to_cover`` / ``@indirect_pct``), or
+      * a literal field name (legacy).
+
+    We fetch the FULL row (no ``fields=`` restriction) so a renamed column
+    never triggers a 400 — it just falls through the candidate list. The
+    indirect-bidder share has no native percentage column, so we compute it
+    as indirect_bidder_accepted / total_accepted * 100.
 
     Returns one row per auction (sparse — typically monthly for 30Y bonds),
-    indexed by auction_date. Defensive: empty/malformed rows are skipped,
-    and the function raises a clear error if no usable data is returned so
-    the orchestrator records a single named failure rather than poisoning
-    the entire pipeline.
+    indexed by auction_date. Raises a single clear error if no usable data
+    is produced, so the orchestrator records one named failure rather than
+    poisoning the whole pipeline.
     """
-    term, field = spec.split("|", 1)
+    term, selector = spec.split("|", 1)
     url = (
         "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/"
         "v1/accounting/od/auctions_query"
     )
     params = {
         "filter": f"security_term:eq:{term}",
-        "fields": f"auction_date,{field}",
         "sort": "-auction_date",
         "page[size]": "200",
     }
     r = SESSION.get(url, params=params, timeout=TIMEOUT)
     r.raise_for_status()
-    payload = r.json()
-    rows = payload.get("data", [])
+    rows = r.json().get("data", [])
     if not rows:
         raise RuntimeError(f"fiscal API returned no rows for term={term}")
+
+    def extract(row: dict) -> float | None:
+        if selector in ("@bid_to_cover", "bid_to_cover_ratio"):
+            return _pick_field(row, "bid_to_cover")
+        if selector == "@indirect_pct":
+            ind = _pick_field(row, "indirect_accepted")
+            tot = _pick_field(row, "total_accepted")
+            if ind is None or not tot:
+                return None
+            return ind / tot * 100.0
+        # Legacy literal field name
+        return _to_clean_float(row.get(selector))
+
     parsed: list[tuple[pd.Timestamp, float]] = []
     for row in rows:
         d = row.get("auction_date")
-        v = row.get(field)
-        if not d or v in (None, "", "null", "NULL"):
+        v = extract(row)
+        if not d or v is None:
             continue
         try:
             parsed.append((pd.Timestamp(d), float(v)))
         except (ValueError, TypeError):
             continue
     if not parsed:
+        sample_keys = sorted(rows[0].keys()) if rows else []
         raise RuntimeError(
-            f"fiscal API: no usable rows for term={term} field={field} "
-            f"(received {len(rows)} raw rows)"
+            f"fiscal API: no usable rows for term={term} selector={selector} "
+            f"(received {len(rows)} raw rows; available keys: {sample_keys})"
         )
     parsed.sort()
     idx, vals = zip(*parsed)
-    # Deduplicate by date (keep the latest write per date)
     s = pd.Series(vals, index=pd.DatetimeIndex(idx))
     s = s.groupby(s.index).last()
-    s.name = f"fiscal_{term}_{field}"
+    s.name = f"fiscal_{term}_{selector}"
     return s
 
 
@@ -294,32 +348,37 @@ def _load_csv(name: str) -> pd.Series:
 
 
 def _compute_jpy_usd_hedge_cost() -> pd.Series:
-    us3 = _load_csv("us_3m_tbill")
-    jp3 = _load_csv("jp_3m_tbill")
-    if us3.empty or jp3.empty:
-        raise RuntimeError("missing inputs: us_3m_tbill or jp_3m_tbill")
-    jp3_ff = jp3.reindex(us3.index, method="ffill")
-    s = (us3 - jp3_ff).dropna()
+    # 1Y CIP-implied hedge cost = US 1Y − JP 1Y.
+    # Both legs are daily and tenor-matched. We use JGB 1Y (MoF, daily) for
+    # the JP leg instead of the FRED 3M interbank series (monthly, lags 1-3
+    # months) — daily freshness beats the small 3M-vs-1Y tenor difference.
+    us1 = _load_csv("us_1y")
+    jp1 = _load_csv("jgb_1y")
+    if us1.empty or jp1.empty:
+        raise RuntimeError("missing inputs: us_1y or jgb_1y")
+    jp1_ff = jp1.reindex(us1.index, method="ffill")
+    s = (us1 - jp1_ff).dropna()
     s.name = "jpy_usd_hedge_cost"
     return s
 
 
 def _compute_hedged_us_jgb_carry() -> pd.Series:
+    # = US 10Y − (US 1Y − JP 1Y) − JGB 10Y. Uses daily 1Y rates on both legs.
     us10 = _load_csv("us_10y")
-    us3 = _load_csv("us_3m_tbill")
-    jp3 = _load_csv("jp_3m_tbill")
+    us1 = _load_csv("us_1y")
+    jp1 = _load_csv("jgb_1y")
     jgb10 = _load_csv("jgb_10y")
     missing = [n for n, s in zip(
-        ["us_10y", "us_3m_tbill", "jp_3m_tbill", "jgb_10y"],
-        [us10, us3, jp3, jgb10],
+        ["us_10y", "us_1y", "jgb_1y", "jgb_10y"],
+        [us10, us1, jp1, jgb10],
     ) if s.empty]
     if missing:
         raise RuntimeError(f"missing inputs: {missing}")
     idx = us10.index
-    us3_a = us3.reindex(idx, method="ffill")
-    jp3_a = jp3.reindex(idx, method="ffill")
+    us1_a = us1.reindex(idx, method="ffill")
+    jp1_a = jp1.reindex(idx, method="ffill")
     jgb10_a = jgb10.reindex(idx, method="ffill")
-    hedge = us3_a - jp3_a
+    hedge = us1_a - jp1_a
     s = (us10 - hedge - jgb10_a).dropna()
     s.name = "hedged_us_jgb_carry"
     return s

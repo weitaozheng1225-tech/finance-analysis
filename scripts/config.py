@@ -129,23 +129,25 @@ INDICATORS: dict[str, dict] = {
     },
     # ============================== 外汇 ==============================
     "usdjpy": {
-        "source": "fred", "id": "DEXJPUS", "unit": "JPY",
+        "source": "yahoo", "id": "JPY=X", "unit": "JPY",
         "label": "美元/日元",
         "group": "外汇",
         "notes": (
             "USD/JPY 即期汇率。反映 Fed-BOJ 政策利差及日元套息交易的温度。"
             "若快速回落（日元升值）即套息平仓信号，往往领先全球避险情绪"
-            "（如 2024 年 8 月日股闪崩前）。"
+            "（如 2024 年 8 月日股闪崩前）。数据源用 Yahoo 日频（JPY=X），"
+            "FRED DEXJPUS 为周频且滞后约 10 天，已弃用。"
         ),
     },
     "gbpusd": {
-        "source": "fred", "id": "DEXUSUK", "unit": "USD",
+        "source": "yahoo", "id": "GBPUSD=X", "unit": "USD",
         "label": "英镑/美元",
         "group": "外汇",
         "notes": (
             "GBP/USD 即期汇率。英国财政与政治信誉的重要标尺。LDI 式压力"
             "（如 2022 年 9 月）通常先在此显现，因海外持债人抛售英国国债"
-            "并将本金兑回本币。"
+            "并将本金兑回本币。数据源用 Yahoo 日频（GBPUSD=X），"
+            "FRED DEXUSUK 为周频且滞后约 10 天，已弃用。"
         ),
     },
     "dxy": {
@@ -294,40 +296,62 @@ INDICATORS: dict[str, dict] = {
             "明显压力薄弱的养老金 / 寿险需求。"
         ),
     },
+    "jgb_1y": {
+        "source": "mof", "id": "1", "unit": "%",
+        "label": "日本 1Y 国债",
+        "group": "日本国债",
+        "notes": (
+            "Japan 1Y JGB 收益率（MoF 日频）。JGB 曲线最短端，直接反映"
+            "BOJ 政策利率预期。作为 USD/JPY 锁汇成本与对冲后套息差的"
+            "日频日本短端利率来源，替代 FRED 月频且滞后 1-3 个月的"
+            "3M 银行间利率。"
+        ),
+    },
     # ========================== 外汇与套息 ==========================
+    "us_1y": {
+        "source": "fred", "id": "DGS1", "unit": "%",
+        "label": "美国 1Y 国债利率",
+        "group": "外汇与套息",
+        "notes": (
+            "美国 1 年期国债到期收益率 (CMT, 日频)。USD 端短期无风险利率，"
+            "与日本 1Y 配对计算期限匹配的 USD/JPY 锁汇成本（CIP 隐含）。"
+        ),
+    },
     "us_3m_tbill": {
         "source": "fred", "id": "DGS3MO", "unit": "%",
         "label": "美国 3M 国债利率",
         "group": "外汇与套息",
         "notes": (
-            "美国 3 个月期国债到期收益率 (CMT)。USD 端短期无风险利率，"
-            "也是 USD/JPY 锁汇成本（CIP 隐含）的核心分量。"
+            "美国 3 个月期国债到期收益率 (CMT, 日频)。USD 端最短期无风险"
+            "利率，作为信息性参考；锁汇成本计算改用 1Y 期限以与日本 1Y 匹配。"
         ),
     },
     "jp_3m_tbill": {
         "source": "fred", "id": "IR3TIB01JPM156N", "unit": "%",
-        "label": "日本 3M 银行间利率（月频）",
+        "label": "日本 3M 银行间利率（月频，参考）",
         "group": "外汇与套息",
+        "max_staleness_days": 120,
         "notes": (
-            "日本 3 个月银行间拆借利率（IR3TIB01JPM156N）。FRED 仅提供"
-            "月频，本系统按月更新并前向填充到日频供派生指标使用。"
-            "由 BOJ 政策利率直接驱动；BOJ 加息时该值同步上行，"
-            "降低 USD/JPY 锁汇成本。"
+            "日本 3 个月银行间拆借利率（IR3TIB01JPM156N）。FRED 仅提供月频"
+            "且公布滞后 1-3 个月，仅作信息性参考。派生指标（锁汇成本、对冲"
+            "套息差）已改用日频的日本 1Y JGB 作短端利率，不再依赖此序列。"
         ),
     },
     "jpy_usd_hedge_cost": {
         "source": "derived", "id": "jpy_usd_hedge_cost", "unit": "%",
-        "label": "USD/JPY 3M 锁汇成本（CIP 隐含）",
+        "label": "USD/JPY 1Y 锁汇成本（CIP 隐含）",
         "group": "外汇与套息",
         "warn": 4.0, "crisis": 5.0, "direction": "above",
         "notes": (
-            "通过覆盖性利率平价 (CIP) 隐含的 3 个月 USD/JPY 锁汇成本，"
-            "= 美 3M T-Bill 利率 − 日 3M 银行间利率。日本投资者持有 USD"
-            "资产并用 3M 远期对冲汇率风险，每年需付出此比例的费用。"
-            "判断：> 4% = 锁汇后美债吸引力大幅下降；> 5% = 结构性回流"
-            "压力显著。"
-            "注意：真实锁汇成本还含 30-80bp 的 USD/JPY 跨货币基差点 "
-            "(xccy basis)，为付费数据；CIP 隐含值已捕捉 90%+ 的信号。"
+            "通过覆盖性利率平价 (CIP) 隐含的 1 年期 USD/JPY 锁汇成本，"
+            "= 美 1Y 国债利率 − 日 1Y JGB 利率（两腿均为日频、期限匹配）。"
+            "日本投资者持有 USD 资产并用远期对冲汇率风险，每年需付出此"
+            "比例的费用。判断：> 4% = 锁汇后美债吸引力大幅下降；> 5% = "
+            "结构性回流压力显著。"
+            "注意：(1) 此前用美 3M − 日 3M（月频）口径，因日本 3M 序列"
+            "滞后 1-3 个月已改为 1Y-1Y 日频口径；(2) 真实锁汇成本还含 "
+            "30-80bp 的 USD/JPY 跨货币基差点 (xccy basis)，为付费数据，"
+            "CIP 隐含值已捕捉 90%+ 的信号。"
         ),
     },
     "hedged_us_jgb_carry": {
@@ -336,10 +360,10 @@ INDICATORS: dict[str, dict] = {
         "group": "外汇与套息",
         "warn": -1.0, "crisis": -2.5, "direction": "below",
         "notes": (
-            "日本投资者用 3M 远期全额锁汇 USD/JPY 后，持有美 10Y 国债"
-            "相对持有 JGB 10Y 的实际超额收益。"
+            "日本投资者用远期全额锁汇 USD/JPY 后，持有美 10Y 国债相对"
+            "持有 JGB 10Y 的实际超额收益。"
             "计算公式：(美 10Y − 锁汇成本) − JGB 10Y "
-            "= 美 10Y − (美 3M − 日 3M) − JGB 10Y。"
+            "= 美 10Y − (美 1Y − 日 1Y) − JGB 10Y（短端均用日频 1Y）。"
             "为负 = 锁汇后美债 carry 低于 JGB，日本机构有结构性回流"
             "动机；深度为负（< −2.5%）= 寿险 / 大行已开始系统性减持美债。"
             "对应 04_japan_carry_unwind.md 通道 1（寿险回流）最直接的"
@@ -425,9 +449,10 @@ INDICATORS: dict[str, dict] = {
     },
     # ============================ 美债拍卖 ============================
     "us_30y_auction_btc": {
-        "source": "fiscal", "id": "30-Year|bid_to_cover_ratio", "unit": "x",
+        "source": "fiscal", "id": "30-Year|@bid_to_cover", "unit": "x",
         "label": "美 30Y 拍卖 Bid-to-Cover",
         "group": "美债拍卖",
+        "max_staleness_days": 50,
         "warn": 2.30, "crisis": 2.10, "direction": "below",
         "notes": (
             "美国 30Y 国债最新一次拍卖的 Bid-to-Cover 比率（投标总额 / "
@@ -438,9 +463,10 @@ INDICATORS: dict[str, dict] = {
         ),
     },
     "us_30y_auction_indirect": {
-        "source": "fiscal", "id": "30-Year|indirect_bidder_accepted_pct", "unit": "%",
+        "source": "fiscal", "id": "30-Year|@indirect_pct", "unit": "%",
         "label": "美 30Y 拍卖间接投标份额",
         "group": "美债拍卖",
+        "max_staleness_days": 50,
         "warn": 65.0, "crisis": 55.0, "direction": "below",
         "notes": (
             "美国 30Y 最新拍卖中间接投标人（含外国央行、主权基金）的"
@@ -487,3 +513,14 @@ ANOMALY_Z_CRISIS = 3.0
 # 压力指数告警阈值（满分 12）
 STRESS_ALERT_WARN = 4
 STRESS_ALERT_CRISIS = 7
+
+# 数据新鲜度检查 —— 若某指标最新数据距今超过其预算天数，报告中标记陈旧
+# 默认适用于所有日频指标；天然稀疏 / 低频的序列在 max_staleness_days 中单独放宽。
+DEFAULT_MAX_STALENESS_DAYS = 14
+# 个别指标的覆盖值直接写在各自的 INDICATORS 条目里（max_staleness_days 字段）。
+# 这里再补充几个无法在条目内方便标注的低频序列：
+STALENESS_OVERRIDES = {
+    "tga_balance": 10,         # 财政部 DTS 准日频
+    "fed_balance_sheet": 12,   # H.4.1 周频
+    "us_10y_term_premium": 14, # NY Fed 周频，通常较新
+}

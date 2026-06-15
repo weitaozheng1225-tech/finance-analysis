@@ -19,8 +19,10 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from config import (  # noqa: E402
     ANOMALY_Z_CRISIS,
     ANOMALY_Z_WARN,
+    DEFAULT_MAX_STALENESS_DAYS,
     INDICATORS,
     ROLLING_WINDOW_DAYS,
+    STALENESS_OVERRIDES,
     STRESS_ALERT_CRISIS,
     STRESS_ALERT_WARN,
     STRESS_COMPONENTS,
@@ -44,6 +46,8 @@ class IndicatorReading:
     group: str = ""
     unit: str = ""
     notes: str = ""
+    staleness_days: int | None = None
+    is_stale: bool = False
 
 
 @dataclass
@@ -116,6 +120,15 @@ def _threshold_state(name: str, value: float | None) -> str:
     return "ok"
 
 
+def _staleness_budget(name: str) -> int:
+    cfg = INDICATORS.get(name, {})
+    if "max_staleness_days" in cfg:
+        return int(cfg["max_staleness_days"])
+    if name in STALENESS_OVERRIDES:
+        return int(STALENESS_OVERRIDES[name])
+    return DEFAULT_MAX_STALENESS_DAYS
+
+
 def _read_indicator(name: str) -> IndicatorReading:
     cfg = INDICATORS[name]
     s = _load_series(name)
@@ -129,6 +142,7 @@ def _read_indicator(name: str) -> IndicatorReading:
             change_1d=None, change_5d=None, change_20d=None,
             z_60d=None, threshold_state="ok",
             group=group, unit=unit, notes=notes + " (no data this run)",
+            staleness_days=None, is_stale=True,
         )
     val = float(s.iloc[-1])
     # Use level changes for yields and spreads (units: %, bp); pct for prices/indices.
@@ -136,14 +150,18 @@ def _read_indicator(name: str) -> IndicatorReading:
         c1, c5, c20 = _level_change(s, 1), _level_change(s, 5), _level_change(s, 20)
     else:
         c1, c5, c20 = _pct_change(s, 1), _pct_change(s, 5), _pct_change(s, 20)
+    latest_dt = s.index[-1].date()
+    staleness = (date.today() - latest_dt).days
+    is_stale = staleness > _staleness_budget(name)
     return IndicatorReading(
         name=name, label=cfg["label"],
         latest_value=val,
-        latest_date=s.index[-1].date().isoformat(),
+        latest_date=latest_dt.isoformat(),
         change_1d=c1, change_5d=c5, change_20d=c20,
         z_60d=_z_score(s),
         threshold_state=_threshold_state(name, val),
         group=group, unit=unit, notes=notes,
+        staleness_days=staleness, is_stale=is_stale,
     )
 
 
@@ -198,6 +216,18 @@ def compute_snapshot() -> DailySnapshot:
             anomalies.append(
                 f"{ind.label}：当前 {ind.latest_value:.3f} 越过"
                 f"{state_zh[ind.threshold_state]}阈值"
+            )
+
+    # 数据新鲜度告警 —— 让任何静默失效的数据源显形
+    for ind in indicators:
+        if not ind.is_stale:
+            continue
+        if ind.latest_date is None:
+            anomalies.append(f"⚠ 数据缺失：{ind.label} 本次运行无任何数据")
+        else:
+            anomalies.append(
+                f"⚠ 数据陈旧：{ind.label} 最新数据为 {ind.latest_date}"
+                f"（距今 {ind.staleness_days} 天，超过预算）"
             )
 
     components: list[StressComponent] = []
