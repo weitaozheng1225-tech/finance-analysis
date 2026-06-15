@@ -30,8 +30,10 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "data" / "latest_snapshot.json"
 WEEKLY_SNAPSHOT = ROOT / "data" / "weekly_snapshot.json"
+EVENT_STATUS = ROOT / "data" / "event_status.json"
 DAILY_PDF = ROOT / "reports" / "daily" / "latest.pdf"
 WEEKLY_PDF = ROOT / "reports" / "weekly" / "latest.pdf"
+EVENT_PDF = ROOT / "reports" / "events" / "latest.pdf"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)-7s %(message)s")
 log = logging.getLogger("notify")
@@ -54,6 +56,14 @@ def _should_alert(snap: dict) -> bool:
 
 
 def _subject(snap: dict, mode: str) -> str:
+    if mode == "event":
+        n = len(snap.get("triggers", []))
+        nn = len(snap.get("news", {}).get("events", []))
+        stress = snap.get("composite_stress", 0)
+        return (
+            f"[全球长债监测·⚠事件警报] {snap.get('as_of','')} · "
+            f"触发 {n} 项 · 新闻 {nn} 项 · 压力 {stress}/12"
+        )
     stress = snap.get("composite_stress") or snap.get("today_stress") or 0
     band_en = (snap.get("stress_band") or snap.get("today_band") or "ok")
     band_zh = {"ok": "正常", "watch": "观察", "warn": "警戒", "crisis": "危机"}.get(band_en, band_en)
@@ -65,6 +75,33 @@ def _subject(snap: dict, mode: str) -> str:
 
 def _summary_body(snap: dict, mode: str, pdf_path: Path | None) -> str:
     """纯文本邮件正文 —— 简短摘要；详细内容在 PDF 附件。"""
+    if mode == "event":
+        lines = [
+            "⚠ 全球长债危机监测 · 即时事件警报",
+            f"数据截至：{snap.get('as_of','')}（检测 {snap.get('checked_at','')[:16]} UTC）",
+            f"复合压力指数：{snap.get('composite_stress',0)}/12（{snap.get('stress_band','')}）",
+            "",
+        ]
+        if snap.get("triggers"):
+            lines.append("数值触发信号：")
+            for t in snap["triggers"]:
+                lines.append(f"  • [{t.get('category','')}] {t.get('desc','')}"
+                             f"（{t.get('indicator','')} 当前 {t.get('latest_value')}, 单日Δ {t.get('change_1d')}）")
+        news_events = snap.get("news", {}).get("events", [])
+        if news_events:
+            lines.append("")
+            lines.append("新闻扫描发现：")
+            for e in news_events:
+                lines.append(f"  • [{e.get('category','')}] {e.get('headline','')}")
+        lines.append("")
+        if snap.get("ai_narrative"):
+            lines.append("AI 后果分析详见附件 PDF。")
+        else:
+            lines.append("（本次未生成 AI 后果分析，详见附件触发明细。）")
+        lines.append("")
+        lines.append("历史归档：https://github.com/weitaozheng1225-tech/finance-analysis")
+        return "\n".join(lines)
+
     band_en = (snap.get("stress_band") or snap.get("today_band") or "ok")
     band_zh = {"ok": "正常", "watch": "观察", "warn": "警戒", "crisis": "危机"}.get(band_en, band_en)
     stress = snap.get("composite_stress") or snap.get("today_stress") or 0
@@ -165,6 +202,20 @@ def _send_webhook(snap: dict, mode: str, pdf_path: Path | None) -> None:
 
 def main() -> int:
     mode = sys.argv[1] if len(sys.argv) > 1 else "daily"
+
+    if mode == "event":
+        # 仅在 event_monitor 判定 detected=True 时发送即时警报
+        if not EVENT_STATUS.exists():
+            log.error("event_status.json not found — run event_monitor.py first")
+            return 1
+        status = json.loads(EVENT_STATUS.read_text())
+        if not status.get("detected"):
+            log.info("No event detected — no alert sent.")
+            return 0
+        _send_email(status, "event", EVENT_PDF)
+        _send_webhook(status, "event", EVENT_PDF)
+        return 0
+
     if mode == "weekly":
         snap_path = WEEKLY_SNAPSHOT
         pdf_path = WEEKLY_PDF

@@ -514,6 +514,77 @@ ANOMALY_Z_CRISIS = 3.0
 STRESS_ALERT_WARN = 4
 STRESS_ALERT_CRISIS = 7
 
+# ===========================================================================
+# 事件检测 —— 仅在发生"对全球债市有实质性影响的事件"时发出即时警报
+# ===========================================================================
+# 数值触发器：单日(或短期)异动达到"事件规模"即判定当天可能发生实质性事件。
+#   measure: "level_1d" 取 change_1d 的水平差(适用 %/bp 指标)；
+#            "pct_1d"   取 change_1d 的百分比(适用价格/指数)。
+#   direction: "abs" 双向越界 | "up" 仅上行 | "down" 仅下行(阈值为负)。
+EVENT_TRIGGERS = [
+    {"indicator": "usdjpy", "measure": "pct_1d", "threshold": 0.02, "direction": "abs",
+     "category": "B 汇率干预 / BOJ", "desc": "USD/JPY 单日异动 ≥2%"},
+    {"indicator": "gbpusd", "measure": "pct_1d", "threshold": 0.02, "direction": "abs",
+     "category": "B/C 英镑冲击", "desc": "GBP/USD 单日异动 ≥2%"},
+    {"indicator": "us_2y", "measure": "level_1d", "threshold": 0.15, "direction": "abs",
+     "category": "A Fed 政策", "desc": "美 2Y 单日异动 ≥15bp"},
+    {"indicator": "jgb_10y", "measure": "level_1d", "threshold": 0.15, "direction": "up",
+     "category": "A BOJ 政策", "desc": "JGB 10Y 单日跳升 ≥15bp"},
+    {"indicator": "jgb_30y", "measure": "level_1d", "threshold": 0.15, "direction": "up",
+     "category": "A BOJ / 寿险", "desc": "JGB 30Y 单日跳升 ≥15bp"},
+    {"indicator": "us_30y", "measure": "level_1d", "threshold": 0.15, "direction": "up",
+     "category": "C 财政 / 期限溢价", "desc": "美 30Y 单日跳升 ≥15bp"},
+    {"indicator": "move", "measure": "level_1d", "threshold": 20, "direction": "up",
+     "category": "E 波动率体制", "desc": "MOVE 单日跳升 ≥20"},
+    {"indicator": "vix", "measure": "level_1d", "threshold": 5, "direction": "up",
+     "category": "E/D 风险", "desc": "VIX 单日跳升 ≥5"},
+    {"indicator": "kre", "measure": "pct_1d", "threshold": -0.05, "direction": "down",
+     "category": "D 银行爆雷", "desc": "KRE 区域银行单日 ≤ -5%"},
+    {"indicator": "topix_banks", "measure": "pct_1d", "threshold": -0.05, "direction": "down",
+     "category": "D 日本银行", "desc": "TOPIX 银行单日 ≤ -5%"},
+    {"indicator": "gold", "measure": "pct_1d", "threshold": 0.03, "direction": "abs",
+     "category": "F 避险 / 系统性", "desc": "黄金单日异动 ≥3%"},
+    {"indicator": "hy_oas", "measure": "level_1d", "threshold": 0.50, "direction": "up",
+     "category": "D 信用", "desc": "HY 利差单日走阔 ≥50bp"},
+    {"indicator": "ig_oas", "measure": "level_1d", "threshold": 0.15, "direction": "up",
+     "category": "D 信用", "desc": "IG 利差单日走阔 ≥15bp"},
+    {"indicator": "hedged_us_jgb_carry", "measure": "level_1d", "threshold": -0.5, "direction": "down",
+     "category": "A/D 套息", "desc": "对冲后美日套息差单日骤降 ≥0.5%"},
+]
+
+# 复合压力指数单日跳升 ≥ 此值视为事件
+EVENT_STRESS_JUMP = 3
+
+# 提供给 AI 新闻扫描的"实质性事件"分类清单（穷举）
+EVENT_TAXONOMY = """\
+A. 央行政策 / 利率行动
+   - Fed：加息/降息、意外按兵、点阵图突变、QT 节奏变化、紧急/计划外会议、BTFP 类工具
+   - BOJ：加息/降息、YCC 调整或废除、JGB 购债节奏变化、紧急固定利率操作、与汇率挂钩的行动
+   - ECB / BoE：利率决议意外、BoE 紧急购债(gilt)、QT 变化
+   - 任一 G3 央行紧急或计划外会议
+B. 汇率干预
+   - 日本财务省 / BOJ 入市买日元；G7 协调或单边干预；管理货币剧烈变动
+C. 主权 / 财政信誉冲击
+   - 美债务上限 X-date 逼近 / 技术性违约风险升级
+   - 主权评级下调（美 / 英 / 日 / 法）
+   - 重大国债拍卖失败或严重尾随
+   - 意外大规模财政方案 / 预算失控（英国迷你预算式）
+D. 金融机构困境
+   - 大型银行倒闭 / 救助（SVB 式、地区银行挤兑）
+   - 大型保险或养老金亏损公告（日本寿险、英国 LDI 基金）
+   - 货币市场基金跌破净值 / 大额赎回限制
+   - 对冲基金 / 基差交易爆仓
+E. 市场结构 / 流动性失序
+   - 美债市场流动性断裂（结算失败、回购利率飙升）
+   - MOVE / VIX 波动率体制突破
+   - 跨货币基差暴走（美元融资紧张）
+   - 套息交易解除连锁
+F. 系统性 / 外生冲击
+   - 影响债市的地缘冲突（战争、油价冲击）
+   - 主要主权违约（新兴市场传染）
+   - 央行联合流动性行动（互换额度）
+"""
+
 # 数据新鲜度检查 —— 若某指标最新数据距今超过其预算天数，报告中标记陈旧
 # 默认适用于所有日频指标；天然稀疏 / 低频的序列在 max_staleness_days 中单独放宽。
 DEFAULT_MAX_STALENESS_DAYS = 14

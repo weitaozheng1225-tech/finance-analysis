@@ -1,9 +1,11 @@
-name: Daily bond crisis monitor
+name: Event monitor (2x daily)
 
 on:
   schedule:
-    # 06:30 UTC daily = NY ~02:30, London ~07:30, Tokyo ~15:30 — after US close, before Asia close
-    - cron: "30 6 * * *"
+    # 07:00 UTC — after Asia close (Tokyo 16:00): catches BOJ / Japan-session events
+    - cron: "0 7 * * *"
+    # 22:00 UTC — after US close (NY 17:00/18:00): catches Fed / US-session events
+    - cron: "0 22 * * *"
   workflow_dispatch:
 
 permissions:
@@ -40,16 +42,26 @@ jobs:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python scripts/fetch_daily.py
 
-      - name: Compute snapshot + anomalies
+      - name: Compute snapshot + anomalies (+ stress log)
         run: python scripts/analyze.py
 
-      - name: Generate Markdown report (archive)
+      - name: Generate Markdown report (archive for weekly history)
         run: python scripts/report.py
 
-      - name: Generate PDF report
-        run: python scripts/pdf.py daily
+      # No routine daily email — the user only receives the weekly report
+      # plus immediate alerts when a material event is detected below.
 
-      - name: Send alerts
+      - name: Detect material events (numeric triggers + AI news scan)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EVENT_SCAN_MODEL: ${{ vars.EVENT_SCAN_MODEL || 'claude-opus-4-7' }}
+          EVENT_ANALYSIS_MODEL: ${{ vars.EVENT_ANALYSIS_MODEL || 'claude-opus-4-7' }}
+        run: python scripts/event_monitor.py
+
+      - name: Generate event-alert PDF (only if event detected)
+        run: python scripts/pdf.py event
+
+      - name: Send immediate alert (only if event detected)
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -58,8 +70,7 @@ jobs:
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          ALERT_MIN_BAND: ${{ vars.ALERT_MIN_BAND || 'warn' }}
-        run: python scripts/notify.py daily
+        run: python scripts/notify.py event
 
       - name: Commit data + reports
         run: |

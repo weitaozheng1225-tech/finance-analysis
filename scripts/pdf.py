@@ -19,6 +19,7 @@ SNAPSHOT = DATA / "latest_snapshot.json"
 WEEKLY = DATA / "weekly_snapshot.json"
 DAILY_OUT = ROOT / "reports" / "daily"
 WEEKLY_OUT = ROOT / "reports" / "weekly"
+EVENT_OUT = ROOT / "reports" / "events"
 
 sys.path.insert(0, str(ROOT / "scripts"))
 from config import GROUP_ORDER  # noqa: E402
@@ -482,6 +483,95 @@ def render_daily(snap: dict) -> str:
 """
 
 
+def render_event_html(status: dict) -> str:
+    """即时事件警报 PDF。红色封面 + 触发信号表 + AI 后果分析。"""
+    triggers = status.get("triggers", [])
+    news = status.get("news", {}) or {}
+    band = status.get("stress_band", "ok")
+    stress = status.get("composite_stress", 0)
+
+    if triggers:
+        trig_rows = "".join(
+            f"<tr><td>{t.get('category','')}</td><td>{t.get('desc','')}</td>"
+            f"<td>{t.get('indicator','')}</td>"
+            f"<td class='num'>{fmt_value(t.get('latest_value'))}</td>"
+            f"<td class='num'>{fmt_value(t.get('change_1d'))}</td></tr>"
+            for t in triggers
+        )
+        trig_block = (
+            "<h2>数值触发信号</h2><table><thead><tr>"
+            "<th>类别</th><th>触发条件</th><th>指标</th>"
+            "<th class='num'>当前值</th><th class='num'>单日Δ</th>"
+            "</tr></thead><tbody>" + trig_rows + "</tbody></table>"
+        )
+    else:
+        trig_block = "<h2>数值触发信号</h2><div class='no-alerts'>无数值触发；事件来自新闻扫描。</div>"
+
+    news_events = news.get("events", [])
+    if news_events:
+        items = "".join(
+            f"<div class='glossary-item'><div class='term'>[{e.get('category','')}] "
+            f"{e.get('headline','')}</div><div class='desc'>{e.get('summary','')}</div>"
+            + (
+                "<div class='meta'>来源：" + " · ".join(
+                    f"<a href='{u}'>{u}</a>" for u in e.get("sources", [])
+                ) + "</div>" if e.get("sources") else ""
+            )
+            + "</div>"
+            for e in news_events
+        )
+        news_block = "<h2>新闻扫描发现</h2>" + items
+    else:
+        news_block = "<h2>新闻扫描发现</h2><div class='no-alerts'>新闻扫描未发现重大事件（事件由数值触发）。</div>"
+
+    if status.get("ai_narrative"):
+        analysis_block = (
+            "<div class='page-break'></div><h2>AI 后果分析</h2>"
+            f"<div style='font-size:9.5pt;line-height:1.6;'>{status['ai_narrative']}</div>"
+        )
+    else:
+        analysis_block = (
+            "<div class='page-break'></div><h2>AI 后果分析</h2>"
+            "<div class='no-alerts'>未生成 AI 分析（未配置 ANTHROPIC_API_KEY 或调用失败）。"
+            "请结合上方触发信号与新闻自行研判。</div>"
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8">
+<title>全球长债危机监测 — 即时事件警报 {status.get('as_of','')}</title>
+<style>{CSS}
+.cover {{ background:#9C2A2A; }}
+.cover .brand {{ color:#F4D6D6; }}
+.cover .date {{ color:#F4D6D6; }}
+</style></head>
+<body>
+<div class="cover">
+  <div class="brand">BOND CRISIS MONITOR · 即时事件警报</div>
+  <h1>⚠ 实质性事件警报</h1>
+  <p class="subtitle">检测到对全球债券市场可能有实质性影响的事件</p>
+  <p class="date">数据截至 {status.get('as_of','')} · 检测时间 {status.get('checked_at','')[:16]} UTC</p>
+</div>
+
+<h2>当前压力定位</h2>
+<div class="stress-block">
+  <div><span class="stress-number">{stress}</span><span class="stress-suffix"> / 12</span>
+  {band_pill(band)}</div>
+</div>
+
+{trig_block}
+{news_block}
+{analysis_block}
+
+<div class="footer-note">
+  本警报由数值触发器（单日事件级异动）与 AI 联网新闻扫描共同判定，
+  后果分析由 Claude Opus 4.7 结合参考框架与当下市场快照生成，仅供研究参考，
+  不构成投资建议。完整方法见 <code>01_scenario_analysis.md</code>。
+</div>
+</body></html>
+"""
+
+
 def render_pdf(html: str, out_path: Path) -> None:
     from weasyprint import HTML  # imported lazily so unit tests don't need libs
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -510,8 +600,24 @@ def main() -> int:
         render_pdf(html, out)
         (WEEKLY_OUT / "latest.pdf").write_bytes(out.read_bytes())
         return 0
+    elif mode == "event":
+        status_path = DATA / "event_status.json"
+        if not status_path.exists():
+            log.error("event_status.json missing — run event_monitor.py first")
+            return 1
+        status = json.loads(status_path.read_text())
+        if not status.get("detected"):
+            log.info("event not detected — no event PDF generated")
+            return 0
+        EVENT_OUT.mkdir(parents=True, exist_ok=True)
+        html = render_event_html(status)
+        stamp = (status.get("checked_at") or status.get("as_of") or "event")[:16].replace(":", "")
+        out = EVENT_OUT / f"{stamp}.pdf"
+        render_pdf(html, out)
+        (EVENT_OUT / "latest.pdf").write_bytes(out.read_bytes())
+        return 0
     else:
-        log.error("Unknown mode: %s (use 'daily' or 'weekly')", mode)
+        log.error("Unknown mode: %s (use 'daily' | 'weekly' | 'event')", mode)
         return 2
 
 

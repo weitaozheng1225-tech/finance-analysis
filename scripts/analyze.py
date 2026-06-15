@@ -266,10 +266,26 @@ def compute_snapshot() -> DailySnapshot:
     )
 
 
+def _append_stress_log(snap: DailySnapshot) -> None:
+    """Append today's composite stress to a small log so event detection can
+    measure the day-over-day jump. One row per calendar date (latest wins)."""
+    path = OUT_DIR / "stress_log.csv"
+    rows: dict[str, str] = {}
+    if path.exists():
+        for line in path.read_text().splitlines()[1:]:
+            if "," in line:
+                d, v = line.split(",", 1)
+                rows[d] = v
+    rows[snap.as_of] = str(snap.composite_stress)
+    ordered = sorted(rows.items())
+    path.write_text("date,stress\n" + "\n".join(f"{d},{v}" for d, v in ordered) + "\n")
+
+
 def main() -> int:
     snap = compute_snapshot()
     out = OUT_DIR / "latest_snapshot.json"
     out.write_text(json.dumps(asdict(snap), indent=2, default=str))
+    _append_stress_log(snap)
     log.info(
         "Snapshot: stress=%d/12 band=%s, %d anomalies",
         snap.composite_stress, snap.stress_band, len(snap.anomalies),
