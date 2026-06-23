@@ -1,13 +1,24 @@
 {
   "as_of": "2026-06-23",
-  "checked_at": "2026-06-23T10:31:50.817316+00:00",
-  "detected": false,
+  "checked_at": "2026-06-23T23:01:51.917109+00:00",
+  "detected": true,
   "triggers": [],
   "news": {
-    "found": false,
-    "events": []
+    "found": true,
+    "events": [
+      {
+        "category": "C",
+        "headline": "英国首相斯塔默辞职，引发市场对继任者财政立场和英国国债前景的担忧",
+        "summary": "Keir Starmer于2026年6月22日早间宣布辞去英国首相和工党党魁职务，触发领导权过渡。10年期英国国债收益率初步反应温和（约4.80%–4.85%，部分时段下行约4个基点），但市场关注热门继任者Andy Burnham被视为财政立场更左倾，此前其表态曾令债市不安，叠加英国财政状况持续恶化，使Gilt隐含风险溢价显著高于国际同业。",
+        "sources": [
+          "https://www.bloomberg.com/news/articles/2026-06-22/gilts-steady-pound-lower-as-uk-prime-minister-starmer-resigns",
+          "https://www.cnbc.com/2026/06/22/keir-starmer-andy-burnham-uk-markets.html",
+          "https://tradingeconomics.com/united-kingdom/government-bond-yield"
+        ]
+      }
+    ]
   },
-  "ai_narrative": null,
+  "ai_narrative": "<h4>事件认定</h4>\n<p>2026 年 6 月 22 日早间，英国首相 Keir Starmer 宣布辞去首相及工党党魁职务，触发领导权过渡。市场关注热门继任者 Andy Burnham 被视为财政立场更左倾，过往表态曾令 Gilt 市场承压。事件定性为<b>英国主权-财政可信度冲击</b>，对标框架中通道 3（LDI 链条）与通道 6（主权-银行死亡螺旋），归入<b>情景 B（区域性流动性事件）的早期触发候选</b>。确信度：事件本身已确认；但传导至 LDI 危机仍需后续催化（继任者人选、财政表态）。<i>当前压力指数 3/12，仍处 watch 区间，尚未升级至 action。</i></p>\n\n<h4>传导链路与受影响市场</h4>\n<ul>\n<li><b>Gilt 长端是核心痛点</b>：10Y Gilt 初步反应温和（4.80–4.85%，部分时段反而下行 4bp），显示市场尚未定价\"Burnham 上任\"。但参考 2022/9 模板，30Y Gilt 单周飙 130bp 仅需\"迷你预算\"级别催化，<b>真正风险窗口在新党魁财政表态前后</b>。</li>\n<li><b>英镑已先于债市反应</b>：GBP/USD 1.3201，1 日 z = -2.07，属显著异动；DXY z = 2.66 同步走强，与 2022/9 \"镑债双杀\"前夜的形态相似。</li>\n<li><b>跨市场外溢路径</b>：(A) Gilt → BTP/Bund 利差走阔；(B) 英国机构若被迫抛售美债换镑，传导至美 10Y（已升至 4.51%，1Y z = 3.06，短端供给压力可见）；(C) 信誉传染推升全球主权期限溢价（ACM 已 warn）。</li>\n<li><b>叠加日本系统性背景不利</b>：JGB 10Y 2.68%、30Y 3.80%、40Y 3.77%（均 crisis 状态），USD/JPY 161.55 接近 2024/8 套息解除前高位。<b>若英国事件触发全球避险，日元升值可能同步引爆 carry unwind，构成\"英 + 日\"双重叠加（情景 C 雏形）</b>。</li>\n<li>当前未见警报：MOVE 68.8（3Y 分位仅 13%）、VIX 19.5、IG/HY 利差收窄，<b>市场尚处\"未定价\"阶段</b>。</li>\n</ul>\n\n<h4>情景概率与时间窗口</h4>\n<ul>\n<li><b>情景 A（基线，55%）</b>：工党快速完成有序过渡，新党魁明确承诺财政纪律，Gilt 30Y 30 日内波动 &lt; 30bp，事件被消化。时间窗口：2–6 周。</li>\n<li><b>情景 B（区域 LDI 重启，30%）</b>：Burnham 或类似立场者上位，秋季声明/迷你预算前后市场逼空，Gilt 30Y 单周 &gt;50bp，BoE 启用 TECRF。时间窗口：6–16 周（关注 7/1 DMO 季度发行通告、秋季财政声明）。</li>\n<li><b>情景 C（跨市场传染，10%）</b>：与日元 carry unwind 共振，全球波动率飙升，股市回撤 15–25%。窗口：4–12 周。</li>\n<li><b>情景 D/E（5%）</b>：与本事件直接关联较弱。</li>\n</ul>\n\n<h4>应对建议</h4>\n<ul>\n<li><b>未来 1–2 周观察期</b>：不急于全面对冲，但建立监控清单——继任者宣布时点、Burnham 财政表态、30Y Gilt 单日变动、GBP/USD 是否破 1.30、5Y UK CDS。</li>\n<li><b>触发 B 情景的预定动作</b>（Gilt 30Y 单周 &gt;30bp）：减仓欧元区国债（尤其 BTP）；建立 GBP/USD OTM put（3M 行权 1.27）；减仓英国房地产基金与 FTSE 250；保留 FTSE 100 出口型（镑贬受益）。</li>\n<li><b>核心对冲组合</b>：黄金（当前 4123 美元，z = -2.04 处于回调区，可在 4050–4100 加仓至 10–15%）；瑞郎多头；保留 6 个月生活+机会现金（占比提至 15%）。</li>\n<li><b>BoE 紧急购债出现后 24–48 小时</b>：按 2022/9 模板抄底 Gilt 长端（IGLT.L）与 FTSE 100；同步关注 BoE 是否能压住跨市场外溢。</li>\n<li><b>不做的事</b>：当前波动率与信用利差均处低位，<i>不要现在追买 VIX call</i>（成本高且事件尚未定价完成），等待 MOVE 突破 100 或 Burnham 正式获位再行动。</li>\n</ul>",
   "composite_stress": 3,
   "stress_band": "watch"
 }
