@@ -1,12 +1,12 @@
 {
   "as_of": "2026-07-18",
-  "checked_at": "2026-07-18T08:45:15.118538+00:00",
+  "checked_at": "2026-07-18T22:39:06.418889+00:00",
   "detected": false,
   "triggers": [],
   "news": {
     "found": false,
     "events": [],
-    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'This organization has been disabled.'}, 'request_id': 'req_011Cd9EGZTmN2QWGh7wpcchK'}"
+    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'This organization has been disabled.'}, 'request_id': 'req_011CdAKrakgnjNXMuC6TcEcF'}"
   },
   "ai_narrative": null,
   "composite_stress": 3,
