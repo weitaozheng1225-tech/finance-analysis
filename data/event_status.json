@@ -1,20 +1,12 @@
 {
   "as_of": "2026-07-31",
-  "checked_at": "2026-07-31T09:38:40.549961+00:00",
-  "detected": true,
-  "triggers": [
-    {
-      "category": "B 汇率干预 / BOJ",
-      "desc": "USD/JPY 单日异动 ≥2%",
-      "indicator": "美元/日元",
-      "change_1d": -0.021114500811014434,
-      "latest_value": 159.8520050048828
-    }
-  ],
+  "checked_at": "2026-07-31T22:52:18.697481+00:00",
+  "detected": false,
+  "triggers": [],
   "news": {
     "found": false,
     "events": [],
-    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdZurimgqsgc8PEtwP4Cz'}"
+    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdaxNtJ15auoUAi1Acvhd'}"
   },
   "ai_narrative": null,
   "composite_stress": 3,
