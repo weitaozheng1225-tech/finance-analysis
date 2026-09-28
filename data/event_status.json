@@ -1,12 +1,20 @@
 {
   "as_of": "2026-09-28",
-  "checked_at": "2026-09-28T00:07:44.097795+00:00",
-  "detected": false,
-  "triggers": [],
+  "checked_at": "2026-09-28T14:48:21.472684+00:00",
+  "detected": true,
+  "triggers": [
+    {
+      "category": "F 避险 / 系统性",
+      "desc": "黄金单日异动 ≥3%",
+      "indicator": "黄金 (CME 主力)",
+      "change_1d": -0.03026070763500931,
+      "latest_value": 4166.0
+    }
+  ],
   "news": {
     "found": false,
     "events": [],
-    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CfUs3ZyjTaUimtAjEiZqQ'}"
+    "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CfW2CRXY7cUF3rnsAG41n'}"
   },
   "ai_narrative": null,
   "composite_stress": 3,
