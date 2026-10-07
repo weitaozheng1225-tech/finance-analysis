@@ -1,3 +1,3 @@
-fetched_at=2026-10-07T01:07:54.091890+00:00
+fetched_at=2026-10-07T14:07:36.756778+00:00
 total=41
-failures=jgb_40y,jgb_1y
+failures=none
