@@ -380,12 +380,12 @@
     {
       "name": "btc",
       "label": "\u6bd4\u7279\u5e01",
-      "latest_value": 62731.19926578394,
+      "latest_value": 65292.14413017781,
       "latest_date": "2026-11-15",
-      "change_1d": -0.08171873317839333,
-      "change_5d": -0.16654851129468684,
-      "change_20d": -0.2163385122987893,
-      "z_60d": -3.8745563485975554,
+      "change_1d": -0.044230725267494254,
+      "change_5d": -0.1325236028806451,
+      "change_20d": -0.18434623595398925,
+      "z_60d": -3.4440665648755586,
       "threshold_state": "ok",
       "group": "\u907f\u9669\u4e0e\u53e6\u7c7b\u8d44\u4ea7",
       "unit": "USD",
@@ -699,7 +699,7 @@
     }
   ],
   "anomalies": [
-    "\u6bd4\u7279\u5e01\uff1az=-3.87\uff08\u5371\u673a\uff09",
+    "\u6bd4\u7279\u5e01\uff1az=-3.44\uff08\u5371\u673a\uff09",
     "USD/JPY 1Y \u9501\u6c47\u6210\u672c\uff08CIP \u9690\u542b\uff09\uff1az=+2.02\uff08\u8b66\u6212\uff09",
     "\u7f8e\u56fd 10Y \u76c8\u4e8f\u5e73\u8861\u901a\u80c0\u9884\u671f\uff1az=-2.17\uff08\u8b66\u6212\uff09",
     "\u7f8e\u56fd 10Y \u671f\u9650\u6ea2\u4ef7 (ACM)\uff1a\u5f53\u524d 0.874 \u8d8a\u8fc7\u8b66\u6212\u9608\u503c",
